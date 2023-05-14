@@ -1,0 +1,27 @@
+table 'KS5 Slot'
+	lineageTag: a738f066-b3d6-45f8-9971-9c6e94a747e1
+	ordinal: 60
+
+	partition 'KS5 Slot' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS4Data             
+				Dataflow = Workspace{[ dataflowName = "Edu-KS5Data" ]}[Data],
+				Entity = Dataflow{[ entity = "dimKS5Slot" ]}[Data]
+			in
+				Entity
+
+
+	column 'KS5 Slot'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 2f647a5e-1710-4e3b-a44b-037f57825cce
+		sourceColumn: "KS5 Slot"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = KS5
+

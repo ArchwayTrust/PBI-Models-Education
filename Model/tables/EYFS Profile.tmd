@@ -1,0 +1,143 @@
+table 'EYFS Profile'
+	lineageTag: f3af3646-9e8b-4d7a-8b15-0a9f558192b3
+	ordinal: 77
+
+	partition 'EYFS Profile' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],           
+				Dataflow = Workspace{[ dataflowName = "Edu-Primary-Ingest" ]}[Data],
+				Entity = Dataflow{[ entity = "fctPrimaryEYFSProfiles" ]}[Data]
+			in
+				Entity
+
+
+	measure 'EYFS Outcomes GLD %' =
+		VAR StudentsAchievingGLD =
+		    COUNTROWS(
+		        CALCULATETABLE(
+		            FILTER(
+		                Student,
+		                CALCULATE( SUM( 'EYFS Profile'[Expected+] ) ) = 12
+		            ),
+		            'EYFS Goal'[Core] = 1,
+		            'EYFS Profile'[PupilIncluded] = 1
+		        )
+		    )
+		
+		VAR TotalStudents = 
+		    CALCULATE (
+		        DISTINCTCOUNT ( 'EYFS Profile'[StudentId] ),
+		        'EYFS Profile'[PupilIncluded] = 1
+		    )
+		
+		VAR Result = 
+		    DIVIDE (
+		        StudentsAchievingGLD,
+		        TotalStudents
+		    )
+		
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: 9965721c-d1f1-4be8-90b7-bb2dfff33f5e
+
+	measure 'EYFS % Achieving Goal' =
+		VAR NumAchievingGoal =
+		    CALCULATE(
+		        SUM( 'EYFS Profile'[Expected+] ),
+		        'EYFS Profile'[PupilIncluded] = 1
+		    )
+		    
+		VAR TotalGoals =
+		    CALCULATE(
+		        COUNTROWS ( 'EYFS Profile' ),
+		        'EYFS Profile'[PupilIncluded] = 1
+		    )
+		        
+		VAR Result = 
+		    DIVIDE (
+		        NumAchievingGoal,
+		        TotalGoals
+		    )
+		    
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: f518b5a5-4c86-41a3-9b61-e7a16a2096ac
+
+	column DataSet
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5826279f-8c05-424c-836c-e57c8dff6e38
+		sourceColumn: DataSet
+		summarizeBy: None
+
+	column 'Expected+'
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 7a817d0f-f504-4a3b-a9aa-1270ec9e6601
+		sourceColumn: Expected+
+		summarizeBy: None
+
+	column GoalId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 52e0a981-d4f2-439b-b172-5a01e87fddec
+		sourceColumn: GoalId
+		summarizeBy: None
+
+	column OutcomeId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d7919a2f-1449-4310-a39a-c8cd87b6efe2
+		sourceColumn: OutcomeId
+		summarizeBy: None
+
+	column PupilIncluded
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 4a65acf9-6d42-4a67-ab51-22890af5d489
+		sourceColumn: PupilIncluded
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 87c65f1a-bb1d-4b6b-9f76-b089366a4805
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6ae54111-69d9-4430-a500-7a02407bc086
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = EYFS
+

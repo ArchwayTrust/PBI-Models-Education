@@ -1,0 +1,87 @@
+table 'G4S TT Periods'
+	lineageTag: 4c6484d0-b7c6-4d7b-b344-8755f9ab3a01
+	ordinal: 33
+
+	partition 'G4S TT Periods' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-G4SAttendance                   
+				Dataflow = Workspace{[ dataflowName = "Edu-G4SAttendance" ]}[Data],
+				Entity = Dataflow{[ entity = "dimG4SPeriods" ]}[Data]
+			in
+				Entity
+
+
+	column Academy
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: fba58f64-0331-4ee3-ab10-501765553170
+		sourceColumn: Academy
+		summarizeBy: None
+
+	column DataSet
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 8b949959-137f-4ef0-b714-d7e2131d0bcd
+		sourceColumn: DataSet
+		summarizeBy: None
+
+	column 'Day Of Week'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 9a3a430c-a62e-4464-9e6c-0b31a7eb9fd6
+		sourceColumn: "Day Of Week"
+		summarizeBy: None
+
+	column G4SPeriodId
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: db7026d5-353f-4908-a250-e4567acea603
+		sourceColumn: G4SPeriodId
+		summarizeBy: None
+
+	column Period
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 9e17b087-9674-417a-ad02-32f166247bae
+		sourceColumn: Period
+		summarizeBy: None
+
+	column 'Period Day Name'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 9ac5ba1f-79c2-4b6d-91ae-dc40daf78014
+		sourceColumn: "Period Day Name"
+		summarizeBy: None
+
+	column PeriodId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		lineageTag: 7b803cd7-81b9-45cd-98cc-8bbe9b0394cb
+		sourceColumn: PeriodId
+		summarizeBy: None
+
+	column 'Week Number'
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: 000be9a9-412a-4316-9106-5a8348d1de9f
+		sourceColumn: "Week Number"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Attendance
+

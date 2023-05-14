@@ -1,0 +1,840 @@
+/// Session attendance data.
+/// One row per student, per mark.
+/// (FACT)
+table Attendance
+	lineageTag: 4a836710-f288-41eb-a655-caa3f80c556f
+	ordinal: 25
+
+	partition LatestYear = M
+		expression:=
+			let
+			    Source = fxAttendancePartition(#date(2022, 9, 1), #date(2040, 8, 31))
+			in
+			    Source
+
+
+	partition '2019 - 1' = M
+		expression:=
+			let
+			    Source = fxAttendancePartition(#date(2018, 9, 1), #date(2019, 3, 31))
+			in
+			    Source
+
+
+	partition '2020 - 1' = M
+		expression:=
+			let
+			    Source = fxAttendancePartition(#date(2019, 9, 1), #date(2020, 3, 31))
+			in
+			    Source
+
+
+	partition '2021 - 1' = M
+		expression:=
+			let
+			    Source = fxAttendancePartition(#date(2020, 9, 1), #date(2021, 3, 31))
+			in
+			    Source
+
+
+	partition '2022 - 1' = M
+		expression:=
+			let
+			    Source = fxAttendancePartition(#date(2021, 9, 1), #date(2022, 3, 31))
+			in
+			    Source
+
+
+	partition '2019 - 2' = M
+		expression:=
+			let
+			    Source = fxAttendancePartition(#date(2019, 4, 1), #date(2019, 8, 31))
+			in
+			    Source
+
+
+	partition '2020 - 2' = M
+		expression:=
+			let
+			    Source = fxAttendancePartition(#date(2020, 4, 1), #date(2020, 8, 31))
+			in
+			    Source
+
+
+	partition '2021 - 2' = M
+		expression:=
+			let
+			    Source = fxAttendancePartition(#date(2021, 4, 1), #date(2021, 8, 31))
+			in
+			    Source
+
+
+	partition '2022 - 2' = M
+		expression:=
+			let
+			    Source = fxAttendancePartition(#date(2022, 4, 1), #date(2022, 8, 31))
+			in
+			    Source
+
+
+	measure 'LA Attendance' =
+		
+		VAR Sessions =  
+		    SUMX(
+		        'DfE LA Attendance',
+		        'DfE LA Attendance'[sess_possible]-'DfE LA Attendance'[sess_authorised]-'DfE LA Attendance'[sess_unauthorised]
+		    )
+		
+		VAR Possible = 
+		    SUM('DfE LA Attendance'[sess_possible]) 
+		    
+		VAR Result =
+		    DIVIDE(
+		        Sessions,
+		        Possible
+		    )
+		
+		RETURN 
+		    IF(
+		        HASONEVALUE('DfE Attendance Year Breakdown'[Half Terms]),
+		        Result
+		    )
+		
+		
+
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: 8093cf5b-0455-47c1-a058-29fe7fe3df0c
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'National Attendance' =
+		
+		    CALCULATE (
+		        [LA Attendance],
+		        REMOVEFILTERS(Site)
+		    )
+
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: c654f20c-e987-4def-a6de-50f4da3f56c8
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	/// Excludes X and No Marks
+	measure '# Attendance Possible' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN
+		CALCULATE (
+		    COUNTROWS( Attendance ),
+		    NOT 'SIMS Attendance Code'[Statistical Meaning] IN { "No mark", "Attendance not required" },
+		    KEEPFILTERS( AttFilter )
+		)
+
+		formatString:= #,0
+		lineageTag: 5ebe397c-3707-4fb0-995c-713938f6777c
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" ThousandSeparator="True" />
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+	/// Only Present (Not AEA)
+	measure '# Attendance Present' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN     
+		CALCULATE (
+		    COUNTROWS ( Attendance ),
+		    'SIMS Attendance Code'[Statistical Meaning] = "Present",
+		    KEEPFILTERS( AttFilter )
+		)
+		
+
+		formatString:= #,0
+		lineageTag: 1e90d170-f12e-4c21-b3d6-c5340755a569
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" ThousandSeparator="True" />
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+	measure '% Attendance' =
+		VAR PossibleAtt = [# Attendance Possible]
+		VAR PossibleAttLatest = 
+		        CALCULATE(
+		            [# Attendance Possible],
+		            Calendar[Academic Year] = "2022/2023"
+		        )
+		
+		VAR NormalResult =
+		    DIVIDE(
+		        [# Attendance Present] + [# Attendance AEA],
+		        PossibleAtt
+		    )
+		VAR LatestResult =
+		    CALCULATE(
+		        DIVIDE(
+		            [# Attendance Present] + [# Attendance AEA],
+		            PossibleAttLatest
+		        ),
+		        Calendar[Academic Year] = "2022/2023"
+		    )
+		RETURN
+		
+		    SWITCH(
+		        TRUE(),
+		        HASONEVALUE( Calendar[Academic Year] ) && PossibleAtt > 0, NormalResult + 0,
+		        PossibleAttLatest > 0, LatestResult + 0,
+		        BLANK()
+		    )
+		
+		
+
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		KPI:
+			statusExpression:=
+				
+				VAR AttDiff = 
+				    IF(
+				        ISBLANK( [% Attendance] ),
+				        BLANK(),
+				        [% Attendance] - [National Attendance]
+				    )
+				    
+				VAR StatusFlag = 
+				    SWITCH ( TRUE(),
+				        AttDiff < -0.002, -1,
+				        AttDiff < 0.002, 0,
+				        1
+				    )
+				
+				RETURN StatusFlag
+
+			statusGraphic: "Traffic Light"
+			targetExpression:= [National Attendance]
+			targetFormatString: "#,##0.0 %"
+		lineageTag: 6f85ed2e-ef04-405c-85db-2fd5ed238fab
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+	measure '# Lates' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN
+		     
+		CALCULATE (
+		    COUNTROWS( Attendance ),
+		    'SIMS Attendance Code'[Mark] IN { "L" },
+		    KEEPFILTERS( AttFilter )
+		)
+
+		lineageTag: 09a5e98c-eea0-4ced-928d-a5414100500e
+
+	measure '% Late' =
+		
+		DIVIDE(
+		    [# Lates],
+		    [# Attendance Possible]
+		)
+
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: e39593bb-61fc-4b63-9a31-d720978995e6
+
+	measure '% Students PA' =
+		
+		DIVIDE (
+		    [# Students PA],
+		    [# Students From Attendance]
+		)
+
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: 747c07c8-d1a2-4744-9394-4ed38555f5c3
+
+	measure '# Attendance AEA' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN  
+		CALCULATE(
+		    COUNTROWS( Attendance ),
+		    'SIMS Attendance Code'[Statistical Meaning] = "Approved Educational Activity",
+		    KEEPFILTERS( AttFilter )
+		)
+
+		lineageTag: 4971e766-2613-4c0b-96d1-e7f1523c4fd0
+
+	measure '# Attendance Not Required' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN
+		CALCULATE(
+		    COUNTROWS( Attendance ),
+		    'SIMS Attendance Code'[Statistical Meaning] = "Attendance Not Required",
+		    KEEPFILTERS( AttFilter )
+		)
+
+		lineageTag: 3e49fddc-6c43-42d0-847b-1cf4b3af0da0
+
+	measure '# Authorised Absence' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN   
+		    
+		CALCULATE(
+		    COUNTROWS( Attendance ),
+		    'SIMS Attendance Code'[Statistical Meaning] = "Authorised Absence",
+		    KEEPFILTERS( AttFilter )
+		)
+
+		lineageTag: 104a822e-5812-4953-a841-2a5fa4e9a688
+
+	measure '# Missing Marks' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN
+		    
+		CALCULATE(
+		    COUNTROWS( Attendance ),
+		    'SIMS Attendance Code'[Statistical Meaning] = "No mark",
+		    KEEPFILTERS( AttFilter )
+		)
+
+		lineageTag: 00efbbe4-c754-4d29-90f2-5b0cacb09f37
+
+	measure '# Unauthorised Absence' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN
+		    
+		CALCULATE(
+		    COUNTROWS( Attendance ),
+		    'SIMS Attendance Code'[Statistical Meaning] = "Unauthorised Absence",
+		    KEEPFILTERS( AttFilter )
+		)
+
+		lineageTag: 225b1a9e-dd9f-4213-a876-286950d225ed
+
+	measure '# X Codes' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN
+		CALCULATE(
+		    COUNTROWS( Attendance ),
+		    'SIMS Attendance Code'[Mark] = "X",
+		    KEEPFILTERS( AttFilter )
+		)
+
+		lineageTag: 3d270129-e3fa-442f-ae75-9699955647b9
+
+	/// Excludes X and No Marks
+	measure '% Absence' =
+		
+		    DIVIDE(
+		        [# Authorised Absence] + [# Unauthorised Absence],
+		        [# Attendance Possible]
+		    )
+
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: 4ed327cc-dd69-44b8-b27a-b29bdce40a73
+
+	measure '# AM Lates' =
+		
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		
+		RETURN
+		CALCULATE(
+		    SUM( Attendance[AM] ),
+		    'SIMS Attendance Code'[Mark] IN { "L" },
+		    KEEPFILTERS( AttFilter )
+		)
+		
+
+		lineageTag: 4d7ea675-4f77-40c2-acfc-d6566ce06201
+
+	measure '# Students PA' =
+		 
+		VAR StuIdList = VALUES ( Student[StudentId] )
+		      
+		VAR NumberPA =    
+		    COUNTROWS(
+		        FILTER (
+		                StuIdList,
+		                [% Attendance] <= 0.9 && [# Attendance Possible] > 0
+		            )     
+		    )
+		    
+		RETURN NumberPA
+		
+
+		lineageTag: 2ae93a8a-805b-49df-8824-7779a3c9dfb6
+
+	measure '% Cumulative Attendance' =
+		
+		TOTALYTD (
+		    [% Attendance], 
+		    Calendar[Date],
+		    "31/08"
+		)
+
+		formatString:= #,##0.00 %
+		lineageTag: 6aa2305b-245d-4a75-b16b-fb536d3d10da
+
+	measure '# Students From Attendance' =
+		VAR StuIdList = VALUES ( Student[StudentId] )
+		      
+		VAR NumberStu =    
+		    COUNTROWS(
+		        FILTER (
+		                StuIdList,
+		                [# Attendance Possible] > 0
+		            )     
+		    )
+		    
+		RETURN NumberStu
+		    
+
+		lineageTag: a1965ea9-41e6-4e7a-b625-c2be552856d0
+
+	measure 'Attendance Slicer Filter' = INT( NOT ( ISEMPTY( Attendance ) ) )
+		lineageTag: a80b02ea-c1b8-4a06-9453-4f05487d7a5c
+
+	measure '% Attendance (X Code As Absent)' =
+		VAR NormalResult =
+		    DIVIDE(
+		        [# Attendance Present] + [# Attendance AEA],
+		        [# Attendance Possible] + [# X Codes]
+		    )
+		VAR LatestResult =
+		    CALCULATE(
+		        DIVIDE(
+		            [# Attendance Present] + [# Attendance AEA],
+		            [# Attendance Possible] + [# X Codes]
+		        ),
+		        Calendar[Academic Year] = "2022/2023"
+		    )
+		RETURN
+		    IF(
+		        HASONEVALUE( Calendar[Academic Year] ),
+		        NormalResult,
+		        LatestResult
+		    )
+
+		formatString:= #,##0.0 %
+		lineageTag: ed962843-cde9-4f4b-8ef0-c084f073a4aa
+
+	measure '# I Codes' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN
+		CALCULATE(
+		    COUNTROWS( Attendance ),
+		    'SIMS Attendance Code'[Mark] = "I",
+		    KEEPFILTERS( AttFilter )
+		)
+
+		formatString:= #,##0
+		lineageTag: d3b1cb8a-a8b2-4b95-b643-37b227c2b370
+
+	measure '# I02 Codes' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN
+		CALCULATE(
+		    COUNTROWS( Attendance ),
+		    'SIMS Attendance Code'[Subcode] = "I02",
+		    KEEPFILTERS( AttFilter )
+		)
+
+		lineageTag: 7d79628c-b26e-4644-8fd1-46b9e67f3f3b
+
+	measure 'Maximum Absence Sessions Remaining to Finish Above 95%' =
+		VAR _StudentsMaxPossible = 
+		    IF(
+		        HASONEVALUE( Student[StudentId] ),
+		        [# Sessions Remaining] + [# Attendance Possible],
+		        BLANK()
+		    )
+		    
+		VAR _MaxAllowedFor90 = 0.05 * _StudentsMaxPossible
+		
+		VAR _Result = _MaxAllowedFor90 - ( [# Authorised Absence] + [# Unauthorised Absence] )
+		
+		RETURN _Result
+
+		displayFolder: "Absence Impact"
+		lineageTag: 4de0a164-f3d5-4e8a-99b1-5082a227f0b0
+
+	/// Assumes 380 Sessions
+	measure '# Sessions Remaining' =
+		VAR _PossibleSoFar = 
+		        CALCULATE(
+		            MAXX(
+		                VALUES( Student[StudentId] ),
+		                [# Attendance Possible]
+		            ),
+		            REMOVEFILTERS( Student ),
+		            REMOVEFILTERS( '(RLS) Student Name' )
+		        )
+		
+		VAR _StudentYG = SELECTEDVALUE ( Student[NC Year] )
+		
+		VAR _Result = 
+		    IF(
+		        HASONEVALUE( Calendar[Academic Year] ),
+		        SWITCH(
+		            TRUE(),
+		            _StudentYG = - 1, BLANK(),
+		            _StudentYG < 11, 376 - _PossibleSoFar,
+		            _StudentYG = 11, 376 - 76 - _PossibleSoFar,
+		            BLANK()
+		        ),
+		        BLANK()
+		    )
+		        
+		RETURN _Result
+		    
+
+		displayFolder: "Absence Impact"
+		formatString:= #,##0
+		lineageTag: a703cf3f-d6ad-4a55-ad67-c6f261c1f74a
+
+	measure '# Attendance Absent' = [# Authorised Absence] + [# Unauthorised Absence]
+		formatString:= #,##0
+		lineageTag: b3b529f1-1e02-4de2-89b4-b913cf80400f
+
+	/// Assumes 380 sessions possible.
+	measure 'Maximum Absence Sessions Remaining to Finish Above 90%' =
+		VAR _StudentsMaxPossible = 
+		    IF(
+		        HASONEVALUE( Student[StudentId] ),
+		        [# Sessions Remaining] + [# Attendance Possible],
+		        BLANK()
+		    )
+		    
+		VAR _MaxAllowedFor90 = 0.1 * _StudentsMaxPossible
+		
+		VAR _Result = _MaxAllowedFor90 - ( [# Authorised Absence] + [# Unauthorised Absence] )
+		
+		RETURN _Result
+		
+		    
+		    
+
+		displayFolder: "Absence Impact"
+		formatString:= #,##0
+		lineageTag: 6b53deca-fcf7-44b4-82b9-195932088224
+
+	measure 'Test Measure' = COUNTROWS ( Attendance )
+		lineageTag: c8b22bed-316f-47c9-a499-7787c27d5cae
+
+	measure '# E Codes' =
+		VAR AttFilter =     
+		    TREATAS (
+		        AttendanceFilter, 
+		        Student[NC Year], 
+		        Calendar[Half Term]
+		    )
+		    
+		RETURN
+		CALCULATE(
+		    COUNTROWS( Attendance ),
+		    'SIMS Attendance Code'[Mark] = "E",
+		    KEEPFILTERS( AttFilter )
+		)
+
+		formatString:= #,##0
+		lineageTag: 800ab7f3-b728-41bb-9915-f1318756f41f
+
+	/// Attendance counting suspension as neutral.
+	measure '% Attendance (Suspension Neutral)' =
+		VAR PossibleAtt = [# Attendance Possible] - [# E Codes]
+		VAR PossibleAttLatest = 
+		        CALCULATE(
+		            [# Attendance Possible] - [# E Codes],
+		            Calendar[Academic Year] = "2022/2023"
+		        )
+		
+		VAR NormalResult =
+		    DIVIDE(
+		        [# Attendance Present] + [# Attendance AEA],
+		        PossibleAtt
+		    )
+		VAR LatestResult =
+		    CALCULATE(
+		        DIVIDE(
+		            [# Attendance Present] + [# Attendance AEA],
+		            PossibleAttLatest
+		        ),
+		        Calendar[Academic Year] = "2022/2023"
+		    )
+		RETURN
+		
+		    SWITCH(
+		        TRUE(),
+		        HASONEVALUE( Calendar[Academic Year] ) && PossibleAtt > 0, NormalResult + 0,
+		        PossibleAttLatest > 0, LatestResult + 0,
+		        BLANK()
+		    )
+
+		formatString:= #,##0.0 %
+		lineageTag: f431c289-a798-486e-9d4d-72c85cd45ef5
+
+	/// Attendance counting suspension as positive.
+	measure '% Attendance (Suspension Positive)' =
+		VAR PossibleAtt = [# Attendance Possible]
+		VAR PossibleAttLatest = 
+		        CALCULATE(
+		            [# Attendance Possible],
+		            Calendar[Academic Year] = "2022/2023"
+		        )
+		
+		VAR NormalResult =
+		    DIVIDE(
+		        [# Attendance Present] + [# Attendance AEA] + [# E Codes],
+		        PossibleAtt
+		    )
+		VAR LatestResult =
+		    CALCULATE(
+		        DIVIDE(
+		            [# Attendance Present] + [# Attendance AEA] + [# E Codes],
+		            PossibleAttLatest
+		        ),
+		        Calendar[Academic Year] = "2022/2023"
+		    )
+		RETURN
+		
+		    SWITCH(
+		        TRUE(),
+		        HASONEVALUE( Calendar[Academic Year] ) && PossibleAtt > 0, NormalResult + 0,
+		        PossibleAttLatest > 0, LatestResult + 0,
+		        BLANK()
+		    )
+
+		formatString:= #,##0.0 %
+		lineageTag: 16840944-9fd2-4831-9a6b-055eb91ad1c0
+
+	/// Simple count of marks in filter context.
+	/// =========================
+	/// COUNTROWS ( Attendance )
+	measure '# Marks' = COUNTROWS ( Attendance )
+		formatString:= #,##0
+		lineageTag: 4f5c0531-fdae-4061-afb8-73cafc56c3ed
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isNullable: false
+		lineageTag: 28341d7d-02b8-4f68-a2c5-7ce42bd68888
+		sourceColumn: SiteId
+		sourceProviderType: int
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column SIMSPersonId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isNullable: false
+		lineageTag: b574b745-13df-4ed2-97f7-63313a82ba08
+		sourceColumn: SIMSPersonId
+		sourceProviderType: int
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column Date
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= Long Date
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6df091a1-ae38-49e8-8b37-50f2a42208eb
+		sourceColumn: Date
+		sourceProviderType: date
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="D" /></DateTimes></Format>
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column AM
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isNullable: false
+		lineageTag: 201b5f3e-9192-4f16-a341-1c6ff1b53d21
+		sourceColumn: AM
+		sourceProviderType: int
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ff82b46c-3fd6-43c1-b1a9-6a545f88a2ab
+		sourceColumn: StudentId
+		sourceProviderType: int
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column SIMSAttendanceCodeId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isNullable: false
+		lineageTag: 483afd79-e8c0-44a5-873a-5013aa5a3747
+		sourceColumn: SIMSAttendanceCodeId
+		sourceProviderType: int
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column OnRollModeId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isNullable: false
+		lineageTag: f00267a4-a144-442c-bde8-33b62174c6ff
+		sourceColumn: OnRollModeId
+		sourceProviderType: int
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column AuditId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1dea4d85-22fb-4246-9299-ff8127b72a29
+		sourceColumn: AuditId
+		sourceProviderType: int
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	annotation PBI_IsMQueryFoldable = True
+
+	annotation PBI_ResultType = Table
+
+	annotation TabularEditor_TableGroup = Attendance
+

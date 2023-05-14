@@ -1,0 +1,96 @@
+table 'PP Calc Group'
+	lineageTag: f58ed4cc-cc3d-4c92-8050-0f83de9c68b9
+	ordinal: 54
+
+	partition Partition = CalculationGroup
+		mode: Import
+
+	calculationGroup
+		precedence: 2
+
+		calculationItem PP =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[Pupil Premium] = "PP"
+			)
+
+
+		calculationItem 'Not PP' =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[Pupil Premium] = "Not PP"
+			)
+
+
+		calculationItem 'PP Gap' =
+			
+			VAR PP = 
+			    CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[Pupil Premium] = "PP"
+			)
+			
+			VAR NotPP = 
+			    CALCULATE (
+			        SELECTEDMEASURE(),
+			        Student[Pupil Premium] = "Not PP"
+			    )
+			    
+			RETURN PP - NotPP
+
+
+		calculationItem 'PP-SEND' =
+			
+			CALCULATE(
+			    SELECTEDMEASURE(),
+			    NOT Student[SEN Status] IN { BLANK(), "C", "O", "M", "N" },
+			    Student[Pupil Premium] = "PP"
+			)
+
+
+		calculationItem 'Not PP-SEND' =
+			
+			CALCULATE(
+			    SELECTEDMEASURE(),
+			    NOT (NOT Student[SEN Status] IN { BLANK(), "C", "O", "M", "N" } && Student[Pupil Premium] = "PP")
+			)
+
+
+		calculationItem 'PP-SEND Gap' =
+			
+			VAR PPSend = 
+			    CALCULATE(
+			        SELECTEDMEASURE(),
+			        NOT Student[SEN Status] IN { BLANK(), "C", "O", "M", "N" },
+			        Student[Pupil Premium] = "PP"
+			    )
+			
+			
+			VAR NotPPSend = 
+			    CALCULATE(
+			        SELECTEDMEASURE(),
+			        NOT (NOT Student[SEN Status] IN { BLANK(), "C", "O", "M", "N" } && Student[Pupil Premium] = "PP")
+			    )
+			    
+			RETURN PPSend - NotPPSend
+
+
+	column Name
+		dataType: String
+		isDataTypeInferred: false
+		sortByColumn: Ordinal
+		sourceColumn: Name
+		summarizeBy: None
+
+	column Ordinal
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		sourceColumn: Ordinal
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Calculation Groups
+

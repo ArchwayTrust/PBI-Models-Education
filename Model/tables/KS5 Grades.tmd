@@ -1,0 +1,242 @@
+table 'KS5 Grades'
+	lineageTag: 60163c5f-db00-4b4d-8585-f14d8e5a948a
+	ordinal: 57
+
+	partition 'KS5 Grades' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS4Data             
+				Dataflow = Workspace{[ dataflowName = "Edu-KS5Data" ]}[Data],
+				Entity = Dataflow{[ entity = "fctKS5Grades" ]}[Data]
+			in
+				Entity
+
+
+	measure 'KS5 Avg Points' = AVERAGE ('KS5 Grades'[KS5Points])
+		lineageTag: ef6a6dfb-48f4-4069-a9af-d29990689276
+
+	measure 'KS5 A Level Avg Points' =
+		VAR InternalPoints =
+		    CALCULATE(
+		        AVERAGE( 'KS5 Grades'[KS5Points] ),
+		        Student[In KPI],
+		        'KS5 Quals'[Type] = "A Levels"
+		    )
+		    
+		VAR DfETotalPoints =
+		    CALCULATE(
+		        SUM( 'DfE KS5 Pupil Level'[TotalPointScoreInALevels] ),
+		        'DfE KS5 Pupil Level'[StudentInclusionFlag] = "501",
+		        'DfE KS5 Pupil Level'[ALevelStudent] = TRUE( )
+		    )
+		    
+		VAR DfETotalEntries =
+		    CALCULATE(
+		        SUM( 'DfE KS5 Pupil Level'[TotalEntriesInALevels] ),
+		        'DfE KS5 Pupil Level'[StudentInclusionFlag] = "501",
+		        'DfE KS5 Pupil Level'[ALevelStudent] = TRUE( )
+		    )
+		    
+		VAR DfEPoints = DIVIDE( DfETotalPoints, DfETotalEntries )
+		    
+		VAR Result = 
+		    IF (ISBLANK(DfEPoints), InternalPoints, DfEPoints)
+		    
+		RETURN Result
+		
+
+		lineageTag: 821ec8db-6d64-4824-bec7-bb7dc978ffae
+
+	measure 'KS5 Applied General Avg Points' =
+		VAR InternalPoints =
+		    CALCULATE(
+		        AVERAGE( 'KS5 Grades'[KS5Points] ),
+		        Student[In KPI],
+		        'KS5 Quals'[Type] = "Applied Generals"
+		    )
+		    
+		VAR DfETotalPoints =
+		    CALCULATE(
+		        SUM( 'DfE KS5 Pupil Level'[TotalPointScoreInAppliedGeneralQualifications] ),
+		        'DfE KS5 Pupil Level'[StudentInclusionFlag] = "501",
+		        'DfE KS5 Pupil Level'[ALevelStudent] = TRUE( )
+		    )
+		    
+		VAR DfETotalEntries =
+		    CALCULATE(
+		        SUM( 'DfE KS5 Pupil Level'[TotalEntriesInAppliedGeneralQualifications] ),
+		        'DfE KS5 Pupil Level'[StudentInclusionFlag] = "501",
+		        'DfE KS5 Pupil Level'[ALevelStudent] = TRUE( )
+		    )
+		    
+		VAR DfEPoints = DIVIDE( DfETotalPoints, DfETotalEntries )
+		    
+		VAR Result = 
+		    IF (ISBLANK(DfEPoints), InternalPoints, DfEPoints)
+		    
+		RETURN Result
+		
+
+		lineageTag: d007f041-abb1-4567-ab46-abb71a2421ec
+
+	measure 'KS5 Slicer Filter' =
+		INT(
+		    NOT ( ISEMPTY( 'KS5 Grades' ) && ISEMPTY( 'DfE KS5 Pupil Level' ) )
+		)
+
+		formatString:= #,##0
+		lineageTag: 9a396aa3-6bbf-47ea-848d-b56eaf12d839
+
+	column ALevelSize
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 91ab4777-c2c9-4331-bb91-fe834f742c54
+		sourceColumn: ALevelSize
+		summarizeBy: None
+
+	column GCSESize
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e9ce8436-8dd0-4f1f-a314-adaba015852d
+		sourceColumn: GCSESize
+		summarizeBy: None
+
+	column Grade
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c5284687-2587-4728-91a2-d64b3ee4af57
+		sourceColumn: Grade
+		summarizeBy: None
+
+	column GradeTypeId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 42486879-8509-429c-9ddb-61615a1c67e6
+		sourceColumn: GradeTypeId
+		summarizeBy: None
+
+	column KS4Points
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 120303a0-6b74-4aef-b30f-d784508a69a4
+		sourceColumn: KS4Points
+		summarizeBy: None
+
+	column KS5Estimate
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ba71e35f-c923-4eb9-b96d-c7638f9c6941
+		sourceColumn: KS5Estimate
+		summarizeBy: None
+
+	column KS5Points
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 7694a84e-511b-4fac-8513-ee1ec0978e59
+		sourceColumn: KS5Points
+		summarizeBy: None
+
+	column KS5QualId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 72e8023b-9d18-4dfe-8d6d-35620d6e7db5
+		sourceColumn: KS5QualId
+		summarizeBy: None
+
+	column NormalYear13In
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: f5d370df-3302-4d61-8869-c7323947aad4
+		sourceColumn: NormalYear13In
+		summarizeBy: None
+
+	column PA
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 4bb5c4d3-b74e-4f38-ac0d-b639083dc3f9
+		sourceColumn: PA
+		summarizeBy: None
+
+	column ResultDate
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 204cd5c0-ed83-4c53-86e5-a3d16e24e104
+		sourceColumn: ResultDate
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b034412f-aa01-4117-accb-d6679ef1e22c
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column Slot
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3ca6ad4b-4097-447d-b541-8ee54e9ade91
+		sourceColumn: Slot
+		summarizeBy: None
+
+	column VA
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a71606be-347f-4af4-a0a5-c21b55e26bbd
+		sourceColumn: VA
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c080849e-8912-43fc-882c-5d1e123beda8
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = KS5
+

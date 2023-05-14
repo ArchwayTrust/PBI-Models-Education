@@ -1,0 +1,44 @@
+table 'ASR Strand'
+	lineageTag: b1a4914e-3ed6-45c1-8f00-1b6e452e6223
+	ordinal: 75
+
+	partition 'ASR Strand' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],                     
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-QA" ]}[Data],       
+				Dataflow = Workspace{[ dataflowName = "QA-ASR" ]}[Data],
+				Entity = Dataflow{[ entity = "dimASRStrands" ]}[Data]
+			in
+				Entity
+
+
+	column ASRStrandId
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 474c12dd-1c78-47b1-8f30-d0e3d08f6440
+		sourceColumn: ASRStrandId
+		summarizeBy: None
+
+	column DisplayOrder
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: fe2d1137-3d95-4308-ba5d-c2d55092ea19
+		sourceColumn: DisplayOrder
+		summarizeBy: None
+
+	column Strand
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 2b6a4659-1a1b-45d4-90bf-337df1037685
+		sortByColumn: ASRStrandId
+		sourceColumn: Strand
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = ASR
+

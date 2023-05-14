@@ -1,0 +1,58 @@
+table 'KS3 Group'
+	lineageTag: cd5d0715-7730-4c54-91de-de8f103f8fda
+	ordinal: 38
+
+	partition 'KS3 Group' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS3Data             
+				Dataflow = Workspace{[ dataflowName = "Edu-KS3Data" ]}[Data],
+				Entity = Dataflow{[ entity = "KS3 Group" ]}[Data]
+			in
+				Entity
+
+
+	column KS3GroupId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 903fc423-c37a-422b-b26b-aaa720148d6a
+		sourceColumn: KS3GroupId
+		summarizeBy: None
+
+	column Subject
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: cc4ce42e-e9ff-476f-a637-41f6fee5493c
+		sourceColumn: Subject
+		summarizeBy: None
+
+	column 'Teaching Groups'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: a1b00ca3-3373-4e4a-916e-c3f7ad9c7287
+		sourceColumn: "Teaching Groups"
+		summarizeBy: None
+
+	column Tier
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: dd39c501-615b-4348-8afd-d94a12f0bb62
+		sourceColumn: Tier
+		summarizeBy: None
+
+	column 'Trust Subject'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: b7ca8466-3645-4abc-becd-5aae868aa9c7
+		sourceColumn: TrustSubject
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = KS3
+

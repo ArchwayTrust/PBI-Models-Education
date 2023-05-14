@@ -1,0 +1,73 @@
+/// School notes from a behaviour event.
+/// This is free text so should only be used in a drill through.
+/// Filters "Behaviour".
+/// (DIMENSION)
+table 'Behaviour School Note'
+	lineageTag: c6886f0f-368d-4dfe-9207-a7c71e7fc7e6
+	ordinal: 21
+
+	partition 'Behaviour School Note' = M
+		mode: Import
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows ( null ), 
+			  Workspaces = Source{[ Id = "Workspaces" ]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data], 
+			  //Edu-Behaviour
+			  Dataflow = Workspace{[ dataflowName = "Edu-Behaviour" ]}[Data], 
+			  Entity = Dataflow{[ entity = "dimBehSchoolNotes" ]}[Data]
+			in
+			  Entity
+
+		queryGroup: Dimensions
+
+	column BehSchoolNoteId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: 6acea4cd-5dfc-4a31-a01f-fc5551011904
+		sourceColumn: BehSchoolNoteId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column BehEventId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isKey
+		lineageTag: 20aa6b83-7ef0-471d-bd0e-f5dd100568ad
+		sourceColumn: BehEventId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+	column 'School Notes'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 69e3b199-868b-49b4-8df7-501ec230c8d7
+		sourceColumn: "School Notes"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Behaviour
+

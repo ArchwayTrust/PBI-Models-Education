@@ -1,0 +1,11 @@
+role AMA
+	modelPermission: Read
+
+	tablePermission '(RLS) Site' = '(RLS) Site'[Academy Code] = "AMA"
+		table: '(RLS) Site'
+
+	tablePermission '(RLS) Student Name' = '(RLS) Student Name'[Academy] = "AMA"
+		table: '(RLS) Student Name'
+
+	annotation PBI_Id = a248e9dec1f147e48f8ed80878023a28
+

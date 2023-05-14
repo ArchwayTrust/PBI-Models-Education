@@ -1,0 +1,141 @@
+table 'DFE KS2 National'
+	isHidden
+	lineageTag: 616a207b-f16f-47ec-8724-78e919f410e9
+	ordinal: 65
+
+	partition 'DFE KS2 National' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS2Data-Ingest           
+				Dataflow = Workspace{[ dataflowName = "Edu-Primary-Ingest" ]}[Data],
+				Entity = Dataflow{[ entity = "fctKS2National" ]}[Data]
+			in
+				Entity
+
+
+	column AvgGPSSS
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3c386a49-65f0-4ad6-a996-10edff8fdf2b
+		sourceColumn: AvgGPSSS
+		summarizeBy: None
+
+	column AvgMathsSS
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1a770d3c-279f-44a1-b871-b0454bacb397
+		sourceColumn: AvgMathsSS
+		summarizeBy: None
+
+	column AvgReadSS
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6f00e518-969c-4b7e-9bfe-daa22c7e084e
+		sourceColumn: AvgReadSS
+		summarizeBy: None
+
+	column 'MathsEXS%'
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1d5ba593-b015-46ab-875f-945b0a68867f
+		sourceColumn: MathsEXS%
+		summarizeBy: None
+
+	column PerformanceTableYear
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e16420ab-0c99-4c16-95d6-279cea123f84
+		sourceColumn: PerformanceTableYear
+		summarizeBy: None
+
+	column ProgressStDevMaths
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2dda911b-f3f7-4385-acb3-5f6b7398b197
+		sourceColumn: ProgressStDevMaths
+		summarizeBy: None
+
+	column ProgressStDevRead
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6b741f1a-0b56-4444-8d3b-66f336f8d8c0
+		sourceColumn: ProgressStDevRead
+		summarizeBy: None
+
+	column ProgressStDevWriting
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a62d7285-0bd2-4159-ab74-77456a5f6734
+		sourceColumn: ProgressStDevWriting
+		summarizeBy: None
+
+	column 'ReadingEXS%'
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6be92247-fa3d-41f3-98a3-fe8d69560d9c
+		sourceColumn: ReadingEXS%
+		summarizeBy: None
+
+	column 'RWMEXS%'
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d6ea1866-5993-4306-ae29-0db4dbfdb0f4
+		sourceColumn: RWMEXS%
+		summarizeBy: None
+
+	column 'RWMGDS%'
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ea51e42e-c48c-4fd3-b247-3abffe3b90bd
+		sourceColumn: RWMGDS%
+		summarizeBy: None
+
+	column 'WritingEXS%'
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3e5dbb76-1ef4-4e4d-8736-3abce9425d4b
+		sourceColumn: WritingEXS%
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = DfE
+

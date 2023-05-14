@@ -1,0 +1,57 @@
+table 'DfE Parent View'
+	isHidden
+	lineageTag: 6a47897a-28bb-4178-8deb-5446039cc35c
+	ordinal: 49
+
+	partition 'DfE Parent View' = M
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows(null), 
+			  Workspaces = Source{[Id = "Workspaces"]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[workspaceName = "DW-Dataflows-Education"]}[Data], 
+			  //Edu-ParentView
+			  Dataflow = Workspace{[dataflowName = "Edu-ParentView"]}[Data], 
+			  Entity = Dataflow{[entity = "factNationalParentView"]}[Data]
+			in
+			  Entity
+
+
+	column Date
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		lineageTag: 4fb26394-56cc-4a28-9ede-b6f2f160ebea
+		sourceColumn: Date
+		summarizeBy: None
+
+	column NumberOfResponses
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		lineageTag: 1768e986-4bff-44e7-89e4-206d6016f3e9
+		sourceColumn: NumberOfResponses
+		summarizeBy: None
+
+	column Question
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		lineageTag: 623afaca-7497-4066-9ba5-0a9e377427c2
+		sourceColumn: Question
+		summarizeBy: None
+
+	column ResponseId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		lineageTag: fd9074a1-61f5-46f3-9777-6429693a2cf0
+		sourceColumn: ResponseId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = DfE
+

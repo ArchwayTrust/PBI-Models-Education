@@ -1,0 +1,9 @@
+role LBA
+	modelPermission: Read
+
+	tablePermission '(RLS) Site' = '(RLS) Site'[Academy Code] = "LBA"
+		table: '(RLS) Site'
+
+	tablePermission '(RLS) Student Name' = '(RLS) Student Name'[Academy] = "LBCS"
+		table: '(RLS) Student Name'
+

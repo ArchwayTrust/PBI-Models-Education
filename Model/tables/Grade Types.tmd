@@ -1,0 +1,37 @@
+table 'Grade Types'
+	lineageTag: 19d4609b-c154-4ee3-8e9a-3205d2dc4321
+	ordinal: 2
+
+	partition 'Grade Types' = M
+		mode: Import
+		expression:=
+			let
+				Source = #table (
+					type table [ #"GradeType" = text ],
+					{ { "Actual" }, { "Projected" }, { "Benchmark" }, { "Current" } }
+				)
+			in
+				Source
+
+		queryGroup: 'Dimensions\Static'
+
+	column GradeType
+		dataType: String
+		isDataTypeInferred: false
+		isKey
+		lineageTag: a053dbe2-19a5-463a-9643-c858ac6aeb23
+		sourceColumn: GradeType
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE","ISAVAILABLEINMDX_FALSE_NONATTRIBUTE_COLUMNS"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = KS4
+

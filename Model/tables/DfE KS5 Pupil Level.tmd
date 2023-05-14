@@ -1,0 +1,871 @@
+table 'DfE KS5 Pupil Level'
+	isHidden
+	lineageTag: 9ca71704-eebe-4309-9110-4105c0b846ca
+	ordinal: 56
+
+	partition 'DfE KS5 Pupil Level' = M
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows ( null ), 
+			  Workspaces = Source{[ Id = "Workspaces" ]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data], 
+			  //Edu-DfEStatistics
+			  Dataflow = Workspace{[ dataflowName = "Edu-DfEStatistics" ]}[Data], 
+			  Entity = Dataflow{[ entity = "factKS5PupilLevel" ]}[Data]
+			
+			in
+			  Entity
+
+
+	column AcademicStudent
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ae0f7657-7ea2-43c6-b143-aba85dfd4a41
+		sourceColumn: AcademicStudent
+		summarizeBy: None
+
+	column ALevelStudent
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5bcfdd9b-bc80-48fd-a1b7-8eec354ae167
+		sourceColumn: ALevelStudent
+		summarizeBy: None
+
+	column AppliedGeneralStudent
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d9770cc1-328a-42ff-8577-42e2931cff11
+		sourceColumn: AppliedGeneralStudent
+		summarizeBy: None
+
+	column AppliedGeneralStudentIgnoringDiscounting
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2cd9db10-20dd-42fd-8758-a252d06a9e15
+		sourceColumn: AppliedGeneralStudentIgnoringDiscounting
+		summarizeBy: None
+
+	column BaselinePointsForEnglishProgressMeasure
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a278ed0e-a0fe-4d67-a658-61df90b2f538
+		sourceColumn: BaselinePointsForEnglishProgressMeasure
+		summarizeBy: None
+
+	column BaselinePointsForMathsProgressMeasure
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 30460e95-30dd-470c-a915-4037d58d8291
+		sourceColumn: BaselinePointsForMathsProgressMeasure
+		summarizeBy: None
+
+	column HighestPointsInEnglish
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: bba814f0-d4d3-48e5-929f-cc53c42c8707
+		sourceColumn: HighestPointsInEnglish
+		summarizeBy: None
+
+	column HighestPointsInMaths
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5bf42c4f-a813-4ace-933b-e6a3d5e5b25f
+		sourceColumn: HighestPointsInMaths
+		summarizeBy: None
+
+	column Level2VocationalStudent
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5163488b-c956-4f23-904d-492d1b478500
+		sourceColumn: Level2VocationalStudent
+		summarizeBy: None
+
+	column Level2VocationalStudentIgnoringDiscounting
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6dcc7c89-9b24-400c-8725-6b037fed309f
+		sourceColumn: Level2VocationalStudentIgnoringDiscounting
+		summarizeBy: None
+
+	column Level3VocationalStudentExcludingAppliedGeneralsIgnoringDiscounting
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6c839445-d213-4d77-a133-2f56f29b7ab4
+		sourceColumn: Level3VocationalStudentExcludingAppliedGeneralsIgnoringDiscounting
+		summarizeBy: None
+
+	column Level3VocationalStudentExcludingTechLevelsIgnoringDiscounting
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: fa6c04ef-962e-4631-b962-2d22d08fedbe
+		sourceColumn: Level3VocationalStudentExcludingTechLevelsIgnoringDiscounting
+		summarizeBy: None
+
+	column NumberOfTechCertAimsALearnerHasWithAtLeastOneResult
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b0eab38d-c8fe-4f84-be1c-19360c3440bb
+		sourceColumn: NumberOfTechCertAimsALearnerHasWithAtLeastOneResult
+		summarizeBy: None
+
+	column NumberOfTechCertAimsALearnerHasWithNoResults
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b6db266c-2d0d-4b22-83d9-49ce5503793c
+		sourceColumn: NumberOfTechCertAimsALearnerHasWithNoResults
+		summarizeBy: None
+
+	column NumberOfTechCertAimsInCompletionAndAttainmentMeasure
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 26f8b8bc-689f-4600-a9bf-313bef714458
+		sourceColumn: NumberOfTechCertAimsInCompletionAndAttainmentMeasure
+		summarizeBy: None
+
+	column NumberOfTechLevelAimsALearnerHasWithAtLeastOneResult
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 35b8b51d-cec6-4a23-ba52-40cd99ca40f3
+		sourceColumn: NumberOfTechLevelAimsALearnerHasWithAtLeastOneResult
+		summarizeBy: None
+
+	column NumberOfTechLevelAimsALearnerHasWithNoResults
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: dadd4868-76bb-4e40-9292-dc77ebfb5967
+		sourceColumn: NumberOfTechLevelAimsALearnerHasWithNoResults
+		summarizeBy: None
+
+	column NumberOfTechLevelAimsInCompletionAndAttainmentMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 4d6de81a-bbcb-4af7-9d4f-c10674186133
+		sourceColumn: NumberOfTechLevelAimsInCompletionAndAttainmentMeasure
+		summarizeBy: None
+
+	column PointsDifferenceFromNationalAverageOverAllTechCertSubjects
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 980c76c8-f32a-4db4-8ef0-f752381bcfb1
+		sourceColumn: PointsDifferenceFromNationalAverageOverAllTechCertSubjects
+		summarizeBy: None
+
+	column PointsDifferenceFromNationalAverageOverAllTechLevelSubjects
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 26866177-02dc-4a6c-b680-06ce54017eac
+		sourceColumn: PointsDifferenceFromNationalAverageOverAllTechLevelSubjects
+		summarizeBy: None
+
+	column ProgressMadeInEnglish
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 64559b50-eb06-4d95-9a6e-a199f27540a0
+		sourceColumn: ProgressMadeInEnglish
+		summarizeBy: None
+
+	column ProgressMadeInMaths
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5fd7cdbf-a7af-4848-be55-830ee551e7da
+		sourceColumn: ProgressMadeInMaths
+		summarizeBy: None
+
+	column RetentionCoreAimCompletionStatus
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 48095fca-fe16-4156-83bd-7542fa14914a
+		sourceColumn: RetentionCoreAimCompletionStatus
+		summarizeBy: None
+
+	column RetentionCoreAimFlaggedAsCoreAimByProvider
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 8c4dd776-94f1-41b7-b80f-a6c8229c6c34
+		sourceColumn: RetentionCoreAimFlaggedAsCoreAimByProvider
+		summarizeBy: None
+
+	column RetentionCoreAimInScope
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 087056c5-2b27-407e-a32f-a0d91034fa15
+		sourceColumn: RetentionCoreAimInScope
+		summarizeBy: None
+
+	column RetentionCoreAimQualificationNumber
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: bf8ae366-2591-4360-b7da-39d91af064f4
+		sourceColumn: RetentionCoreAimQualificationNumber
+		summarizeBy: None
+
+	column RetentionCoreAimSize
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 8e0c7dd2-10b7-4a29-9abb-05a0e1d392b6
+		sourceColumn: RetentionCoreAimSize
+		summarizeBy: None
+
+	column StudentAchievedAABMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 787d7609-afe2-4f46-b5a9-315611ffa8ce
+		sourceColumn: StudentAchievedAABMeasure
+		summarizeBy: None
+
+	column StudentAchievedApprovedL3MathsQualification
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 907b813c-d3a0-4de7-9a45-e2e2cd2911bf
+		sourceColumn: StudentAchievedApprovedL3MathsQualification
+		summarizeBy: None
+
+	column StudentAchievedTechBacc
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: aba08092-2eaf-4941-93b8-a63859a3cae1
+		sourceColumn: StudentAchievedTechBacc
+		summarizeBy: None
+
+	column StudentExemptFromEnglishProgressMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5d9d7dd7-361b-473d-8774-37efda908476
+		sourceColumn: StudentExemptFromEnglishProgressMeasure
+		summarizeBy: None
+
+	column StudentExemptFromMathsProgressMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a4b457aa-3975-4045-9a44-c399f437c6aa
+		sourceColumn: StudentExemptFromMathsProgressMeasure
+		summarizeBy: None
+
+	column StudentInAcademicProgrammeForRetentionMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3615f39c-99ba-4457-8a40-f2e349ddc19d
+		sourceColumn: StudentInAcademicProgrammeForRetentionMeasure
+		summarizeBy: None
+
+	column StudentInAcademicProgrammeForReturnedForASecondYearSupportingMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a876e159-42b8-49b6-a6eb-02e3c5c4b9ae
+		sourceColumn: StudentInAcademicProgrammeForReturnedForASecondYearSupportingMeasure
+		summarizeBy: None
+
+	column StudentInALevelProgrammeForRetentionMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: becddc54-1d06-4b11-9027-af5304c32999
+		sourceColumn: StudentInALevelProgrammeForRetentionMeasure
+		summarizeBy: None
+
+	column StudentInALevelProgrammeForReturnedForASecondYearSupportingMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 4e3f741f-99b1-459f-899b-df358fd2bdc0
+		sourceColumn: StudentInALevelProgrammeForReturnedForASecondYearSupportingMeasure
+		summarizeBy: None
+
+	column StudentInAppliedGeneralProgrammeForRetentionMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2bc78e72-3e4b-4682-952e-7bdd9c296245
+		sourceColumn: StudentInAppliedGeneralProgrammeForRetentionMeasure
+		summarizeBy: None
+
+	column StudentInAppliedGeneralProgrammeForReturnedForASecondYearSupportingMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6d453b7b-c7e3-4be6-886d-641832244308
+		sourceColumn: StudentInAppliedGeneralProgrammeForReturnedForASecondYearSupportingMeasure
+		summarizeBy: None
+
+	column StudentIncludedInAABMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 07558a8c-1c4b-43f6-9d96-da5d7e9c2eba
+		sourceColumn: StudentIncludedInAABMeasure
+		summarizeBy: None
+
+	column StudentIncludedInBest3Measure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d73e3f47-d440-4c57-a238-74bc3c652945
+		sourceColumn: StudentIncludedInBest3Measure
+		summarizeBy: None
+
+	column StudentInclusionFlag
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: cce69608-e8ee-4979-aa4f-69ad32921a94
+		sourceColumn: StudentInclusionFlag
+		summarizeBy: None
+
+	column StudentInclusionFlagForAimsBasedMeasures
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 7eff967b-c983-4c1d-a294-2e0c61be0630
+		sourceColumn: StudentInclusionFlagForAimsBasedMeasures
+		summarizeBy: None
+
+	column StudentInEnglishProgressMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c6d85baf-01b5-494c-93cd-4caa45b22c6c
+		sourceColumn: StudentInEnglishProgressMeasure
+		summarizeBy: None
+
+	column StudentInMathsProgressMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 38b8e03a-2fae-48c6-84ab-2d553f9f4a5e
+		sourceColumn: StudentInMathsProgressMeasure
+		summarizeBy: None
+
+	column StudentInOneOfTheL3AttainmentProgrammes
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 4bfa4c37-4eac-4b44-8e15-8041541829e8
+		sourceColumn: StudentInOneOfTheL3AttainmentProgrammes
+		summarizeBy: None
+
+	column StudentInScopeAndAchievedApprovedL3Maths
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: efb74a39-06b2-4066-90fd-d4c547258840
+		sourceColumn: StudentInScopeAndAchievedApprovedL3Maths
+		summarizeBy: None
+
+	column StudentInScopeForL3MathsMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c42746b0-5a35-45e7-8a81-4a6f7ad3efb9
+		sourceColumn: StudentInScopeForL3MathsMeasure
+		summarizeBy: None
+
+	column StudentInScopeForTheEnglishProgressMeasureAndDidNotEnterApprovedExams
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 17fa97f3-cbdc-4707-96ed-f98fb7806a3e
+		sourceColumn: StudentInScopeForTheEnglishProgressMeasureAndDidNotEnterApprovedExams
+		summarizeBy: None
+
+	column StudentInScopeForTheMathsProgressMeasureAndDidNotEnterApprovedExams
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 19db9432-09fe-4393-8d2a-992ca614abb9
+		sourceColumn: StudentInScopeForTheMathsProgressMeasureAndDidNotEnterApprovedExams
+		summarizeBy: None
+
+	column StudentInTechLevelProgrammeForRetentionMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 34e4a0df-12b1-4a71-a944-d5f4457cf755
+		sourceColumn: StudentInTechLevelProgrammeForRetentionMeasure
+		summarizeBy: None
+
+	column StudentInTechLevelProgrammeForReturnedForASecondYearSupportingMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 11636533-dc8c-46c7-82ea-6c25c8ff29f0
+		sourceColumn: StudentInTechLevelProgrammeForReturnedForASecondYearSupportingMeasure
+		summarizeBy: None
+
+	column StudentInTechnicalCertificateProgrammeForRetentionMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 0e934a93-25cc-44e1-885b-d316bdddbf14
+		sourceColumn: StudentInTechnicalCertificateProgrammeForRetentionMeasure
+		summarizeBy: None
+
+	column StudentRetainedAndAssessedWithAnAcademicCoreAim
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 50f545db-2cb3-453c-a81a-f9a79d70bc1a
+		sourceColumn: StudentRetainedAndAssessedWithAnAcademicCoreAim
+		summarizeBy: None
+
+	column StudentRetainedAndAssessedWithAnALevelCoreAim
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 7dc68a93-a9dd-44fd-9d06-5eb045192b23
+		sourceColumn: StudentRetainedAndAssessedWithAnALevelCoreAim
+		summarizeBy: None
+
+	column StudentRetainedAndAssessedWithAnAppliedGeneralCoreAim
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 25545ff3-5d22-4fd2-bcef-fccee5666c7a
+		sourceColumn: StudentRetainedAndAssessedWithAnAppliedGeneralCoreAim
+		summarizeBy: None
+
+	column StudentRetainedAndAssessedWithATechLevelCoreAim
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 55973b88-275b-412e-9300-6a7e9a904c18
+		sourceColumn: StudentRetainedAndAssessedWithATechLevelCoreAim
+		summarizeBy: None
+
+	column StudentRetainedAndAssessedWithATechnicalCertificateCoreAim
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 88cef557-7b61-43be-9359-8c8e2d6481ee
+		sourceColumn: StudentRetainedAndAssessedWithATechnicalCertificateCoreAim
+		summarizeBy: None
+
+	column StudentRetainedAndReturnedForASecondYearWithAnALevelProgramme
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c09dda72-c1e4-4228-9fcf-f0c8aae30ab8
+		sourceColumn: StudentRetainedAndReturnedForASecondYearWithAnALevelProgramme
+		summarizeBy: None
+
+	column StudentRetainedForASecondYearWithAnAcademicCoreAim
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 51c14e73-77dd-4177-8083-1e40630de660
+		sourceColumn: StudentRetainedForASecondYearWithAnAcademicCoreAim
+		summarizeBy: None
+
+	column StudentRetainedForASecondYearWithAnAppliedGeneralCoreAim
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ef39c9f4-7109-4050-b5a1-f7a75b6984eb
+		sourceColumn: StudentRetainedForASecondYearWithAnAppliedGeneralCoreAim
+		summarizeBy: None
+
+	column StudentRetainedForASecondYearWithATechLevelCoreAim
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 01eeeec7-8190-4a8a-be41-a6de2ca117ff
+		sourceColumn: StudentRetainedForASecondYearWithATechLevelCoreAim
+		summarizeBy: None
+
+	column StudentRetainedInAcademicProgramme
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 38ac80b3-979c-4556-93f0-6c5d09b01b4b
+		sourceColumn: StudentRetainedInAcademicProgramme
+		summarizeBy: None
+
+	column StudentRetainedInALevelProgramme
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 19e180a9-7d3d-4072-89b9-678131656a51
+		sourceColumn: StudentRetainedInALevelProgramme
+		summarizeBy: None
+
+	column StudentRetainedInAppliedGeneralProgramme
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: f25d3dc4-f97c-4b4d-9258-e971ab48f39d
+		sourceColumn: StudentRetainedInAppliedGeneralProgramme
+		summarizeBy: None
+
+	column StudentRetainedInATechnicalCertificateProgramme
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2709c435-b1f8-4e80-af6b-b1761a0e84b6
+		sourceColumn: StudentRetainedInATechnicalCertificateProgramme
+		summarizeBy: None
+
+	column StudentRetainedInTechLevelProgramme
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 44866605-23b0-4df0-a2a2-436a7de17803
+		sourceColumn: StudentRetainedInTechLevelProgramme
+		summarizeBy: None
+
+	column StudentsBest3score
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 0d58cf52-7b7c-45f0-afc3-5d9aa1ac4751
+		sourceColumn: StudentsBest3score
+		summarizeBy: None
+
+	column StudentsEligibleForTheCompletionAndAttainmentMeasure
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a73e567b-7c76-481e-a33d-b565dafef42e
+		sourceColumn: StudentsEligibleForTheCompletionAndAttainmentMeasure
+		summarizeBy: None
+
+	column TechLevelStudent
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 34b414db-7dd6-4c75-84ff-5e25924aeee0
+		sourceColumn: TechLevelStudent
+		summarizeBy: None
+
+	column TechLevelStudentIgnoringDiscounting
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2e5814e3-38b0-4c0a-99c9-8d5ee44f143b
+		sourceColumn: TechLevelStudentIgnoringDiscounting
+		summarizeBy: None
+
+	column TechnicalCertificateStudent
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: aeb04264-33fa-44bc-9299-f6c3c9683901
+		sourceColumn: TechnicalCertificateStudent
+		summarizeBy: None
+
+	column TechnicalCertificateStudentIgnoringDiscounting
+		dataType: Boolean
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 82adf2f7-62d6-4369-8a8f-6989f110fd2c
+		sourceColumn: TechnicalCertificateStudentIgnoringDiscounting
+		summarizeBy: None
+
+	column TotalEntriesInAcademicQualifications
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 10ec0ae3-320c-4048-b3b2-f4e727d4facc
+		sourceColumn: TotalEntriesInAcademicQualifications
+		summarizeBy: None
+
+	column TotalEntriesInALevels
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e66fa7c1-a5b8-488f-9af7-f99e027f7691
+		sourceColumn: TotalEntriesInALevels
+		summarizeBy: None
+
+	column TotalEntriesInAppliedGeneralQualifications
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e5a39b1b-49bf-4cc5-a7a0-f6e3122296b7
+		sourceColumn: TotalEntriesInAppliedGeneralQualifications
+		summarizeBy: None
+
+	column TotalEntriesInLevel2VocationalQualifications
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3c896f24-f8d5-479a-975f-d10aa014ff35
+		sourceColumn: TotalEntriesInLevel2VocationalQualifications
+		summarizeBy: None
+
+	column TotalEntriesInTechLevels
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 9cbb5ade-b027-4deb-a753-971d76edb868
+		sourceColumn: TotalEntriesInTechLevels
+		summarizeBy: None
+
+	column TotalEntriesInTechnicalCertificates
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 7135694d-e9e1-4b8b-94dc-1478f9256d10
+		sourceColumn: TotalEntriesInTechnicalCertificates
+		summarizeBy: None
+
+	column TotalPointScoreInAcademicQualifications
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 68c5a524-8785-405e-83a9-4ee45731c65a
+		sourceColumn: TotalPointScoreInAcademicQualifications
+		summarizeBy: None
+
+	column TotalPointScoreInALevels
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5ae727a5-d348-4806-a251-1fad0c82203a
+		sourceColumn: TotalPointScoreInALevels
+		summarizeBy: None
+
+	column TotalPointScoreInAppliedGeneralQualifications
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 822c1940-0e36-4a00-988a-5e9e8f627fa4
+		sourceColumn: TotalPointScoreInAppliedGeneralQualifications
+		summarizeBy: None
+
+	column TotalPointScoreInLevel2VocationalQualifications
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 9dbf1310-c961-4749-8d77-6582c344c165
+		sourceColumn: TotalPointScoreInLevel2VocationalQualifications
+		summarizeBy: None
+
+	column TotalPointScoreInTechLevels
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3a108056-7cd4-4f9f-afb9-e6f12b1caca7
+		sourceColumn: TotalPointScoreInTechLevels
+		summarizeBy: None
+
+	column TotalPointScoreInTechnicalCertificates
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a4910ca3-6ec3-4b14-a091-197da4afe91a
+		sourceColumn: TotalPointScoreInTechnicalCertificates
+		summarizeBy: None
+
+	column TotalSizeOfTechCertAimsInCompletionAndAttainmentMeasure
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 360f1477-f532-4e50-bc32-710b444accb4
+		sourceColumn: TotalSizeOfTechCertAimsInCompletionAndAttainmentMeasure
+		summarizeBy: None
+
+	column TotalSizeOfTechLevelAimsInCompletionAndAttainmentMeasure
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b6c3556a-2ccb-4d04-9bca-125a4d6ea487
+		sourceColumn: TotalSizeOfTechLevelAimsInCompletionAndAttainmentMeasure
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2d7eda8a-87b9-4904-84b6-159ca70a5520
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column DataSet
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 7bafe467-d491-41c4-b9fd-f38e0ffaaf54
+		sourceColumn: DataSet
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b198ce9b-cad4-4b28-9687-42ec841e850d
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	column 'Grade Type'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: eb421adc-4d0a-4152-a406-c5b6a402d7e8
+		sourceColumn: "Grade Type"
+		summarizeBy: None
+
+	column 'KS5 Slot'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: eae491df-b771-49be-8311-8a843afe5b09
+		sourceColumn: "KS5 Slot"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = DfE
+

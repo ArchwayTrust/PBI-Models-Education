@@ -1,0 +1,54 @@
+table 'On Roll Mode'
+	lineageTag: 96ec8165-e931-4674-864c-73011208aad6
+	ordinal: 12
+
+	partition 'On Roll Mode' = M
+		mode: Import
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-ICFP          
+				Dataflow = Workspace{[ dataflowName = "Edu-ICFP" ]}[Data],
+				Entity = Dataflow{[ entity = "dimOnRollMode" ]}[Data]
+			in
+				Entity
+
+		queryGroup: Dimensions
+
+	column OnRollModeId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isKey
+		lineageTag: 40b97bc6-bcca-43cb-92bb-bb358c0ba0df
+		sourceColumn: OnRollModeId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+	column 'On Roll Mode'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e757f099-d836-48cd-af39-d72ed378d70f
+		sourceColumn: "On Roll Mode"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Enrolment
+

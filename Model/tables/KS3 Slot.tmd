@@ -1,0 +1,37 @@
+table 'KS3 Slot'
+	lineageTag: 35a8a50f-0b53-42ab-a417-340551b78ccd
+	ordinal: 40
+
+	partition 'KS3 Slot' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS3Data             
+				Dataflow = Workspace{[ dataflowName = "Edu-KS3Data" ]}[Data],
+				Entity = Dataflow{[ entity = "KS3 Slot" ]}[Data]
+			in
+				Entity
+
+
+	column KS3SlotId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: f6764297-6a17-4e72-8c9b-7ac1a22978e4
+		sourceColumn: KS3SlotId
+		summarizeBy: None
+
+	column 'Slot Name'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 2eeaee55-b8b8-49fc-b8e4-166f9fbc7c9f
+		sourceColumn: "Slot Name"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = KS3
+

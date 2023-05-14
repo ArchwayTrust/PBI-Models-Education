@@ -1,0 +1,664 @@
+table Student
+	lineageTag: 0fedc790-ebd4-43ba-b2dc-ffe0957147c2
+	ordinal: 13
+
+	partition Student = M
+		mode: Import
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-General             
+				Dataflow = Workspace{[ dataflowName = "Edu-General" ]}[Data],
+				Entity = Dataflow{[ entity = "dimStudents" ]}[Data]
+			in
+				Entity
+
+		queryGroup: Dimensions
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		isUnique
+		lineageTag: 48468268-d769-4a86-9f0a-299d70b460e0
+		sourceColumn: StudentId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column DataSet
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e0f8ec03-d505-4969-ba59-1a6bc2863fe9
+		sourceColumn: DataSet
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Academic Year'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 4c030939-62fa-4dc6-96ff-287f7b98fcdc
+		sourceColumn: "Academic Year"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Academy
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 6f33edb3-bce7-4947-b10f-b7c556f0e67b
+		sourceColumn: Academy
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Host SIMS'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 70963cea-d22e-4f76-8bd5-d4be74e50ed5
+		sourceColumn: "Host SIMS"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column UPN
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a43e8123-692b-4ba4-8a12-f764bfa2918c
+		sourceColumn: UPN
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column ULN
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 340679f4-b0f0-4ca4-a452-9644fa86998c
+		sourceColumn: ULN
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'G4S Student Id'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 220c65fd-6409-4d2b-8aa8-9e126e6a84f2
+		sourceColumn: "G4S Student Id"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'SIMS Person Id'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: 83dc9208-e0f8-43c0-8cb3-337fea149ecc
+		sourceColumn: "SIMS Person Id"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'SIMS AdNo'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e5a7d6e3-cbae-4fa6-8aec-5feef2ae621d
+		sourceColumn: "SIMS AdNo"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column StuAcKey
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: cbe2d981-9d32-41fe-b44d-ed911c4cde04
+		sourceColumn: StuAcKey
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column StuAcYearKey
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		lineageTag: 4cab51d2-8820-4ff9-a4d6-117b38b660f1
+		sourceColumn: StuAcYearKey
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["MARK_PRIMARY_KEYS","RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE"]}
+
+	column 'Office 365 Login'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 30e534fb-fd10-473a-8faa-225f760bde6a
+		sourceColumn: "Office 365 Login"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Account Inf PersonId'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 22b4e88d-1096-4a53-93df-df5ba9c6b598
+		sourceColumn: "Account Inf PersonId"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column 'NC Year'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: 03555a48-9e23-4df6-8482-1f4345d512e5
+		sourceColumn: "NC Year"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'On Roll'
+		dataType: Boolean
+		formatString:= "TRUE";"TRUE";"FALSE"
+		isDataTypeInferred: false
+		lineageTag: 158866cf-cb02-4814-b30b-3fdae8060414
+		sourceColumn: "On Roll"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Boolean" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'In SIMS'
+		dataType: Boolean
+		formatString:= "TRUE";"TRUE";"FALSE"
+		isDataTypeInferred: false
+		lineageTag: b6ec1bbf-01ad-4d88-b16c-123dea25b85d
+		sourceColumn: "In SIMS"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Boolean" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'In KPI'
+		dataType: Boolean
+		formatString:= "TRUE";"TRUE";"FALSE"
+		isDataTypeInferred: false
+		lineageTag: 5cce109e-2960-419d-aa04-0c1c55922bf8
+		sourceColumn: "In KPI"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Boolean" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Start Date'
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= dd/mm/yyyy
+		isDataTypeInferred: false
+		lineageTag: f2149ce9-2f30-4166-aaa6-098e7fc7c7d2
+		sourceColumn: "Start Date"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="D" /></DateTimes></Format>
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Leaving Date'
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= Long Date
+		isDataTypeInferred: false
+		lineageTag: a11e2015-d8ad-4033-88e7-a20bee627dee
+		sourceColumn: "Leaving Date"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="D" /></DateTimes></Format>
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Registration Group'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: f290e6cd-8594-476c-9600-94497e1539ac
+		sourceColumn: "Registration Group"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Gender
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: ced85aa2-a8e6-49b7-a14e-eed3d0063fb2
+		sourceColumn: Gender
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column EAL
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e8e10f10-ace1-4140-ac48-3e8b0e0bfed6
+		sourceColumn: EAL
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column FSM
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 0cd5ed44-0807-483b-ae14-8931783ff5f0
+		sourceColumn: FSM
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'FSM Ever 6'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: f895c115-576e-45d6-a2d6-42dfc24ac046
+		sourceColumn: "FSM Ever 6"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Pupil Premium'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: b37f7544-9b62-4516-b337-2062abc72099
+		sourceColumn: "Pupil Premium"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Disadvantaged
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 3af9e811-b819-4b2f-ba50-66ceb4b5e09f
+		sourceColumn: Disadvantaged
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Child Looked After'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: b5389d96-51f0-465c-930f-63481f628dce
+		sourceColumn: "Child Looked After"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Ever In Care'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 3fbdd1c6-c81b-4816-899f-1abbcae30ff4
+		sourceColumn: "Ever In Care"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Bursary
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: aee75df9-fb47-44dd-a39c-494a05c31c8d
+		sourceColumn: Bursary
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'SEN Status'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: bc20db6e-6007-4580-9d50-99e06b9ef7b7
+		sourceColumn: "SEN Status"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Ethnicity
+		dataType: String
+		displayFolder: Ethnicity
+		isDataTypeInferred: false
+		lineageTag: 6808e351-d894-4a1e-ab9a-1c48e5bff757
+		sourceColumn: Ethnicity
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'KS2 Band'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 07e2df77-18a1-494d-84d7-6ad428920738
+		sourceColumn: "KS2 Band"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Record Valid From'
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= Long Date
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 349c2770-5506-478f-b906-24437c349331
+		sourceColumn: "Record Valid From"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="D" /></DateTimes></Format>
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column 'Record Valid To'
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= Long Date
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 399a42cf-f7c5-40de-8704-a185b7d072c6
+		sourceColumn: "Record Valid To"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="D" /></DateTimes></Format>
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column 'Current Record'
+		dataType: Boolean
+		formatString:= "TRUE";"TRUE";"FALSE"
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 85a0220d-7627-4600-836b-39a946b299be
+		sourceColumn: "Current Record"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Boolean" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column 'Enrollment Status'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 4273ae02-7255-4a2a-aa44-9a2e8085095d
+		sourceColumn: "Enrollment Status"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Phase =
+		
+		SWITCH(
+		    TRUE(),
+		    Student[NC Year] < 0, "N",
+		    Student[NC Year] < 1, "R",
+		    Student[NC Year] < 7, "KS1/2",
+		    Student[NC Year] < 12, "KS3/4",
+		    "KS5"
+		)
+
+		dataType: String
+		lineageTag: 2b154069-e1be-4bea-8194-7918e173bac3
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+	column 'DfE SEND' =
+		
+		SWITCH(
+		    Student[SEN Status],
+		    "K", "K",
+		    "E", "E",
+		    "QF", "K",
+		    "Ac", "K",
+		    "S", "E",
+		    "FL", "K",
+		    "A", "K",
+		    "N"
+		)
+
+		dataType: String
+		lineageTag: 0d27b026-9b6e-4268-aa1b-0a1da88fc06a
+		summarizeBy: None
+
+	column SEND =
+		
+		IF (
+		    Student[DfE SEND] = "K" || Student[DfE SEND] = "E",
+		    "SEND",
+		    "Not SEND"
+		)
+
+		dataType: String
+		lineageTag: f2e11504-1d7c-4cba-8566-50ba3aa8bea1
+		summarizeBy: None
+
+	column 'SEND Broad Area of Need'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e9c3df99-b8b6-45d1-822a-9a3c03e20c93
+		sourceColumn: "SEND Broad Area of Need"
+		summarizeBy: None
+
+	column Aspire
+		dataType: Boolean
+		isDataTypeInferred: false
+		lineageTag: f1b6fbb1-3fb3-4f7b-a4c2-3b88623a67d3
+		sourceColumn: Aspire
+		summarizeBy: None
+
+	column 'Exclude From Stats'
+		dataType: Boolean
+		isDataTypeInferred: false
+		lineageTag: be02f065-8b69-4e35-932b-fafc426a51fd
+		sourceColumn: "Exclude From Stats"
+		summarizeBy: None
+
+	column 'DfE Ethnicity Main Category'
+		dataType: String
+		displayFolder: Ethnicity
+		isDataTypeInferred: false
+		lineageTag: b4d683a4-f517-4299-875f-8bd45e92badd
+		sourceColumn: "DfE Ethnicity Main Category"
+
+	column 'DfE Ethnicity Main Code'
+		dataType: String
+		displayFolder: Ethnicity
+		isDataTypeInferred: false
+		lineageTag: 1f658069-dc2f-4a63-90d4-98e73e3b233b
+		sourceColumn: "DfE Ethnicity Main Code"
+
+	column 'DfE Ethnicity Sub Category'
+		dataType: String
+		displayFolder: Ethnicity
+		isDataTypeInferred: false
+		lineageTag: 473378e9-2c3f-4643-8bce-9a3ee29211c5
+		sourceColumn: "DfE Ethnicity Sub Category"
+
+	column 'DfE Extended Ethnicity Code'
+		dataType: String
+		displayFolder: Ethnicity
+		isDataTypeInferred: false
+		lineageTag: 7018b6b8-609e-405b-a560-e3abadfdd047
+		sourceColumn: "DfE Extended Ethnicity Code"
+
+	column 'DfE Extended Ethnicity Description'
+		dataType: String
+		displayFolder: Ethnicity
+		isDataTypeInferred: false
+		lineageTag: ab3640da-7506-464d-a59f-382389a31f56
+		sourceColumn: "DfE Extended Ethnicity Description"
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Conformed
+

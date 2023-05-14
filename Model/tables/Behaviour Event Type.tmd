@@ -1,0 +1,127 @@
+/// List of behaviour event types.
+/// Filters "Behaviour".
+/// (DIMENSION)
+table 'Behaviour Event Type'
+	lineageTag: d538965c-f9d8-4abe-bb09-1fa77c327431
+	ordinal: 20
+
+	partition 'Behaviour Event Type' = M
+		mode: Import
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows ( null ), 
+			  Workspaces = Source{[ Id = "Workspaces" ]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data], 
+			  //Edu-Behaviour
+			  Dataflow = Workspace{[ dataflowName = "Edu-Behaviour" ]}[Data], 
+			  Entity = Dataflow{[ entity = "dimBehEventTypes" ]}[Data]
+			in
+			  Entity
+
+		queryGroup: Dimensions
+
+	column BehEventTypeId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		lineageTag: 368bcb61-ca53-4daa-bfb2-2151c08ccbbd
+		sourceColumn: BehEventTypeId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column Academy
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 7874bf8b-79dc-4907-8763-ddaf2d2087a0
+		sourceColumn: Academy
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Behaviour Class'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 68096ecd-3c9a-4b95-ba3a-78bea11e5f81
+		sourceColumn: "Behaviour Class"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Event Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 71c01b52-5fb9-49d7-918e-6f9b6ecafc4a
+		sourceColumn: "Event Code"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Event Type'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 314802e5-da27-4d9e-9dbc-aa93342f2f8e
+		sourceColumn: "Event Type"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Significance
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: cca4e7f2-6b3c-4de9-ae6a-12a9a0514333
+		sourceColumn: Significance
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Score
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: ef737b82-f0fa-449b-a878-299f95fc4aec
+		sourceColumn: Score
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Behaviour
+

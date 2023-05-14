@@ -1,0 +1,37 @@
+table 'KS5 Grade Type'
+	lineageTag: 446bbd4d-a58f-44ec-ac0d-995c6c39edee
+	ordinal: 59
+
+	partition 'KS5 Grade Type' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS4Data             
+				Dataflow = Workspace{[ dataflowName = "Edu-KS5Data" ]}[Data],
+				Entity = Dataflow{[ entity = "dimKS5GradeType" ]}[Data]
+			in
+				Entity
+
+
+	column 'Grade Type'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 63364487-afbf-460c-a88b-de77f0798254
+		sourceColumn: "Grade Type"
+		summarizeBy: None
+
+	column GradeTypeId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 154919b6-55bc-42f5-a780-fe6cb7df816e
+		sourceColumn: GradeTypeId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = KS5
+

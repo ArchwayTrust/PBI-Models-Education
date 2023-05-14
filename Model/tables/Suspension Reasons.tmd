@@ -1,0 +1,44 @@
+table 'Suspension Reasons'
+	lineageTag: 799a90b7-dd92-4a82-9192-ba5222db67f2
+	ordinal: 53
+
+	partition 'Suspension Reasons' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                                
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-Exclusions                
+				Dataflow = Workspace{[ dataflowName = "Edu-Exclusions" ]}[Data],
+				Entity = Dataflow{[ entity = "dimExclusionReasons", version = "" ]}[Data]
+			in
+				Entity
+
+
+	column Reason
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 6d25082a-b850-4a77-8c8d-3a9aa10de28c
+		sourceColumn: Reason
+		summarizeBy: None
+
+	column ReasonCode
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 45cad4af-94f3-4b64-9304-3037e2bd3f56
+		sourceColumn: ReasonCode
+		summarizeBy: None
+
+	column ReasonId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: aa1d1a94-54f7-4366-bab0-abf5f928445a
+		sourceColumn: ReasonId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Behaviour
+

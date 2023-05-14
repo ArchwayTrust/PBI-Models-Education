@@ -1,0 +1,79 @@
+table 'EYFS Goal'
+	lineageTag: 4ec52023-1dee-43b4-a0e3-4fb879108505
+	ordinal: 78
+
+	partition 'EYFS Goal' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],           
+				Dataflow = Workspace{[ dataflowName = "Edu-Primary-Ingest" ]}[Data],
+				Entity = Dataflow{[ entity = "dimPrimaryEYFSGoals" ]}[Data]
+			in
+				Entity
+
+
+	column Core
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: c1d9abde-38ff-45e5-9f78-ec68244cf86f
+		sourceColumn: Core
+		summarizeBy: None
+
+	column EYFSGoalId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: aebf9af5-c225-4f06-9c63-27202085aac9
+		sourceColumn: EYFSGoalId
+		summarizeBy: None
+
+	column Goal
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: fd266c70-d2d2-445e-93d9-c0a31decba70
+		sortByColumn: GoalDisplayOrder
+		sourceColumn: Goal
+		summarizeBy: None
+
+	column 'Goal Group'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: a2a21d1a-58ab-4f73-b1b5-5f98cc19697e
+		sortByColumn: GoalDisplayOrder
+		sourceColumn: "Goal Group"
+		summarizeBy: None
+
+	column 'Goal Number'
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: e219e359-83bb-4a83-adec-991a782ba29c
+		sourceColumn: "Goal Number"
+		summarizeBy: None
+
+	column GoalDisplayOrder
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b5473810-730a-4d6e-bff2-e857eaf9d927
+		sourceColumn: GoalDisplayOrder
+		summarizeBy: None
+
+	column GroupDisplayOrder
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e6c433db-9f88-484f-ba30-543c004d7c0d
+		sourceColumn: GroupDisplayOrder
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = EYFS
+

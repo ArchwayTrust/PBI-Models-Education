@@ -1,0 +1,155 @@
+table 'KS3 Assessment'
+	lineageTag: 2c57f251-96bf-4067-b16f-4af94e77f2d1
+	ordinal: 37
+
+	partition 'KS3 Assessment' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS3Data             
+				Dataflow = Workspace{[ dataflowName = "Edu-KS3Data" ]}[Data],
+				Entity = Dataflow{[ entity = "KS3 Assessment" ]}[Data]
+			in
+				Entity
+
+
+	measure 'KS3 Number of Students' =
+		
+		DISTINCTCOUNT ( 'KS3 Assessment'[StudentId] )
+
+		lineageTag: 3c462149-35fd-404d-b50c-3382f3e48d0b
+
+	measure 'KS3 Slicer Filter' = INT( NOT ( ISEMPTY( 'KS3 Assessment' ) ) )
+		lineageTag: 5aecf924-9b48-4e1f-9e4b-a5040ea24dc4
+
+	measure 'KS3 Average %' =
+		
+		AVERAGE ( 'KS3 Assessment'[PercentageScore] )
+
+		formatString:= #,##0.00 %
+		lineageTag: 2fd6a5e1-3c41-4539-9aee-b1a808e459d9
+
+	measure 'KS3 Number of Assessments' =
+		
+		COUNTROWS ( 'KS3 Assessment' )
+
+		lineageTag: ee1b4770-1b3d-4222-a4b1-0ebb64858e71
+
+	column 'Baseline Percentile'
+		dataType: Decimal
+		encodingHint: Value
+		formatString:= #,##0.00 %
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e5e968b2-9a08-447b-82d9-82955d9a2f4c
+		sourceColumn: "Baseline Percentile"
+		summarizeBy: None
+
+	column 'Combined Average'
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5e91fce7-b294-48fd-bf94-b1d705f99c4c
+		sourceColumn: "Combined Average"
+		summarizeBy: None
+
+	column KS3GroupId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c0458463-8207-4bed-b493-3ce66e9861ca
+		sourceColumn: KS3GroupId
+		summarizeBy: None
+
+	column KS3ProgressIndicatorId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3eb17066-3989-4077-8af4-09a280665da8
+		sourceColumn: KS3ProgressIndicatorId
+		summarizeBy: None
+
+	column KS3SlotId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c3d53787-f5d1-41ce-bf43-b3f6f2d84abc
+		sourceColumn: KS3SlotId
+		summarizeBy: None
+
+	column 'Recorded Date'
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 85598c76-ce89-4a3e-bb94-d614b47e87d9
+		sourceColumn: "Recorded Date"
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: dd6beb15-4586-4b28-b3a1-c2289392f4c7
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: bbccf721-a2c7-4cc0-9148-dffb9f8a4229
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	column 'Test Percentile'
+		dataType: Decimal
+		encodingHint: Value
+		formatString:= #,##0.00 %
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 396e145d-403c-4cfc-8c56-8037e9fb4082
+		sourceColumn: "Test Percentile"
+		summarizeBy: None
+
+	column PercentageScore
+		dataType: Decimal
+		encodingHint: Value
+		formatString:= #,##0.00 %
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a8284c79-00f1-430e-9664-9b45f5397143
+		sourceColumn: "Percentage Score"
+		summarizeBy: None
+
+	column 'Y11 In'
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 9c0862b0-7d31-43a3-b961-535034d731dc
+		sourceColumn: "Y11 In"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = KS3
+

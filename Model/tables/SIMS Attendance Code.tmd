@@ -1,0 +1,99 @@
+table 'SIMS Attendance Code'
+	lineageTag: 81240557-e5cd-49db-9de2-2c408b09a131
+	ordinal: 24
+
+	partition 'SIMS Attendance Code' = M
+		mode: Import
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-Attendance                
+				Dataflow = Workspace{[ dataflowName = "Edu-Attendance" ]}[Data],
+				Entity = Dataflow{[ entity = "dimSIMSAttendanceCodes" ]}[Data]
+			in
+				Entity
+
+		queryGroup: Dimensions
+
+	column SIMSAttendanceCodeId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		isKey
+		lineageTag: 94347c87-b27a-4d3c-a585-c6ed8acfcee2
+		sourceColumn: SIMSAttendanceCodeId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+	column Mark
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 9e781e4e-a50d-4f30-bbb1-99665c8fc932
+		sourceColumn: Mark
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+	column Description
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 1a337850-29e9-44ca-afdc-105bccc620a0
+		sourceColumn: Description
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+	column 'Statistical Meaning'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 2f2b59cf-2f43-4852-a3ae-1b441b9d6014
+		sourceColumn: "Statistical Meaning"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+	column Subcode
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 99d0552f-4471-42f5-b147-75c387a80e78
+		sourceColumn: Subcode
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+	column 'Subcode Description'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: ec45815d-8e1b-4db7-90d0-2814e3fd93c2
+		sourceColumn: "Subcode Description"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+	column 'Mark + Description'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: d8102f48-2868-45e7-872d-21de686dc07f
+		sourceColumn: "Mark + Description"
+
+	annotation PBI_ResultType = Table
+
+	annotation TabularEditor_TableGroup = Attendance
+

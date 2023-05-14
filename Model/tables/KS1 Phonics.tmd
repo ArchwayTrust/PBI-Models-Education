@@ -1,0 +1,113 @@
+table 'KS1 Phonics'
+	lineageTag: a9af3da1-048f-4854-856c-d6e9f6dfe9b5
+	ordinal: 66
+
+	partition 'KS1 Phonics' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS2Data-Ingest           
+				Dataflow = Workspace{[ dataflowName = "Edu-Primary-Ingest" ]}[Data],
+				Entity = Dataflow{[ entity = "fctPrimaryPhonics" ]}[Data]
+			in
+				Entity
+
+
+	measure 'Phonics NC Y1 % Passed ' =
+		VAR NumberWa =
+		    CALCULATE(
+		        COUNTROWS( 'KS1 Phonics' ),
+		        'KS1 Phonics'[Outcome] IN { "Wa" },
+		        'KS1 Phonics'[NCYearActual] = 1
+		        
+		    )
+		VAR TotalStudents =
+		    CALCULATE(
+		        COUNTROWS( 'KS1 Phonics' ),
+		        'KS1 Phonics'[NCYearActual] = 1
+		    )
+		    
+		VAR Result = DIVIDE( NumberWa, TotalStudents )
+		
+		RETURN Result
+		
+
+		formatString:= #,##0.0 %
+		lineageTag: dad0a249-4d50-45e0-a2b1-3e0bf91d0a21
+
+	measure 'Phonics NC Y2 % Passed' =
+		VAR NumberWa =
+		    CALCULATE(
+		        COUNTROWS( 'KS1 Phonics' ),
+		        'KS1 Phonics'[Outcome] IN { "Wa" },
+		        'KS1 Phonics'[NCYearActual] = 2
+		        
+		    )
+		VAR TotalStudents =
+		    CALCULATE(
+		        COUNTROWS( 'KS1 Phonics' ),
+		        'KS1 Phonics'[NCYearActual] = 2
+		    )
+		    
+		VAR Result = DIVIDE( NumberWa, TotalStudents )
+		
+		RETURN Result
+		
+
+		formatString:= #,##0.0 %
+		lineageTag: b936eddb-e68e-498d-a83c-2e6d313a22af
+
+	column DataSet
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5387f0d1-83d4-4ec5-a9a1-8f476bb03ae8
+		sourceColumn: DataSet
+		summarizeBy: None
+
+	column NCYearActual
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 77340df2-a90c-42f0-adc3-5cce227f763c
+		sourceColumn: NCYearActual
+		summarizeBy: None
+
+	column Outcome
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: dfde2657-727d-46d9-a5e5-6d8d7271d975
+		sourceColumn: Outcome
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a094e29a-db7b-4f31-8108-9eb52ca4779e
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 824e760f-624a-4fd5-9ac1-7635f3bb135a
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Primary
+

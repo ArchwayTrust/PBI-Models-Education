@@ -1,0 +1,51 @@
+table 'Leaver Reasons'
+	lineageTag: 2f5a9b2c-639a-4687-a90f-29633fee9ef2
+	ordinal: 43
+
+	partition 'Leaver Reasons' = M
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows(null), 
+			  Workspaces = Source{[Id = "Workspaces"]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[workspaceName = "DW-Dataflows-Education"]}[Data], 
+			  //Edu-Leavers
+			  Dataflow = Workspace{[dataflowName = "Edu-Leavers"]}[Data], 
+			  Entity = Dataflow{[entity = "dimLeaverReasons"]}[Data]
+			in
+			  Entity
+
+
+	column LeaverReasonId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5dc6b6a9-4756-4b6b-b323-76098a029aaf
+		sourceColumn: LeaverReasonId
+		summarizeBy: None
+
+	column 'Reason Category'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 0fea018e-7405-41d0-8c10-6313290c087a
+		sourceColumn: "Reason Category"
+		summarizeBy: None
+
+	column 'Reason Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e8c8e1b5-2c04-4fd7-a0c6-c40aeab97c8f
+		sourceColumn: "Reason Code"
+		summarizeBy: None
+
+	column 'Reason Description'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: bbaa7699-bbcb-4bda-b514-324d9a08dbf4
+		sourceColumn: "Reason Description"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Enrolment
+

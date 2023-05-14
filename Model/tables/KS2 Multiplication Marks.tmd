@@ -1,0 +1,63 @@
+table 'KS2 Multiplication Marks'
+	lineageTag: 7d4f330f-f0eb-4750-b850-a3f562638b88
+	ordinal: 76
+
+	partition 'KS2 Multiplication Marks' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS2Data-Ingest           
+				Dataflow = Workspace{[ dataflowName = "Edu-Primary-Ingest" ]}[Data],
+				Entity = Dataflow{[ entity = "dimKS2MultiplicationMarks" ]}[Data]
+			in
+				Entity
+
+
+	column Band
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 87780544-c65a-4e1e-95d3-7f0301ca8b85
+		sortByColumn: BandDisplayOrder
+		sourceColumn: Band
+		summarizeBy: None
+
+	column Pass
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: e42106f8-6932-47dd-af4d-f60b56960b88
+		sourceColumn: Pass
+		summarizeBy: None
+
+	column BandDisplayOrder
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: aeb8a573-fb09-401e-93db-89f7a2e6c622
+		sourceColumn: BandDisplayOrder
+		summarizeBy: None
+
+	column Mark
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: 8c144d8f-6650-4dc3-b71a-0ffb3ea21632
+		sourceColumn: Mark
+		summarizeBy: None
+
+	column MarkId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b4a91abf-1d26-4041-96e5-db212d30f2ec
+		sourceColumn: MarkId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Primary
+

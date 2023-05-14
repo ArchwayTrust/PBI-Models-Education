@@ -1,0 +1,73 @@
+/// Details of staff who have created behaviour events.
+/// Filters "Behaviour".
+/// (DIMENSION)
+table 'Behaviour Created By'
+	lineageTag: b7fd799f-206f-4e43-a12a-8e186afc1ea2
+	ordinal: 19
+
+	partition 'Behaviour Created By' = M
+		mode: Import
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows(null), 
+			  Workspaces = Source{[Id = "Workspaces"]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[workspaceName = "DW-Dataflows-Education"]}[Data], 
+			  //Edu-Behaviour
+			  Dataflow = Workspace{[dataflowName = "Edu-Behaviour"]}[Data], 
+			  Entity = Dataflow{[entity = "dimBehCreatedBy"]}[Data]
+			in
+			  Entity
+
+		queryGroup: Dimensions
+
+	column BehCreatedById
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		lineageTag: 8cd25fe6-1b22-4000-8ebd-82c56b81f061
+		sourceColumn: BehCreatedById
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column 'Created By Name'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 413b7f1c-b5a5-49e9-8851-2a7b4c52d4ad
+		sourceColumn: "Created By Name"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Created By Email'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 6c7ce6be-6ad2-4f6c-b370-d615efa996ec
+		sourceColumn: "Created By Email"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Behaviour
+

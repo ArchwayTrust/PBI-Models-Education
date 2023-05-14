@@ -1,0 +1,44 @@
+table 'Parent View Responses'
+	lineageTag: 1ed66817-8647-49b2-8cd2-c40df94578a1
+	ordinal: 48
+
+	partition 'Parent View Responses' = M
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows(null), 
+			  Workspaces = Source{[Id = "Workspaces"]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[workspaceName = "DW-Dataflows-Education"]}[Data], 
+			  //Edu-ParentView
+			  Dataflow = Workspace{[dataflowName = "Edu-ParentView"]}[Data], 
+			  Entity = Dataflow{[entity = "dimParentViewResponses"]}[Data]
+			in
+			  Entity
+
+
+	column Response
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: c297a423-64f3-4db3-b579-6f67c861761d
+		sortByColumn: ResponseId
+		sourceColumn: Response
+		summarizeBy: None
+
+	column ResponseId
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b1130f0f-4528-4343-97d8-facc37c4590b
+		sourceColumn: ResponseId
+		summarizeBy: None
+
+	column Sentiment
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 0bc1918c-1951-42c7-8a0f-53dd1c310898
+		sourceColumn: Sentiment
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Parent View
+

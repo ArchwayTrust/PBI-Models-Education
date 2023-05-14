@@ -1,0 +1,54 @@
+table 'EYFS Outcome'
+	lineageTag: 515cc563-0229-4b4b-94c0-04004c27cd89
+	ordinal: 79
+
+	partition 'EYFS Outcome' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],           
+				Dataflow = Workspace{[ dataflowName = "Edu-Primary-Ingest" ]}[Data],
+				Entity = Dataflow{[ entity = "dimPrimaryEYFSOutcomes" ]}[Data]
+			in
+				Entity
+
+
+	column 'Expected+'
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: 0e7a79b4-6277-493b-a0f1-7faf2e54fb67
+		sourceColumn: Expected+
+		summarizeBy: None
+
+	column EYFSOutcomeId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: cd593bb8-7753-4268-9823-85f43a06a7dd
+		sourceColumn: EYFSOutcomeId
+		summarizeBy: None
+
+	column Outcome
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e36a00af-9e88-4a88-b1ba-dac9e842df13
+		sortByColumn: OutcomeDisplayOrder
+		sourceColumn: Outcome
+		summarizeBy: None
+
+	column OutcomeDisplayOrder
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 658c00e9-f7f3-4dd7-baa0-b4475d8c2eff
+		sourceColumn: OutcomeDisplayOrder
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = EYFS
+

@@ -1,0 +1,37 @@
+table 'Census Term'
+	lineageTag: eb10dfe9-d1bc-4104-82d5-bb79f8a10f8c
+	ordinal: 70
+
+	partition 'Census Term' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-Census        
+				Dataflow = Workspace{[ dataflowName = "Edu-Census" ]}[Data],
+				Entity = Dataflow{[ entity = "dimCensusTerm" ]}[Data]
+			in
+				Entity
+
+
+	column DisplayOrder
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 7b1deb1d-e8d1-49f5-b089-784b9e69d6d6
+		sourceColumn: DisplayOrder
+		summarizeBy: None
+
+	column Term
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: ee2cadd1-06e8-4cfc-abeb-319c40104e80
+		sortByColumn: DisplayOrder
+		sourceColumn: Term
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Census
+

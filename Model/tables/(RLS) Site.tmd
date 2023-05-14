@@ -1,0 +1,87 @@
+/// Add this table into report filter to lock the report down to RLS permissions.
+table '(RLS) Site'
+	lineageTag: 21beb6eb-6b96-4626-9846-94d3a8e652fa
+	ordinal: 35
+
+	partition '(RLS) Site' = M
+		mode: Import
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows ( null ), 
+			  Workspaces = Source{[ Id = "Workspaces" ]}[Data], 
+			  //DW-Dataflows-Conformed
+			  Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Conformed" ]}[Data], 
+			  //Con-General
+			  Dataflow = Workspace{[ dataflowName = "Con-General" ]}[Data], 
+			  Entity = Dataflow{[ entity = "dimSites" ]}[Data], 
+			  RemovedOtherColumns = Table.SelectColumns (
+			    Entity, 
+			    {
+			      "SiteId", 
+			      "Academy Code", 
+			      "Site Name", 
+			      "Regional Director", 
+			      "Phase", 
+			      "LA", 
+			      "LA Code", 
+			      "New LA Code", 
+			      "Date Joined ALT", 
+			      "Main Post Code", 
+			      "URN", 
+			      "DFE Number"
+			    }
+			  )
+			in
+			  RemovedOtherColumns
+
+		queryGroup: Dimensions
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		isUnique
+		lineageTag: 28310cd3-6331-4401-9c99-23d2805e4da4
+		sourceColumn: SiteId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+	column 'Academy Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 51de1d60-e52b-417f-81ca-e1537591d5c9
+		sourceColumn: "Academy Code"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["MARK_PRIMARY_KEYS","RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Site Name'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 1e0b5a61-fc6a-4705-8048-1174ce4d924e
+		sourceColumn: "Site Name"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Conformed
+

@@ -1,0 +1,251 @@
+table Site
+	lineageTag: 8f7fccfd-0554-443a-8675-67db274da21b
+	ordinal: 4
+
+	partition Site = M
+		mode: Import
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Conformed                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Conformed" ]}[Data],
+				//Con-General             
+				Dataflow = Workspace{[ dataflowName = "Con-General" ]}[Data],
+				Entity = Dataflow{[ entity = "dimSites" ]}[Data],
+				RemovedOtherColumns = Table.SelectColumns (
+					Entity,
+					{
+						"SiteId",
+						"Academy Code",
+						"Site Name",
+						"Regional Director",
+						"Phase",
+						"LA",
+						"LA Code",
+						"New LA Code",
+						"Date Joined ALT",
+						"Main Post Code",
+						"URN",
+						"DFE Number",
+			            "Education Location Code"
+					}
+				)
+			in
+				RemovedOtherColumns
+
+		queryGroup: Dimensions
+
+	measure 'Joined ALT' =
+		
+		SELECTEDVALUE(Site[Date Joined ALT])
+
+		formatString:= Short Date
+		lineageTag: de74fb32-a698-4fbc-92b0-67ae2d7bc548
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="ShortDate" FormatString="d" /></DateTimes></Format>
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		isUnique
+		lineageTag: 28310cd3-6331-4401-9c99-23d2805e4da4
+		sourceColumn: SiteId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+	column 'Academy Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 51de1d60-e52b-417f-81ca-e1537591d5c9
+		sourceColumn: "Academy Code"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["MARK_PRIMARY_KEYS","RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Site Name'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 1e0b5a61-fc6a-4705-8048-1174ce4d924e
+		sourceColumn: "Site Name"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Regional Director'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: d4b774dc-ec50-4073-9388-24f4ed156fa6
+		sourceColumn: "Regional Director"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Phase
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: dc9135d6-ea4b-4cc5-8f8e-2aea8cfab290
+		sourceColumn: Phase
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column LA
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 11535639-ffc6-4273-bf39-63fa9a350e29
+		sourceColumn: LA
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'LA Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: d02d2ab3-2e6b-430e-a4be-19542e233314
+		sourceColumn: "LA Code"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE","ISAVAILABLEINMDX_FALSE_NONATTRIBUTE_COLUMNS"]}
+
+	column 'Date Joined ALT'
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= Long Date
+		isDataTypeInferred: false
+		lineageTag: ff1a9760-e8c6-4f0b-a0b5-8ab28147c181
+		sourceColumn: "Date Joined ALT"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="D" /></DateTimes></Format>
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'New LA Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: ab7fc8f0-112c-4228-9c86-12d80ba335cd
+		sourceColumn: "New LA Code"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Main Post Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: dae30a5b-85cc-48f8-aa37-a6833d0f4afc
+		sourceColumn: "Main Post Code"
+		summarizeBy: None
+
+	column 'DFE Number'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 0802aee9-bb51-415c-a5ed-6cc8846fb163
+		sourceColumn: "DFE Number"
+		summarizeBy: None
+
+	column URN
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e0073557-6033-4595-a9d7-3737e8bed610
+		sourceColumn: URN
+		summarizeBy: None
+
+	column 'Years in the Trust' =
+		
+		IF(
+		    ISBLANK( Site[Date Joined ALT] ),
+		    BLANK( ),
+		    INT( ROUNDDOWN( DIVIDE( TODAY() - Site[Date Joined ALT], 365 ), 0 ) )
+		)
+
+		dataType: Int64
+		encodingHint: Value
+		formatString:= #,##0
+		lineageTag: 803beb42-8005-494c-8617-781872dd2eb6
+		summarizeBy: None
+
+	column 'Joining Year' =
+		
+		YEAR(Site[Date Joined ALT])
+
+		dataType: Int64
+		encodingHint: Value
+		lineageTag: 16b1362d-b4d2-481d-8a86-b81f8128a58b
+		summarizeBy: None
+
+	column 'Latest Inspection Grade' = [Latest Ofsted Rating]
+		dataType: String
+		lineageTag: 0e37aab4-4313-4313-97de-c061f3b376e7
+		summarizeBy: None
+
+	column 'Education Location Code'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 68abfdc5-b6cb-4031-bc08-9d715c5f771a
+		sourceColumn: "Education Location Code"
+		summarizeBy: None
+
+	hierarchy Academies
+		lineageTag: dacafea6-fd0f-4967-9994-d98c1b36ef4a
+
+		level 'Regional Director'
+			column: 'Regional Director'
+			lineageTag: d56596e4-8b10-4e81-b4de-3e2c60212b6c
+
+		level 'Site Name'
+			column: 'Site Name'
+			lineageTag: 5dff788a-cd6f-4e78-9710-48ca6e46c7dd
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Conformed
+

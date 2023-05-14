@@ -1,0 +1,377 @@
+perspective Behaviour
+
+	perspectiveTable Behaviour
+		table: Behaviour.Behaviour
+
+		perspectiveMeasure 'Negative Points'
+			measure: Behaviour.'Negative Points'
+
+		perspectiveMeasure 'Number of Negative Student Events'
+			measure: Behaviour.'Number of Negative Student Events'
+
+		perspectiveMeasure 'Number of Student Events'
+			measure: Behaviour.'Number of Student Events'
+
+		perspectiveMeasure 'Positive Points'
+			measure: Behaviour.'Positive Points'
+
+		perspectiveMeasure 'Behaviour Slicer Filter'
+			measure: Behaviour.'Behaviour Slicer Filter'
+
+		perspectiveColumn 'Event Date'
+			column: Behaviour.'Event Date'
+
+		perspectiveColumn BehEventId
+			column: Behaviour.BehEventId
+
+		perspectiveColumn StudentId
+			column: Behaviour.StudentId
+
+		perspectiveColumn SiteId
+			column: Behaviour.SiteId
+
+		perspectiveColumn BehCreatedById
+			column: Behaviour.BehCreatedById
+
+		perspectiveColumn BehEventTypeId
+			column: Behaviour.BehEventTypeId
+
+		perspectiveColumn BehTeachingGroupId
+			column: Behaviour.BehTeachingGroupId
+
+		perspectiveColumn BehSchoolNoteId
+			column: Behaviour.BehSchoolNoteId
+
+		perspectiveColumn AuditId
+			column: Behaviour.AuditId
+
+		perspectiveColumn Score
+			column: Behaviour.Score
+
+		perspectiveColumn Cancelled
+			column: Behaviour.Cancelled
+
+		perspectiveColumn Closed
+			column: Behaviour.Closed
+
+	perspectiveTable 'Behaviour Created By'
+		table: 'Behaviour Created By'.'Behaviour Created By'
+
+		perspectiveColumn BehCreatedById
+			column: 'Behaviour Created By'.BehCreatedById
+
+		perspectiveColumn 'Created By Name'
+			column: 'Behaviour Created By'.'Created By Name'
+
+		perspectiveColumn 'Created By Email'
+			column: 'Behaviour Created By'.'Created By Email'
+
+	perspectiveTable 'Behaviour Event Type'
+		table: 'Behaviour Event Type'.'Behaviour Event Type'
+
+		perspectiveColumn BehEventTypeId
+			column: 'Behaviour Event Type'.BehEventTypeId
+
+		perspectiveColumn Academy
+			column: 'Behaviour Event Type'.Academy
+
+		perspectiveColumn 'Behaviour Class'
+			column: 'Behaviour Event Type'.'Behaviour Class'
+
+		perspectiveColumn 'Event Code'
+			column: 'Behaviour Event Type'.'Event Code'
+
+		perspectiveColumn 'Event Type'
+			column: 'Behaviour Event Type'.'Event Type'
+
+		perspectiveColumn Significance
+			column: 'Behaviour Event Type'.Significance
+
+		perspectiveColumn Score
+			column: 'Behaviour Event Type'.Score
+
+	perspectiveTable 'Behaviour School Note'
+		table: 'Behaviour School Note'.'Behaviour School Note'
+
+		perspectiveColumn BehSchoolNoteId
+			column: 'Behaviour School Note'.BehSchoolNoteId
+
+		perspectiveColumn BehEventId
+			column: 'Behaviour School Note'.BehEventId
+
+		perspectiveColumn 'School Notes'
+			column: 'Behaviour School Note'.'School Notes'
+
+	perspectiveTable 'Behaviour Teaching Group'
+		table: 'Behaviour Teaching Group'.'Behaviour Teaching Group'
+
+		perspectiveColumn BehTeachingGroupId
+			column: 'Behaviour Teaching Group'.BehTeachingGroupId
+
+		perspectiveColumn 'Subject Code'
+			column: 'Behaviour Teaching Group'.'Subject Code'
+
+		perspectiveColumn Subject
+			column: 'Behaviour Teaching Group'.Subject
+
+		perspectiveColumn 'Group Name'
+			column: 'Behaviour Teaching Group'.'Group Name'
+
+	perspectiveTable Calendar
+		table: Calendar.Calendar
+
+		perspectiveMeasure 'Flag Covid'
+			measure: Calendar.'Flag Covid'
+
+		perspectiveColumn Date
+			column: Calendar.Date
+
+		perspectiveColumn 'Academic Year'
+			column: Calendar.'Academic Year'
+
+		perspectiveColumn Term
+			column: Calendar.Term
+
+		perspectiveColumn 'Term Order'
+			column: Calendar.'Term Order'
+
+		perspectiveColumn 'Half Term'
+			column: Calendar.'Half Term'
+
+		perspectiveColumn 'Half Term Order'
+			column: Calendar.'Half Term Order'
+
+		perspectiveColumn 'Month & Year Name'
+			column: Calendar.'Month & Year Name'
+
+		perspectiveColumn Month
+			column: Calendar.Month
+
+		perspectiveColumn 'Week Number'
+			column: Calendar.'Week Number'
+
+		perspectiveColumn Day
+			column: Calendar.Day
+
+		perspectiveColumn 'End of Month'
+			column: Calendar.'End of Month'
+
+		perspectiveColumn 'Financial Period'
+			column: Calendar.'Financial Period'
+
+		perspectiveColumn 'Financial Period & Year'
+			column: Calendar.'Financial Period & Year'
+
+		perspectiveColumn 'Day of Week'
+			column: Calendar.'Day of Week'
+
+		perspectiveColumn 'Week Commencing'
+			column: Calendar.'Week Commencing'
+
+		perspectiveColumn 'G4S Dataset'
+			column: Calendar.'G4S Dataset'
+
+		perspectiveColumn 'Attendance Comparison'
+			column: Calendar.'Attendance Comparison'
+
+		perspectiveColumn 'KS4 Performance Comparison'
+			column: Calendar.'KS4 Performance Comparison'
+
+		perspectiveColumn 'KS5 Performance Comparison'
+			column: Calendar.'KS5 Performance Comparison'
+
+		perspectiveColumn 'KS2 Performance Comparison'
+			column: Calendar.'KS2 Performance Comparison'
+
+		perspectiveColumn 'KS1 Performance Comparison'
+			column: Calendar.'KS1 Performance Comparison'
+
+		perspectiveColumn 'R Performance Comparison'
+			column: Calendar.'R Performance Comparison'
+
+		perspectiveColumn 'Covid Impact'
+			column: Calendar.'Covid Impact'
+
+	perspectiveTable Site
+		table: Site.Site
+
+		perspectiveMeasure 'Joined ALT'
+			measure: Site.'Joined ALT'
+
+		perspectiveColumn SiteId
+			column: Site.SiteId
+
+		perspectiveColumn 'Academy Code'
+			column: Site.'Academy Code'
+
+		perspectiveColumn 'Site Name'
+			column: Site.'Site Name'
+
+		perspectiveColumn 'Regional Director'
+			column: Site.'Regional Director'
+
+		perspectiveColumn Phase
+			column: Site.Phase
+
+		perspectiveColumn LA
+			column: Site.LA
+
+		perspectiveColumn 'LA Code'
+			column: Site.'LA Code'
+
+		perspectiveColumn 'Date Joined ALT'
+			column: Site.'Date Joined ALT'
+
+		perspectiveColumn 'New LA Code'
+			column: Site.'New LA Code'
+
+		perspectiveHierarchy Academies
+			hierarchy: Site.Academies
+
+	perspectiveTable Student
+		table: Student.Student
+
+		perspectiveColumn StudentId
+			column: Student.StudentId
+
+		perspectiveColumn DataSet
+			column: Student.DataSet
+
+		perspectiveColumn 'Academic Year'
+			column: Student.'Academic Year'
+
+		perspectiveColumn Academy
+			column: Student.Academy
+
+		perspectiveColumn 'Host SIMS'
+			column: Student.'Host SIMS'
+
+		perspectiveColumn UPN
+			column: Student.UPN
+
+		perspectiveColumn ULN
+			column: Student.ULN
+
+		perspectiveColumn 'G4S Student Id'
+			column: Student.'G4S Student Id'
+
+		perspectiveColumn 'SIMS Person Id'
+			column: Student.'SIMS Person Id'
+
+		perspectiveColumn 'SIMS AdNo'
+			column: Student.'SIMS AdNo'
+
+		perspectiveColumn StuAcKey
+			column: Student.StuAcKey
+
+		perspectiveColumn StuAcYearKey
+			column: Student.StuAcYearKey
+
+		perspectiveColumn 'Office 365 Login'
+			column: Student.'Office 365 Login'
+
+		perspectiveColumn 'Account Inf PersonId'
+			column: Student.'Account Inf PersonId'
+
+		perspectiveColumn 'NC Year'
+			column: Student.'NC Year'
+
+		perspectiveColumn 'On Roll'
+			column: Student.'On Roll'
+
+		perspectiveColumn 'In SIMS'
+			column: Student.'In SIMS'
+
+		perspectiveColumn 'In KPI'
+			column: Student.'In KPI'
+
+		perspectiveColumn 'Start Date'
+			column: Student.'Start Date'
+
+		perspectiveColumn 'Leaving Date'
+			column: Student.'Leaving Date'
+
+		perspectiveColumn 'Registration Group'
+			column: Student.'Registration Group'
+
+		perspectiveColumn Gender
+			column: Student.Gender
+
+		perspectiveColumn EAL
+			column: Student.EAL
+
+		perspectiveColumn FSM
+			column: Student.FSM
+
+		perspectiveColumn 'FSM Ever 6'
+			column: Student.'FSM Ever 6'
+
+		perspectiveColumn 'Pupil Premium'
+			column: Student.'Pupil Premium'
+
+		perspectiveColumn Disadvantaged
+			column: Student.Disadvantaged
+
+		perspectiveColumn 'Child Looked After'
+			column: Student.'Child Looked After'
+
+		perspectiveColumn 'Ever In Care'
+			column: Student.'Ever In Care'
+
+		perspectiveColumn Bursary
+			column: Student.Bursary
+
+		perspectiveColumn 'SEN Status'
+			column: Student.'SEN Status'
+
+		perspectiveColumn Ethnicity
+			column: Student.Ethnicity
+
+		perspectiveColumn 'KS2 Band'
+			column: Student.'KS2 Band'
+
+		perspectiveColumn 'Record Valid From'
+			column: Student.'Record Valid From'
+
+		perspectiveColumn 'Record Valid To'
+			column: Student.'Record Valid To'
+
+		perspectiveColumn 'Current Record'
+			column: Student.'Current Record'
+
+		perspectiveColumn 'Enrollment Status'
+			column: Student.'Enrollment Status'
+
+		perspectiveColumn Phase
+			column: Student.Phase
+
+	perspectiveTable '(RLS) Site'
+		table: '(RLS) Site'.'(RLS) Site'
+
+		perspectiveColumn SiteId
+			column: '(RLS) Site'.SiteId
+
+		perspectiveColumn 'Academy Code'
+			column: '(RLS) Site'.'Academy Code'
+
+		perspectiveColumn 'Site Name'
+			column: '(RLS) Site'.'Site Name'
+
+	perspectiveTable '(RLS) Student Name'
+		table: '(RLS) Student Name'.'(RLS) Student Name'
+
+		perspectiveColumn StudentId
+			column: '(RLS) Student Name'.StudentId
+
+		perspectiveColumn Academy
+			column: '(RLS) Student Name'.Academy
+
+		perspectiveColumn UPN
+			column: '(RLS) Student Name'.UPN
+
+		perspectiveColumn 'First Name'
+			column: '(RLS) Student Name'.'First Name'
+
+		perspectiveColumn 'Last Name'
+			column: '(RLS) Student Name'.'Last Name'
+

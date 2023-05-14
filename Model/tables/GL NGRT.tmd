@@ -1,0 +1,619 @@
+/// NGRT Data from GL. 
+/// New and untested.
+table 'GL NGRT'
+	lineageTag: 21bf1452-97cb-4d01-85f6-bf09cf735ef0
+	ordinal: 26
+
+	partition 'GL NGRT' = M
+		mode: Import
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-GL        
+				Dataflow = Workspace{[ dataflowName = "Edu-GL" ]}[Data],
+				Entity = Dataflow{[ entity = "factGLNGRT" ]}[Data]
+			in
+				Entity
+
+
+	/// Calculates the average NGRT SAS.
+	/// 
+	/// Average is calulcated based on the most recent test
+	/// by a student in the selected date period.
+	measure 'NGRT SAS' =
+		
+		VAR Result =
+		    AVERAGEX(
+		        Student,
+		        VAR LatestTestDate =
+		            CALCULATETABLE(
+		                LASTDATE( 'GL NGRT'[Date of Test] )
+		            )
+		        VAR TestSAS =
+		            CALCULATE(
+		                SELECTEDVALUE(
+		                    'GL NGRT'[SAS],
+		                    BLANK()
+		                ),
+		                LatestTestDate
+		            )
+		        RETURN
+		            TestSAS
+		    )
+		RETURN
+		        Result
+
+		lineageTag: 3ee11e39-6b67-4db6-9a2d-fa2abcdf587d
+
+	/// Calculates the average NGRT Stanine.
+	/// 
+	/// Average is calulcated based on the most recent test
+	/// by a student in the selected date period.
+	/// 
+	measure 'NGRT Stanine' =
+		
+		VAR Result =
+		    AVERAGEX(
+		        Student,
+		        VAR LatestTestDate =
+		            CALCULATETABLE(
+		                LASTDATE( 'GL NGRT'[Date of Test] )
+		            )
+		        VAR TestStanine =
+		            CALCULATE(
+		                SELECTEDVALUE(
+		                    'GL NGRT'[Stanine],
+		                    BLANK()
+		                ),
+		                LatestTestDate
+		            )
+		        RETURN
+		            TestStanine
+		    )
+		RETURN
+		    IF(
+		        HASONEVALUE( Calendar[Academic Year] ),
+		        Result,
+		        BLANK()
+		    )
+
+		formatString:= #,##0.0
+		lineageTag: 965f6410-8334-41d8-9169-08938b783b2e
+
+	/// Gives count of the number of distinct UPNs.
+	measure 'NGRT Students Tested' =
+		
+		VAR StuIds = VALUES ('GL NGRT'[StudentId])
+		
+		RETURN
+		
+		CALCULATE(
+		    DISTINCTCOUNT( Student[UPN] ),
+		    TREATAS( StuIds, Student[StudentId] )
+		)
+
+		lineageTag: f83060ad-fe37-4ccf-990e-ac66951430dc
+
+	measure 'NGRT Tests Sat' = COUNTROWS('GL NGRT')
+		lineageTag: c4109cc4-4d50-467b-812c-8f5a64ced3d0
+
+	/// Place on visual filter of a slicer and set equal to 1.
+	measure 'NGRT Slicer Filter' = INT( NOT ( ISEMPTY( 'GL NGRT' ) ) )
+		lineageTag: 1814b8e2-bfcd-4a1a-a0fa-011f9525b037
+
+	measure 'NGRT SC Stanine' =
+		
+		VAR Result =
+		    AVERAGEX(
+		        Student,
+		        VAR LatestTestDate =
+		            CALCULATETABLE(
+		                LASTDATE( 'GL NGRT'[Date of Test] )
+		            )
+		        VAR TestStanine =
+		            CALCULATE(
+		                SELECTEDVALUE(
+		                    'GL NGRT'[SC Stanine],
+		                    BLANK()
+		                ),
+		                LatestTestDate
+		            )
+		        RETURN
+		            TestStanine
+		    )
+		RETURN
+		    IF(
+		        HASONEVALUE( Calendar[Academic Year] ),
+		        Result,
+		        BLANK()
+		    )
+
+		formatString:= #,##0.0
+		lineageTag: 56b549d7-d5e2-4476-9605-c4105f277739
+
+	measure 'NGRT PC Stanine' =
+		
+		VAR Result =
+		    AVERAGEX(
+		        Student,
+		        VAR LatestTestDate =
+		            CALCULATETABLE(
+		                LASTDATE( 'GL NGRT'[Date of Test] )
+		            )
+		        VAR TestStanine =
+		            CALCULATE(
+		                SELECTEDVALUE(
+		                    'GL NGRT'[PC Stanine],
+		                    BLANK()
+		                ),
+		                LatestTestDate
+		            )
+		        RETURN
+		            TestStanine
+		    )
+		RETURN
+		    IF(
+		        HASONEVALUE( Calendar[Academic Year] ),
+		        Result,
+		        BLANK()
+		    )
+
+		formatString:= #,##0.0
+		lineageTag: 1213ec1f-94ce-4a24-9a74-483a6df1da5f
+
+	measure 'NGRT Stanine Variation' =
+		
+		VAR Variation = [NGRT PC Stanine] - [NGRT SC Stanine]
+		VAR AbsVariation = ABS ( Variation )
+		
+		RETURN AbsVariation
+
+		lineageTag: e860fa3e-5347-4d36-8963-54d43ed6cf52
+
+	/// Calculates change in SAS between first test in range and last test in range. Use the NGRT Student Filter to hide repeat rows.
+	measure 'NGRT SAS Progress' =
+		
+		VAR LatestAcYear = 
+		            CALCULATE(
+		            SELECTEDVALUE(Calendar[Academic Year]),
+		            Calendar[Date] = MAX( Calendar[Date] )
+		        )
+		VAR SelectedAcademy = VALUES( Site[Academy Code] )
+		        
+		VAR Result =
+		    
+		CALCULATE(
+		    AVERAGEX(
+		        DISTINCT( Student[UPN] ),
+		        VAR LatestSAS = [NGRT SAS]
+		        VAR FirstSAS = [NGRT First SAS]
+		        RETURN
+		        IF( ISBLANK( LatestSAS ) || ISBLANK( FirstSAS ), BLANK(), [NGRT SAS] - [NGRT First SAS] )
+		    ),
+		    TREATAS( SelectedAcademy, Student[Academy] ),
+		    '(RLS) Student Name'[Academic Year] = LatestAcYear
+		)
+		    
+		RETURN
+		        Result
+		
+
+		lineageTag: 1c9443a9-d70b-4b91-9cdc-67bfb1aa700a
+
+	/// Set to 1 as visual level filter in conjunction with NGRT SAS Progress.
+	measure 'NGRT Student Filter' =
+		
+		 VAR LatestAcYear = 
+		            CALCULATE(
+		            SELECTEDVALUE(Calendar[Academic Year]),
+		            Calendar[Date] = MAX( Calendar[Date] )
+		        )
+		 
+		VAR Result =  
+		    CALCULATE (
+		        INT ( NOT ( ISEMPTY ( Student ) ) ),
+		        
+		        Student[Academic Year] = LatestAcYear
+		    )
+		
+		RETURN Result
+
+		lineageTag: 8c740805-0b75-47fe-89e9-ebfafdd78f1b
+
+	measure 'NGRT First SAS' =
+		
+		VAR Result =
+		    AVERAGEX(
+		        VALUES( Student[UPN] ),
+		        VAR SelectedStudentUPN = Student[UPN]
+		        VAR EarliestTestDate =
+		            CALCULATETABLE(
+		                FIRSTDATE( 'GL NGRT'[Date of Test] ),
+		                REMOVEFILTERS(),
+		                Student[UPN] = SelectedStudentUPN 
+		            )
+		            
+		        VAR TestSAS =
+		            CALCULATE(
+		                SELECTEDVALUE(
+		                    'GL NGRT'[SAS],
+		                    BLANK()
+		                ),
+		                EarliestTestDate,
+		                REMOVEFILTERS(),
+		                Student[UPN] = SelectedStudentUPN 
+		            )
+		        RETURN
+		            TestSAS
+		    )
+		RETURN
+		        Result
+		
+
+		lineageTag: 71764cab-b145-4abb-bf21-cb65d8e5c4e8
+
+	measure 'NGRT Latest Test Date' = MAX ( 'GL NGRT'[Date of Test] )
+		formatString:= dd/mm/yyyy
+		lineageTag: 3ae394cb-d69e-4fe3-9cae-05d048998c98
+
+	measure 'NGRT % Expected' =
+		VAR _StuTable = 
+		        ADDCOLUMNS(
+		            DISTINCT( 'GL NGRT'[StudentId] ),
+		            "@LatestStanine", [NGRT Stanine]
+		        )
+		
+		VAR _NumStudents = 
+		    COUNTROWS ( _StuTable )
+		
+		VAR _NumExpected =
+		    COUNTROWS( FILTER( _StuTable, [@LatestStanine] > 3 ) )
+		
+		
+		VAR _Result = DIVIDE ( _NumExpected, _NumStudents )
+		
+		RETURN _Result
+		    
+		    
+
+		formatString:= #,##0.0 %
+		lineageTag: d2e09368-1557-44c0-b411-0c2414171673
+
+	measure 'NGRT In Year Progress' =
+		VAR _VisibleStudents = 
+		    TREATAS(
+		        VALUES( 'GL NGRT'[StudentId] ),
+		        Student[StudentId]
+		    )
+		
+		VAR _FirstAndLast =
+		    ADDCOLUMNS(
+		        _VisibleStudents,
+		        "@FirstSAS",
+		        VAR _EarliestTestDate = 
+		            CALCULATETABLE( 
+		                FIRSTDATE( 'GL NGRT'[Date of Test] ),
+		                REMOVEFILTERS ( 'Calendar'),
+		                VALUES ( Calendar[Academic Year] )
+		            )
+		        RETURN
+		            CALCULATE (
+		                MAX ( 'GL NGRT'[SAS] ),
+		                REMOVEFILTERS ( 'Calendar'), 
+		                _EarliestTestDate
+		                
+		            ),
+		        "@LatestSAS",
+		        VAR _LatestTestDate = 
+		            CALCULATETABLE( LASTDATE( 'GL NGRT'[Date of Test] ) )
+		        RETURN
+		            CALCULATE (
+		                MAX ( 'GL NGRT'[SAS] ),
+		                _LatestTestDate
+		            ),
+		        "@NumberOfTests",
+		        CALCULATE ( COUNTROWS ( 'GL NGRT' ) )
+		        
+		    )
+		
+		VAR _FilteredFirstLast = 
+		    FILTER (
+		        _FirstAndLast,
+		        [@NumberOfTests] > 1
+		    )
+		    
+		VAR _Result = 
+		    AVERAGEX (
+		        _FilteredFirstLast,
+		        [@LatestSAS] - [@FirstSAS]
+		    )
+		    
+		RETURN _Result
+		    
+		    
+		
+		
+		
+		
+		
+		
+
+		lineageTag: 0714a692-a11b-4390-bd7d-c4a58fd7e6a0
+
+	measure 'NGRT All Time Progress' =
+		VAR _VisibleStudents =
+		    TREATAS(
+		        VALUES( 'GL NGRT'[StudentId] ),
+		        Student[StudentId]
+		    )
+		VAR _VisibleUPNS =
+		    CALCULATETABLE( VALUES( Student[UPN] ), _VisibleStudents )
+		VAR _FirstAndLast =
+		    CALCULATETABLE(
+		        ADDCOLUMNS(
+		            _VisibleUPNS,
+		            "@FirstSAS",
+		                VAR _EarliestTestDate =
+		                    CALCULATETABLE(
+		                        FIRSTDATE( 'GL NGRT'[Date of Test] ),
+		                        REMOVEFILTERS( Calendar )
+		                    )
+		                RETURN
+		                    CALCULATE(
+		                        MAX( 'GL NGRT'[SAS] ),
+		                        _EarliestTestDate,
+		                        REMOVEFILTERS( Calendar )
+		                    ),
+		            "@LatestSAS",
+		                VAR _LatestTestDate =
+		                    CALCULATETABLE( LASTDATE( 'GL NGRT'[Date of Test] ) )
+		                RETURN
+		                    CALCULATE( MAX( 'GL NGRT'[SAS] ), _LatestTestDate ),
+		            "@NumberOfTests",
+		                CALCULATE(
+		                    COUNTROWS( 'GL NGRT' ),
+		                    REMOVEFILTERS( Calendar )
+		                )
+		        ),
+		        REMOVEFILTERS( Student )
+		    )
+		VAR _FilteredFirstLast =
+		    FILTER( _FirstAndLast, [@NumberOfTests] > 1 )
+		VAR _Result =
+		    AVERAGEX( _FilteredFirstLast, [@LatestSAS] - [@FirstSAS] )
+		RETURN
+		    _Result
+
+		lineageTag: ab735425-7c4e-4486-8e47-c2b9dfac0195
+
+	measure 'NGRT Initial % Expected' =
+		VAR _VisibleStudents =
+		    TREATAS(
+		        VALUES( Enrolment[UPN] ),
+		        Student[UPN]
+		    )
+		    
+		VAR _StanineTable =
+		    CALCULATETABLE(
+		        ADDCOLUMNS(
+		            _VisibleStudents,
+		            "@FirstStanine",
+		                VAR _EarliestTestDate =
+		                    CALCULATETABLE(
+		                        FIRSTDATE( 'GL NGRT'[Date of Test] ),
+		                        REMOVEFILTERS( Calendar )
+		                    )
+		                RETURN
+		                    CALCULATE(
+		                        MAX( 'GL NGRT'[Stanine] ),
+		                        _EarliestTestDate,
+		                        REMOVEFILTERS( Calendar )
+		                    )
+		        ),
+		        REMOVEFILTERS( Student )
+		    )
+		
+		VAR _NumExpected =
+		    COUNTROWS( FILTER( _StanineTable, [@FirstStanine] > 3 ) )
+		    
+		VAR _NumStudents = 
+		    COUNTROWS( FILTER( _StanineTable, NOT ISBLANK( [@FirstStanine] ) ) )
+		
+		
+		VAR _Result = DIVIDE ( _NumExpected, _NumStudents )
+		
+		RETURN _Result
+		    
+		    
+
+		formatString:= #,##0.0 %
+		lineageTag: 43241e1c-43ec-4de9-a2ab-46b9b8dc6cd3
+
+	measure 'NGRT First In Year % Expected' =
+		VAR _VisibleStudents = 
+		    TREATAS(
+		        VALUES( Enrolment[StudentId] ),
+		        Student[StudentId]
+		    )
+		
+		VAR _StanineTable =
+		    ADDCOLUMNS(
+		        _VisibleStudents,
+		        "@FirstStanine",
+		        VAR  _EarliestTestDate =
+		        CALCULATETABLE(
+		            FIRSTDATE( 'GL NGRT'[Date of Test] ),
+		            REMOVEFILTERS( 'Calendar' ),
+		            VALUES( Calendar[Academic Year] )
+		        )
+		        RETURN
+		        CALCULATE(
+		            MAX( 'GL NGRT'[Stanine] ),
+		            REMOVEFILTERS( 'Calendar' ),
+		            _EarliestTestDate
+		        )
+		    )
+		
+		VAR _NumExpected =
+		    COUNTROWS( FILTER( _StanineTable, [@FirstStanine] > 3 ) )
+		    
+		VAR _NumStudents = 
+		    COUNTROWS( FILTER( _StanineTable, NOT ISBLANK( [@FirstStanine] ) ) )
+		
+		
+		VAR _Result = DIVIDE ( _NumExpected, _NumStudents )
+		
+		RETURN _Result
+		    
+		    
+
+		formatString:= #,##0.0 %
+		lineageTag: 90d88cb2-f4bf-4452-8d05-95ae3088b351
+
+	measure 'NGRT Latest % Expected' =
+		VAR _VisibleStudents =
+		    TREATAS(
+		        VALUES( Enrolment[UPN] ),
+		        Student[UPN]
+		    )
+		    
+		VAR _StanineTable =
+		    CALCULATETABLE(
+		        ADDCOLUMNS(
+		            _VisibleStudents,
+		            "@LatestStanine",
+		                VAR _LatestTestDate =
+		                    CALCULATETABLE(
+		                        LASTDATE( 'GL NGRT'[Date of Test] ),
+		                        REMOVEFILTERS( Calendar )
+		                    )
+		                RETURN
+		                    CALCULATE(
+		                        MAX( 'GL NGRT'[Stanine] ),
+		                        _LatestTestDate,
+		                        REMOVEFILTERS( Calendar )
+		                    )
+		        ),
+		        REMOVEFILTERS( Student )
+		    )
+		
+		VAR _NumExpected =
+		    COUNTROWS( FILTER( _StanineTable, [@LatestStanine] > 3 ) )
+		    
+		VAR _NumStudents = 
+		    COUNTROWS( FILTER( _StanineTable, NOT ISBLANK( [@LatestStanine] ) ) )
+		
+		
+		VAR _Result = DIVIDE ( _NumExpected, _NumStudents )
+		
+		RETURN _Result
+		    
+		    
+		    
+
+		formatString:= #,##0.0 %
+		lineageTag: cf587d7d-0b22-4546-8f1a-7b4b6e61b34b
+
+	column 'Academic Year'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 65d6e0bb-f59c-4b9b-8f9e-00fa43b82425
+		sourceColumn: "Academic Year"
+		summarizeBy: None
+
+	column 'Date of Test'
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ab692f9a-581f-44d4-a925-ca2b050eb5a2
+		sourceColumn: "Date of Test"
+		summarizeBy: None
+
+	column NPR
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2b4848e1-80e9-47b1-bc59-2bb76b0e6e78
+		sourceColumn: NPR
+		summarizeBy: None
+
+	column 'PC Stanine'
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5dd236c1-855a-40ce-8971-ce7d41782979
+		sourceColumn: "PC Stanine"
+		summarizeBy: None
+
+	column SAS
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6b214414-1711-4f55-946f-2f383908edbd
+		sourceColumn: SAS
+		summarizeBy: None
+
+	column 'SC Stanine'
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 27f0a939-8f41-4c78-922e-5fd0c908ecb3
+		sourceColumn: "SC Stanine"
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b982595a-fe53-44b3-8090-88bec546664f
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column Stanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 60fe63f1-04ec-4c6a-be00-a0a1a26021cf
+		sourceColumn: Stanine
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: cd919965-8dfd-47a0-aa27-c351e99f3e24
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	column NGRTLevel
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 72a766c0-22ed-415f-87a2-8ca1f432a492
+		sourceColumn: NGRTLevel
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = GL
+

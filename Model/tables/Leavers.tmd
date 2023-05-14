@@ -1,0 +1,98 @@
+table Leavers
+	lineageTag: ab5eefac-2ce2-4678-981b-f617e7e659ca
+	ordinal: 42
+
+	partition Leavers = M
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows(null), 
+			  Workspaces = Source{[Id = "Workspaces"]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[workspaceName = "DW-Dataflows-Education"]}[Data], 
+			  //Edu-Leavers
+			  Dataflow = Workspace{[dataflowName = "Edu-Leavers"]}[Data], 
+			  Entity = Dataflow{[entity = "fctLeavers"]}[Data]
+			in
+			  Entity
+
+
+	measure '# Leavers' = COUNTROWS( Leavers )
+		formatString:= #,##0
+		lineageTag: bb74bfa0-fb3c-45aa-94ad-2f96116c39c8
+
+	measure 'Leavers Slicer Filter' = INT( NOT ( ISEMPTY( Leavers ) ) )
+		formatString:= #,##0
+		lineageTag: f17faf6e-a3e2-4e64-98a6-41be86fc5826
+
+	column 'Enrolment Status'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a8a9f09f-ef0a-40ad-a6fe-d717b59ad85a
+		sourceColumn: "Enrolment Status"
+		summarizeBy: None
+
+	column LeaverReasonId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ecf50823-b236-424d-af72-0d42fe69bea5
+		sourceColumn: LeaverReasonId
+		summarizeBy: None
+
+	column LeaverRemovalGroundsId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 05b3cb23-eb1f-4fcd-b2dd-6d3cc84edccd
+		sourceColumn: LeaverRemovalGroundsId
+		summarizeBy: None
+
+	column 'Leaving Date'
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= dd/mm/yyyy
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3938abbf-6425-461b-b6a8-9ce6ebef76f3
+		sourceColumn: "Leaving Date"
+		summarizeBy: None
+
+	column LeavingDateForRelationship
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a51dd230-626d-4677-ad5f-a66593983b16
+		sourceColumn: LeavingDateForRelationship
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: dbd4240c-134f-4526-bf4e-0b773b586ffa
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b91e00b2-1a8d-4ba4-9842-a66431157cb5
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Enrolment
+

@@ -1,0 +1,594 @@
+relationship 'f7c78840-52ba-4f2c-82b6-6cc907a5c494'
+	fromColumn: 'KS4 Statistics'.CAFSlot
+	toColumn: 'CAF Slot'.CAFSlot
+
+relationship '32cca846-f012-4bc8-8a39-8a76eb2e2d19'
+	fromColumn: 'KS4 Statistics'.Academy
+	toColumn: Site.'Education Location Code'
+
+relationship '0e8a2184-ba59-4221-816a-f2d139e6141b'
+	fromColumn: Suspension.StartDate
+	toColumn: Calendar.Date
+
+relationship '324ef315-3a70-42bb-873b-0c720b4704a0'
+	fromColumn: 'KS4 Statistics'.ResultYear
+	toCardinality: Many
+	toColumn: Calendar.'Academic Year'
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["CHECK_IF_BI-DIRECTIONAL_AND_MANY-TO-MANY_RELATIONSHIPS_ARE_VALID"]}
+
+relationship '50329d1c-c6cb-4e54-b817-a0e59a7da50e'
+	fromColumn: 'DfE LA Suspension'.LAId
+	toColumn: 'Local Authorities'.LAId
+
+relationship '1d0d81c5-eef1-429a-8459-ab1a72c6b5f2'
+	fromColumn: 'DfE LA Suspension'.SchoolTypeId
+	toColumn: 'DfE School Type'.SchoolTypeId
+
+relationship '0eab7cd1-fc31-4d4b-bdc6-557e51e659fd'
+	fromColumn: 'Local Authorities'.'LA Code'
+	toCardinality: Many
+	toColumn: Site.'LA Code'
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["CHECK_IF_BI-DIRECTIONAL_AND_MANY-TO-MANY_RELATIONSHIPS_ARE_VALID"]}
+
+relationship 'a3e5eb24-5f1f-4345-a885-43461e0c74a2'
+	fromColumn: 'DfE LA Attendance'.AttendanceYearBreakdownId
+	toColumn: 'DfE Attendance Year Breakdown'.AttendanceYearBreakdownId
+
+relationship 'e340ecf6-0f83-459c-a402-fe392e3614f2'
+	fromColumn: 'DfE LA Attendance'.SchoolTypeId
+	toColumn: 'DfE School Type'.SchoolTypeId
+
+relationship '08e1290d-a9a6-499f-a2d9-6552d6cad982'
+	fromColumn: 'DfE LA Attendance'.LAId
+	toColumn: 'Local Authorities'.LAId
+
+relationship '3b42f1bf-0e39-424d-9163-ec7f95fa7e1b'
+	fromColumn: 'DfE LA KS4 Statistics'.LAId
+	toColumn: 'Local Authorities'.LAId
+
+relationship 'f9913dc1-9941-46c9-b676-ee2719a3fb7d'
+	fromColumn: 'DfE LA KS4 Statistics'.SchoolTypeId
+	toColumn: 'DfE School Type'.SchoolTypeId
+
+relationship '556e9c1e-f2ea-4d9d-98b4-f3b732c0a2b3'
+	fromColumn: 'KS4 Statistics'.GradeType
+	toColumn: 'Grade Types'.GradeType
+
+relationship '64f0801f-6888-4075-a499-41faa9e8f3a0'
+	fromColumn: Enrolment.OnRollModeId
+	toColumn: 'On Roll Mode'.OnRollModeId
+
+relationship '3a6ac2f2-cdf0-4f3a-9f84-ce377b67034d'
+	fromColumn: Enrolment.SiteId
+	toColumn: Site.SiteId
+
+relationship '58802dea-ead1-4441-ac67-1257806990d6'
+	fromColumn: Enrolment.Date
+	toColumn: Calendar.Date
+
+relationship '8b33a7f2-20d8-456d-b991-7892397b7938'
+	fromColumn: 'KS4 Statistics'.StuAcYearKey
+	toColumn: Student.StuAcYearKey
+
+relationship '2cd86792-7f42-4e54-ba50-7c2774322d0e'
+	fromColumn: PAN.'Academic Year'
+	toCardinality: Many
+	toColumn: Calendar.'Academic Year'
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["CHECK_IF_BI-DIRECTIONAL_AND_MANY-TO-MANY_RELATIONSHIPS_ARE_VALID"]}
+
+relationship 'd0b3d7ff-d98a-44a4-9aa2-bb395e39cf0f'
+	fromColumn: PAN.SiteId
+	toColumn: Site.SiteId
+
+relationship 'bcba8f1c-89aa-459a-8362-b314665df235'
+	fromColumn: 'Ofsted Inspections'.OfstedRatingId
+	toColumn: 'Ofsted Rating'.OfstedRatingId
+
+relationship 'ba1f5931-5143-49af-9b06-98d64f29d25f'
+	fromColumn: 'Ofsted Inspections'.SiteId
+	toColumn: Site.SiteId
+
+relationship 'fe48a885-02d8-4185-9da0-d0ad8877bc03'
+	fromColumn: 'Ofsted Inspections'.'Inspection Date'
+	toColumn: Calendar.Date
+
+relationship 'd2c9e989-c807-43e8-a905-98dbb128b7f2'
+	fromColumn: 'KS4 Statistics'.ALTMembership
+	toColumn: 'ALT Membership'.ALTMembershipId
+
+relationship '828d69be-8b10-4ad9-a5db-e3125a8323de'
+	fromColumn: 'Ofsted Inspections'.ALTMembership
+	toColumn: 'ALT Membership'.ALTMembershipId
+
+relationship '1a5fc3ff-7086-4ed7-9bab-c2aabcc1c161'
+	fromColumn: Suspension.ALTMembership
+	toColumn: 'ALT Membership'.ALTMembershipId
+
+relationship '635a45a0-a4ee-4a0c-8867-bdb465b9fcd1'
+	fromColumn: Enrolment.ALTMembership
+	toColumn: 'ALT Membership'.ALTMembershipId
+
+relationship 'dc3351a9-82e9-4ab4-9041-ae1fa05238bb'
+	fromColumn: 'DfE LA KS4 Statistics'.'Academic Year'
+	toCardinality: Many
+	toColumn: Calendar.'Academic Year'
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["CHECK_IF_BI-DIRECTIONAL_AND_MANY-TO-MANY_RELATIONSHIPS_ARE_VALID"]}
+
+relationship '7d4868ba-ef4d-4d6a-9c4e-4351c5d09778'
+	fromColumn: 'DfE LA Attendance'.'Academic Year'
+	isActive: false
+	toCardinality: Many
+	toColumn: Calendar.'Academic Year'
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["CHECK_IF_BI-DIRECTIONAL_AND_MANY-TO-MANY_RELATIONSHIPS_ARE_VALID"]}
+
+relationship 'd96b3323-4872-4772-9979-57a75ca1b937'
+	fromColumn: 'DfE KS4 Pupil Level'.CAFSlot
+	toColumn: 'CAF Slot'.CAFSlot
+
+relationship 'bd262775-f7d5-4104-aeef-1375d055112d'
+	fromColumn: 'DfE KS4 Pupil Level'.PerformanceTableYear
+	toCardinality: Many
+	toColumn: Calendar.'G4S Dataset'
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["CHECK_IF_BI-DIRECTIONAL_AND_MANY-TO-MANY_RELATIONSHIPS_ARE_VALID"]}
+
+relationship '6748040c-7954-41c0-87ff-37df270d5322'
+	fromColumn: 'DfE KS4 Pupil Level'.SiteId
+	toColumn: Site.SiteId
+
+relationship '172824ae-98e4-4aa9-9506-38f2a1abd54c'
+	fromColumn: Behaviour.StudentId
+	toColumn: Student.StudentId
+
+relationship '8a3dad93-eda1-4947-8d36-879f7bcb0350'
+	fromColumn: Behaviour.SiteId
+	toColumn: Site.SiteId
+
+relationship '8289d903-70bd-4414-8775-fc1fd56d5759'
+	fromColumn: Behaviour.BehEventId
+	toColumn: 'Behaviour School Note'.BehEventId
+
+relationship '118f6208-2c62-45f6-960b-cd3452dc7f21'
+	fromColumn: Behaviour.BehEventTypeId
+	toColumn: 'Behaviour Event Type'.BehEventTypeId
+
+relationship '3283f50f-fd4d-47f3-97d1-a3e8b3c6b921'
+	fromColumn: Behaviour.BehCreatedById
+	toColumn: 'Behaviour Created By'.BehCreatedById
+
+relationship 'eed92c74-43db-4543-b137-77e8d45f3662'
+	fromColumn: Behaviour.BehTeachingGroupId
+	toColumn: 'Behaviour Teaching Group'.BehTeachingGroupId
+
+relationship '1f80c9b6-f96e-45c1-bfbc-d8cdf416bba6'
+	fromColumn: Behaviour.'Event Date'
+	toColumn: Calendar.Date
+
+relationship '819d0bc3-c65a-4d37-aec8-d63298302dcf'
+	fromColumn: Attendance.StudentId
+	toColumn: Student.StudentId
+
+relationship '8c1c473c-9c0e-48af-8aa6-617c22b730dc'
+	fromColumn: Attendance.Date
+	toColumn: Calendar.Date
+
+relationship '915821bc-4243-4b0c-be35-cc7c3d78d5ec'
+	fromColumn: Attendance.SiteId
+	toColumn: Site.SiteId
+
+relationship 'acef6406-9373-4071-9e89-75410b8ffb77'
+	fromColumn: Attendance.SIMSAttendanceCodeId
+	toColumn: 'SIMS Attendance Code'.SIMSAttendanceCodeId
+
+relationship 'd8f7c244-60ea-44cf-aa8b-4a720a831592'
+	fromColumn: Enrolment.StudentId
+	toColumn: Student.StudentId
+
+relationship 'a6c5a503-dfba-47ed-8007-05efb6951c39'
+	fromColumn: 'DfE KS4 Pupil Level'.UPN
+	toCardinality: Many
+	toColumn: Student.UPN
+
+relationship 'd3c80d0f-7b8c-4c61-ac73-52c2dc6a0ba7'
+	fromColumn: PAN.'Year Group'
+	toCardinality: Many
+	toColumn: Student.'NC Year'
+
+relationship '36a032fd-08b2-418c-8216-8d3e5f897c62'
+	fromColumn: 'GL NGRT'.SiteId
+	toColumn: Site.SiteId
+
+relationship '643f4b28-c8a5-4f5e-b20e-9ac5ff9c0ec2'
+	fromColumn: 'GL NGRT'.StudentId
+	toColumn: Student.StudentId
+
+relationship 'c4cfe350-8b27-4d42-851f-1db266eeb877'
+	fromColumn: 'GL NGRT'.'Date of Test'
+	toColumn: Calendar.Date
+
+relationship '04c978d7-3dad-48c7-819d-033cb445c88f'
+	fromColumn: 'GL NGRT'.'Academic Year'
+	isActive: false
+	toCardinality: Many
+	toColumn: Calendar.'Academic Year'
+
+relationship '62e5fe6e-e4c6-4625-92c8-419de6cce5e8'
+	fromColumn: 'GL PTE'.DateOfTest
+	toColumn: Calendar.Date
+
+relationship 'b41ffa0f-3640-4c69-bcbe-965f93e8accd'
+	fromColumn: 'GL PTE'.SiteId
+	toColumn: Site.SiteId
+
+relationship '276263ed-47f0-47e9-ba06-b221bb943145'
+	fromColumn: 'GL PTE'.StudentId
+	toColumn: Student.StudentId
+
+relationship '257ce200-c648-45d2-b696-49cc9806a135'
+	fromColumn: 'GL PTM'.SiteId
+	toColumn: Site.SiteId
+
+relationship 'b7a6c4a6-c32a-4383-bb76-b8a60a17d48e'
+	fromColumn: 'GL PTM'.StudentId
+	toColumn: Student.StudentId
+
+relationship 'f4717335-06b6-435e-8c45-8694694a35c0'
+	fromColumn: 'GL PTM'.DateOfTest
+	toColumn: Calendar.Date
+
+relationship '033e138d-c586-402b-9a5c-52576a4f3526'
+	fromColumn: 'GL PTS'.StudentId
+	toColumn: Student.StudentId
+
+relationship 'c89a09ac-ac2e-4b9e-8111-febf0b4b99cd'
+	fromColumn: 'GL PTS'.SiteId
+	toColumn: Site.SiteId
+
+relationship '490d5b1c-d47e-44a3-9f36-b9a73d542cc6'
+	fromColumn: 'GL PTS'.DateOfTest
+	toColumn: Calendar.Date
+
+relationship '94e80ee6-becd-408a-ab3a-c6b51172944a'
+	fromColumn: 'G4S Session Attendance'.SiteId
+	toColumn: Site.SiteId
+
+relationship 'b6c17799-ed88-4c48-be36-a2eb272c84d1'
+	fromColumn: 'G4S Session Attendance'.StudentId
+	toColumn: Student.StudentId
+
+relationship '8d0f3e85-578f-43f5-8681-372d4c9b075f'
+	fromColumn: 'G4S Session Attendance'.G4SAttendanceCodeId
+	toColumn: 'G4S Attendance Code'.G4SAttendanceCodeId
+
+relationship 'c71b672b-4ea9-4f99-994a-21b59807b5e8'
+	fromColumn: 'G4S Session Attendance'.Date
+	toColumn: Calendar.Date
+
+relationship '9b159f2c-b374-48a9-ab8b-d80b6826864c'
+	fromColumn: 'G4S Lesson Attendance'.StudentId
+	toColumn: Student.StudentId
+
+relationship '2cecbea3-a470-4522-b6da-4f380a53748f'
+	fromColumn: 'G4S Lesson Attendance'.PeriodId
+	toColumn: 'G4S TT Periods'.PeriodId
+
+relationship '89548b4a-bc20-494a-95dc-867c3d285dd0'
+	fromColumn: 'G4S Lesson Attendance'.GroupId
+	toColumn: 'G4S Groups'.GroupId
+
+relationship '6dec86b9-d32b-4e5a-a7a7-ca150682fc00'
+	fromColumn: 'G4S Lesson Attendance'.SiteId
+	toColumn: Site.SiteId
+
+relationship 'b966b79d-1528-42cd-952c-a9beea5d11f5'
+	fromColumn: 'G4S Lesson Attendance'.Date
+	toColumn: Calendar.Date
+
+relationship '62234c7e-b784-4fc1-a03e-3213c7650a02'
+	fromColumn: 'DfE LA Attendance'.'Academic Year'
+	toCardinality: Many
+	toColumn: Calendar.'Attendance Comparison'
+
+relationship 'bb951c9a-8e38-4f1b-809e-da40ecb15e81'
+	fromColumn: Student.StudentId
+	isActive: false
+	relyOnReferentialIntegrity
+	toColumn: '(RLS) Student Name'.StudentId
+
+relationship '74e71398-342b-431f-a3c4-cfe74b71b51d'
+	crossFilteringBehavior: BothDirections
+	fromColumn: '(RLS) Site'.SiteId
+	relyOnReferentialIntegrity
+	toColumn: Site.SiteId
+
+relationship 'dc5a905a-4096-4945-b186-bba3800a20c3'
+	fromColumn: 'KS3 Assessment'.KS3GroupId
+	toColumn: 'KS3 Group'.KS3GroupId
+
+relationship '8c341090-5dde-4703-8df3-8ffa40aa764e'
+	fromColumn: 'KS3 Assessment'.KS3ProgressIndicatorId
+	toColumn: 'KS3 Progress Indicator'.KS3ProgressIndicatorId
+
+relationship '8e0fb4d0-5a60-48f4-b7e2-ad1156d409fd'
+	fromColumn: 'KS3 Assessment'.KS3SlotId
+	toColumn: 'KS3 Slot'.KS3SlotId
+
+relationship '13bef76f-6668-4e53-a85d-2eb67295784c'
+	fromColumn: 'KS3 Assessment'.StudentId
+	toColumn: Student.StudentId
+
+relationship 'c347be7e-ac98-4e54-bab0-89beaa161b1b'
+	fromColumn: 'KS3 Assessment'.SiteId
+	toColumn: Site.SiteId
+
+relationship '68970e51-0ee9-4dc9-b1c0-53590d41d8f8'
+	fromColumn: 'KS3 Assessment'.'Recorded Date'
+	toColumn: Calendar.Date
+
+relationship 'ab9d0b95-e39f-4866-9a6a-db06e3aba279'
+	fromColumn: Suspension.ReasonId
+	toColumn: 'Suspension Reasons'.ReasonId
+
+relationship '836aa146-7f59-4311-a681-6bf00c478be9'
+	fromColumn: Suspension.SiteId
+	toColumn: Site.SiteId
+
+relationship '703e16d8-da2d-419f-8435-e5c24de76760'
+	fromColumn: Suspension.StudentId
+	toColumn: Student.StudentId
+
+relationship '86ecf20f-ede5-46bd-a02c-6914df76d2f8'
+	fromColumn: Leavers.SiteId
+	toColumn: Site.SiteId
+
+relationship '447e12b3-b68b-496d-9fcc-80e7992f7766'
+	fromColumn: Leavers.LeaverRemovalGroundsId
+	toColumn: 'Leaver Removal Grounds'.LeaverRemovalGroundsId
+
+relationship '9d0aeb71-4fd2-40e1-93a4-763c4096bba7'
+	fromColumn: Leavers.LeaverReasonId
+	toColumn: 'Leaver Reasons'.LeaverReasonId
+
+relationship '76fc43c9-3a85-444b-8073-7a90c5678f75'
+	fromColumn: Leavers.StudentId
+	toColumn: Student.StudentId
+
+relationship 'b866106a-506f-4bfd-876e-7dcef1f1d6cc'
+	fromColumn: Leavers.LeavingDateForRelationship
+	toColumn: Calendar.Date
+
+relationship 'd32c74b7-c34c-4e4f-9b60-bebefe03452c'
+	fromColumn: 'DfE LA Suspension'.DataSet
+	toCardinality: Many
+	toColumn: Calendar.'G4S Dataset'
+
+relationship 'b21c79e7-557e-4564-92f1-df7e0ee02f1e'
+	fromColumn: 'Parent View'.EventDate
+	toColumn: Calendar.Date
+
+relationship '13958ac7-b7cf-4362-9309-dbc63eef7d62'
+	fromColumn: 'Parent View'.SiteId
+	toColumn: Site.SiteId
+
+relationship '0d5be58e-821a-4a74-bad0-745675ada2d2'
+	fromColumn: 'Parent View'.QuestionId
+	toColumn: 'Parent View Question'.QuestionId
+
+relationship 'da10526e-4037-4473-9ba0-b7b2809abadb'
+	fromColumn: 'Parent View'.ResponseId
+	toColumn: 'Parent View Responses'.ResponseId
+
+relationship 'f9e9a38f-f83f-4ca3-8ee2-ca96273b95f9'
+	fromColumn: 'DfE Parent View'.Date
+	toColumn: Calendar.Date
+
+relationship '4cc511d4-ee25-42af-93d3-e917d3ae33d2'
+	fromColumn: 'DfE Parent View'.Question
+	toColumn: 'Parent View Question'.QuestionId
+
+relationship '27d79f3a-3cd0-49e7-9da9-5bda06ffef7c'
+	fromColumn: 'DfE Parent View'.ResponseId
+	toColumn: 'Parent View Responses'.ResponseId
+
+relationship 'c7f206d9-9203-4ebb-98ee-aa6550de5a8d'
+	fromColumn: 'Parent View'.YearGroup
+	toColumn: 'Year Group'.'Year Group'
+
+relationship '58b724fc-8276-4cf0-a9e9-8e293c6890ea'
+	fromColumn: Enrolment.'NC Year'
+	toColumn: 'Year Group'.'NC Year'
+
+relationship '87932e93-9c50-4171-b65e-e27a04a2e76b'
+	fromColumn: 'DfE KS5 Pupil Level'.SiteId
+	toColumn: Site.SiteId
+
+relationship '25a172f2-0fb4-4361-97fa-a1522a239ff6'
+	fromColumn: 'KS5 Grades'.GradeTypeId
+	toColumn: 'KS5 Grade Type'.GradeTypeId
+
+relationship '606e1f9d-fa1e-4509-a4d4-b9f7a81655b5'
+	fromColumn: 'KS5 Grades'.KS5QualId
+	toColumn: 'KS5 Quals'.KS5QualId
+
+relationship '71e30065-0e6c-434d-9aed-63bb3b4051e2'
+	fromColumn: 'KS5 Grades'.Slot
+	toColumn: 'KS5 Slot'.'KS5 Slot'
+
+relationship '9a543c49-9314-4ea3-b6a0-77f3bece9b8e'
+	fromColumn: 'KS5 Grades'.StudentId
+	toColumn: Student.StudentId
+
+relationship 'b0eed26b-64de-4b78-8b00-137cc89d80c1'
+	fromColumn: 'KS5 Grades'.NormalYear13In
+	toColumn: 'KS5 Cohorts'.NormalYear13In
+
+relationship '7893f85f-ca9e-40c2-a2c0-3ad99e88bde2'
+	fromColumn: 'DfE KS5 Pupil Level'.StudentId
+	toColumn: Student.StudentId
+
+relationship 'b9953533-7b12-475c-8294-f183156c44be'
+	fromColumn: 'DfE KS5 Pupil Level'.DataSet
+	toCardinality: Many
+	toColumn: Calendar.'G4S Dataset'
+
+relationship '4b4c8183-62fb-4fe3-bcf0-1640a4e98c03'
+	fromColumn: 'KS5 Grades'.SiteId
+	toColumn: Site.SiteId
+
+relationship '74a46798-eccd-4d3e-b8e3-5826db0ca334'
+	fromColumn: 'KS5 Grades'.NormalYear13In
+	toCardinality: Many
+	toColumn: Calendar.'G4S Dataset'
+
+relationship '2c657a18-c2a8-4226-9759-d9439d0f221c'
+	fromColumn: 'DfE KS5 Pupil Level'.'Grade Type'
+	toColumn: 'KS5 Grade Type'.'Grade Type'
+
+relationship '77963dba-cbaa-46c7-9549-b5b3f4bbc3a3'
+	fromColumn: 'DfE KS5 Pupil Level'.'KS5 Slot'
+	toColumn: 'KS5 Slot'.'KS5 Slot'
+
+relationship 'dc8e99e5-6274-42c1-8a81-b5dc520ee41c'
+	fromColumn: 'KS2 Outcomes'.StudentId
+	toColumn: Student.StudentId
+
+relationship 'be7f7075-58cc-455c-9b52-69184247c3eb'
+	fromColumn: 'KS2 Outcomes'.SiteId
+	toColumn: Site.SiteId
+
+relationship 'ed9cd03b-6a00-43c0-88a3-ab598f94dd39'
+	fromColumn: 'KS2 Outcomes'.PerformanceTableYear
+	toCardinality: Many
+	toColumn: Calendar.'G4S Dataset'
+
+relationship '46f93fcf-d0e9-4970-aff0-2b552967e822'
+	fromColumn: 'KS3 Assessment'.'Y11 In'
+	toColumn: 'Secondary Cohorts'.FinishY11In
+
+relationship '8f75ccf6-dc35-493c-860d-cf3527d05a1c'
+	fromColumn: 'DfE KS4 Pupil Level'.PerformanceTableYear
+	toColumn: 'Secondary Cohorts'.FinishY11In
+
+relationship '3e332f48-5be4-4969-8d59-b505f4af3082'
+	fromColumn: 'KS4 Statistics'.CohortYear
+	toColumn: 'Secondary Cohorts'.CohortYear
+
+relationship '4cb2aef4-20c7-442a-b583-9ccf3565c4b9'
+	fromColumn: 'G4S Lesson Attendance'.G4SAttendanceCodeId
+	toColumn: 'G4S Attendance Code'.G4SAttendanceCodeId
+
+relationship '5b426e36-acc4-44db-801e-ee05ea8c7421'
+	fromColumn: 'DFE KS2 National'.PerformanceTableYear
+	toCardinality: Many
+	toColumn: Calendar.'G4S Dataset'
+
+relationship '6d998d95-5b98-4e24-a24b-8ee6f90ac2d1'
+	fromColumn: 'KS1 Phonics'.DataSet
+	toCardinality: Many
+	toColumn: Calendar.'G4S Dataset'
+
+relationship '6324c2bd-2381-4bc4-aca8-d753c0392fed'
+	fromColumn: 'KS1 Phonics'.SiteId
+	toColumn: Site.SiteId
+
+relationship '1c883d27-9338-4424-bf1d-fbaf43b795c2'
+	fromColumn: 'KS1 Phonics'.StudentId
+	toColumn: Student.StudentId
+
+relationship '0efcf7af-94e9-4f0a-bf02-9b0a002c80aa'
+	fromColumn: 'KS1 Outcomes'.StudentId
+	toColumn: Student.StudentId
+
+relationship '6026f242-7781-4f8e-93f2-e13ded84cea4'
+	fromColumn: 'KS1 Outcomes'.SiteId
+	toColumn: Site.SiteId
+
+relationship '472c0502-18c2-499e-9d8c-a725794e2605'
+	fromColumn: 'KS1 Outcomes'.DataSet
+	toCardinality: Many
+	toColumn: Calendar.'G4S Dataset'
+
+relationship '1478ef8b-e741-4a9b-a6a3-953710796d06'
+	fromColumn: 'KS2 Multiplication'.DataSet
+	toCardinality: Many
+	toColumn: Calendar.'G4S Dataset'
+
+relationship '665fd7c8-6ba5-48db-8785-a77d66797dce'
+	fromColumn: 'KS2 Multiplication'.StudentId
+	toColumn: Student.StudentId
+
+relationship 'a557324f-3d99-4411-9d15-c9d945728f90'
+	fromColumn: 'KS2 Multiplication'.SiteId
+	toColumn: Site.SiteId
+
+relationship 'c424ee82-6de5-4aa1-94c2-493957f752d0'
+	fromColumn: Census.AcademicYear
+	toCardinality: Many
+	toColumn: Calendar.'Academic Year'
+
+relationship 'a6f31767-388d-4169-9620-9023dccbc0c1'
+	fromColumn: Census.IDACI_BAND
+	toColumn: 'IDACI Bands'.'Band Letter'
+
+relationship 'b359fc10-9707-4f43-90a7-8a7ff1a22431'
+	fromColumn: Census.CensusTerm
+	toColumn: 'Census Term'.Term
+
+relationship '3169e3b4-aa89-4daf-9263-78c976d49bcd'
+	fromColumn: Census.SiteId
+	toColumn: Site.SiteId
+
+relationship '0fff7c2b-7400-4d21-bb64-34ef4d8b7926'
+	fromColumn: ASR.Date
+	toColumn: Calendar.Date
+
+relationship 'ee4eca52-f106-4030-9c7a-cadb866b1c8b'
+	fromColumn: ASR.SiteId
+	toColumn: Site.SiteId
+
+relationship '3d74d5f1-6f0e-4fa0-9e80-3e25f957fe6c'
+	fromColumn: ASR.ASRMeetingId
+	toColumn: 'ASR Meeting'.ASRMeetingId
+
+relationship '2c2ec22c-c90d-4b7f-86e8-4b32d8b6035a'
+	fromColumn: ASR.ASRResponseId
+	toColumn: 'ASR Response'.ASRResponseId
+
+relationship '48b4caaf-f9b4-4cbd-b753-12189a1f5bcb'
+	fromColumn: ASR.ASRStrandId
+	toColumn: 'ASR Strand'.ASRStrandId
+
+relationship '24d8349a-ab36-41e9-851f-246b932af539'
+	fromColumn: 'KS2 Multiplication'.MarkId
+	toColumn: 'KS2 Multiplication Marks'.MarkId
+
+relationship '55bf5ce2-671e-42dc-a5ef-d29fad8efe0a'
+	fromColumn: 'EYFS Profile'.OutcomeId
+	toColumn: 'EYFS Outcome'.EYFSOutcomeId
+
+relationship 'b9f06a17-c91d-4528-b0c4-2359b18d37c5'
+	fromColumn: 'EYFS Profile'.GoalId
+	toColumn: 'EYFS Goal'.EYFSGoalId
+
+relationship '74caa0ac-ce00-4f4d-9b89-57503bd0ed05'
+	fromColumn: 'EYFS Profile'.SiteId
+	toColumn: Site.SiteId
+
+relationship 'b1856dc8-bfb3-4e3f-90d8-d213d2a4183d'
+	fromColumn: 'EYFS Profile'.StudentId
+	toColumn: Student.StudentId
+
+relationship '90c67628-5753-4193-ad57-9c8677df2e09'
+	fromColumn: 'EYFS Profile'.DataSet
+	toCardinality: Many
+	toColumn: Calendar.'G4S Dataset'
+
+relationship '8e00bf11-34f5-4496-80dc-913f1f8109e9'
+	fromColumn: SIAMS.SiteId
+	toColumn: Site.SiteId
+

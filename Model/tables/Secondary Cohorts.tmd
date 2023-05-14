@@ -1,0 +1,64 @@
+table 'Secondary Cohorts'
+	lineageTag: f64f9b05-3461-41a0-8cfc-d35285710283
+	ordinal: 64
+
+	partition 'Secondary Cohorts' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-General           
+				Dataflow = Workspace{[ dataflowName = "Edu-General" ]}[Data],
+				Entity = Dataflow{[ entity = "dimSecondaryCohortCodes" ]}[Data]
+			in
+				Entity
+
+
+	column Cohort
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 155995eb-bd9c-40d7-91dd-d7e95696fce2
+		sortByColumn: DisplayOrder
+		sourceColumn: Cohort
+		summarizeBy: None
+
+	column CohortYear
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 223ec92b-42e9-493d-82e8-7f1d518ae059
+		sourceColumn: CohortYear
+		summarizeBy: None
+
+	column 'Current Year Group'
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: e1507545-538e-40ca-b099-fce7aaf73367
+		sourceColumn: "Current Year Group"
+		summarizeBy: None
+
+	column DisplayOrder
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2e25f982-ee3c-4b34-aaff-ade9ed0d2989
+		sourceColumn: DisplayOrder
+		summarizeBy: None
+
+	column FinishY11In
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 47138920-0947-40de-a23e-bc80d2848167
+		sourceColumn: FinishY11In
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Conformed
+

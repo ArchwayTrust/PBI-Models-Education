@@ -1,0 +1,77 @@
+table 'G4S Attendance Code'
+	lineageTag: dbb2a020-ac26-4363-9756-ec80082349b5
+	ordinal: 32
+
+	partition 'G4S Attendance Code' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-G4SAttendance                   
+				Dataflow = Workspace{[ dataflowName = "Edu-G4SAttendance" ]}[Data],
+				Entity = Dataflow{[ entity = "dimG4SAttendanceCodes" ]}[Data]
+			in
+				Entity
+
+
+	column Academy
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a549754c-2276-4dda-aabe-1f4badd60fe2
+		sourceColumn: Academy
+		summarizeBy: None
+
+	column 'Attendance Alias Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 561278a7-942b-4044-af95-a978058a0c06
+		sourceColumn: "Attendance Alias Code"
+		summarizeBy: None
+
+	column 'Attendance Alias Code Label'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 83bb226e-60e3-4dab-9135-fc05a61e0ab7
+		sourceColumn: "Attendance Alias Code Label"
+		summarizeBy: None
+
+	column 'Attendance Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 7457f703-1c25-451b-badc-380c7f26cf10
+		sourceColumn: "Attendance Code"
+		summarizeBy: None
+
+	column 'Attendance Code Label'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 168d7609-aa1a-4f6e-93e3-c3c63a74bcc2
+		sourceColumn: "Attendance Code Label"
+		summarizeBy: None
+
+	column DataSet
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 12fbdb48-9c69-42b9-8a9a-9f609d7beae7
+		sourceColumn: DataSet
+		summarizeBy: None
+
+	column G4SAttendanceCodeId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		lineageTag: 0f129b79-6cb0-457f-a772-afd73843f7b3
+		sourceColumn: G4SAttendanceCodeId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Attendance
+

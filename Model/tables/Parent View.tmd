@@ -1,0 +1,220 @@
+table 'Parent View'
+	lineageTag: 46a1fc35-daca-44f2-b605-0ecafbf66b07
+	ordinal: 46
+
+	partition 'Parent View' = M
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows(null), 
+			  Workspaces = Source{[Id = "Workspaces"]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[workspaceName = "DW-Dataflows-Education"]}[Data], 
+			  //Edu-ParentView
+			  Dataflow = Workspace{[dataflowName = "Edu-ParentView"]}[Data], 
+			  Entity = Dataflow{[entity = "factParentView"]}[Data]
+			in
+			  Entity
+
+
+	measure '% Parent View Responses' =
+		
+		VAR NumberOfResponses = SUM ( 'Parent View'[NumberOfResponses] )
+		
+		        
+		VAR TotalResponses = 
+		    CALCULATE(
+		        SUM ( 'Parent View'[NumberOfResponses] ),
+		        REMOVEFILTERS( 'Parent View Responses' ),
+		        'Parent View Responses'[Sentiment] <> "N/A"
+		    )
+		    
+		VAR Result = DIVIDE ( NumberOfResponses, TotalResponses)
+		    
+		RETURN Result
+		
+
+		formatString:= #,##0.00 %
+		lineageTag: d05f50a0-3738-49ad-a36d-90aa3834b722
+
+	measure '% National Parent View Responses' =
+		
+		VAR NumberOfResponses = 
+		    CALCULATE(
+		        SUM( 'DfE Parent View'[NumberOfResponses] ),
+		        REMOVEFILTERS( Calendar )
+		    )
+		
+		        
+		VAR TotalResponses = 
+		    CALCULATE(
+		        SUM ( 'DfE Parent View'[NumberOfResponses] ),
+		        REMOVEFILTERS( 'Parent View Responses' ),
+		        'Parent View Responses'[Sentiment] <> "N/A",
+		        REMOVEFILTERS( Calendar )
+		    )
+		    
+		VAR Result = DIVIDE ( NumberOfResponses, TotalResponses)
+		    
+		RETURN Result
+
+		formatString:= #,##0.00 %
+		lineageTag: 9d6f1add-ce26-4687-a4fb-f8a95f47826a
+
+	measure '# Parent View Surveys' =
+		
+		CALCULATE(
+		    SUM('Parent View'[NumberOfResponses]),
+		    REMOVEFILTERS( 'Parent View Question' ),
+		    'Parent View Question'[Question] = "Q1"
+		)
+
+		formatString:= #,##0
+		lineageTag: 4a3b024e-b477-4040-867c-c05df3e85ada
+
+	measure '% Parent View Positive Responses' =
+		
+		VAR NumberOfResponses = 
+		    CALCULATE(
+		        SUM( 'Parent View'[NumberOfResponses] ),
+		        'Parent View Responses'[Sentiment] = "Positive"
+		    )
+		        
+		VAR TotalResponses = 
+		    CALCULATE(
+		        SUM( 'Parent View'[NumberOfResponses] ),
+		        REMOVEFILTERS( 'Parent View Responses' ),
+		        'Parent View Responses'[Sentiment] IN { "Positive", "Negative" }
+		    )
+		    
+		VAR Result = DIVIDE ( NumberOfResponses, TotalResponses)
+		    
+		RETURN Result
+		
+
+		formatString:= #,##0.00 %
+		lineageTag: 05e4daae-4513-4e6c-a5ec-f8afb58b84e4
+
+	measure '% National Parent View Positive Responses' =
+		
+		VAR NumberOfResponses = 
+		    CALCULATE(
+		        SUM( 'DfE Parent View'[NumberOfResponses] ),
+		        REMOVEFILTERS( Calendar ),
+		        'Parent View Responses'[Sentiment] = "Positive"
+		    )
+		
+		        
+		VAR TotalResponses = 
+		    CALCULATE(
+		        SUM ( 'DfE Parent View'[NumberOfResponses] ),
+		        //REMOVEFILTERS( 'Parent View Responses' ),
+		        'Parent View Responses'[Sentiment] IN { "Positive", "Negative" },
+		        REMOVEFILTERS( Calendar )
+		    )
+		    
+		VAR Result = DIVIDE ( NumberOfResponses, TotalResponses)
+		    
+		RETURN Result
+
+		formatString:= #,##0.00 %
+		lineageTag: d17dff58-2b5d-4f84-8e5a-e1bf51646002
+
+	measure 'Parent View Positive Responses Conditional' =
+		
+		VAR PosRespDiff = [% Parent View Positive Responses] - [% National Parent View Positive Responses]
+		
+		VAR Result = 
+		    SWITCH (
+		        TRUE(),
+		        PosRespDiff < 0 , -1,
+		        PosRespDiff = 0, 0,
+		        PosRespDiff > 0, 1
+		    )
+		    
+		RETURN Result
+
+		lineageTag: 44f30c61-2dc3-45ec-af6c-eea74f61b6ab
+
+	measure 'Parent View Slicer Filter' = INT ( NOT ( ISEMPTY ( 'Parent View' ) ) )
+		formatString:= #,##0
+		lineageTag: 41e12708-ff6d-4c23-ae73-1736e31daf1e
+
+	measure '% Trust Parent View Positive Responses' =
+		CALCULATE (
+		    [% Parent View Positive Responses],
+		    REMOVEFILTERS ( Site )
+		)
+
+		formatString:= #,##0.00 %
+		lineageTag: 62ce864f-ec1d-4162-b559-0a475f817fed
+
+	measure '% Trust Parent View Responses' =
+		CALCULATE (
+		    [% Parent View Responses],
+		    REMOVEFILTERS( Site )
+		)
+
+		formatString:= #,##0.00 %
+		lineageTag: 4dedfd3c-2106-45a5-b3d6-2eb067586e30
+
+	column EventDate
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 143b2d37-989e-475b-8b09-cb6efdca20a4
+		sourceColumn: EventDate
+		summarizeBy: None
+
+	column NumberOfResponses
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 49129db2-309e-4c91-9e02-ee280e85ecd3
+		sourceColumn: NumberOfResponses
+		summarizeBy: None
+
+	column QuestionId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 9ae15650-a647-4232-974f-653134a48ca0
+		sourceColumn: QuestionId
+		summarizeBy: None
+
+	column ResponseId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b84060cc-a900-458a-83b1-849d81e895b3
+		sourceColumn: ResponseId
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 46bd154a-3302-4437-8d2c-5db4b404c2bf
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column YearGroup
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: f4500da3-94c5-446e-a792-378b615cbdb4
+		sourceColumn: YearGroup
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Parent View
+

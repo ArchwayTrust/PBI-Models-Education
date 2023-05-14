@@ -1,0 +1,405 @@
+/// Date table.
+table Calendar
+	dataCategory: Time
+	lineageTag: 9f83050f-8afb-44e1-b7d5-5e553f4ced33
+	ordinal: 5
+
+	partition Calendar = M
+		mode: Import
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows ( null ), 
+			  Workspaces = Source{[ Id = "Workspaces" ]}[Data], 
+			  //DW-Dataflows-Conformed
+			  Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Conformed" ]}[Data], 
+			  //Con-General
+			  Dataflow = Workspace{[ dataflowName = "Con-General" ]}[Data], 
+			  Entity = Dataflow{[ entity = "dimDates" ]}[Data]
+			in
+			  Entity
+
+		queryGroup: Dimensions
+
+	measure 'Flag Covid' =
+		
+		
+		IF (HASONEVALUE (Calendar[Academic Year]), MAX(Calendar[Covid Impact]))
+
+		formatString:= 0
+		lineageTag: 4fe5b9a8-e739-4d51-99f8-d3a949f9ee41
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Date
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= dd/mm/yyyy
+		isDataTypeInferred: false
+		isKey
+		lineageTag: a1d989eb-b834-480b-8b95-47b56b927c98
+		sourceColumn: Date
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="D" /></DateTimes></Format>
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE","ISAVAILABLEINMDX_FALSE_NONATTRIBUTE_COLUMNS"]}
+
+	column 'Academic Year'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: fcbe15ad-61cd-4e05-b813-5d88c6d32bf8
+		sourceColumn: "Academic Year"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE","ISAVAILABLEINMDX_FALSE_NONATTRIBUTE_COLUMNS"]}
+
+	column Term
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 43c669c0-c143-428e-9b14-9de2bd4aed6a
+		sourceColumn: Term
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Term Order'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: 68a0f542-91be-4bea-807b-227babcae99a
+		sourceColumn: "Term Order"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Half Term'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 6bb759fd-8574-4d51-bd40-f1b28e6fa060
+		sourceColumn: "Half Term"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Half Term Order'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: 5c7b7309-baec-4bcf-b73a-3d45e5a8afd6
+		sourceColumn: "Half Term Order"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Month & Year Name'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: c1820672-5f29-4413-ae7b-84bcf7578247
+		sortByColumn: 'End of Month'
+		sourceColumn: "Month & Year Name"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Month
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 958fcf89-4efa-4e7c-be40-2b6baa70ca46
+		sourceColumn: Month
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Week Number'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: 2df4d9f3-91a3-406b-a4b8-49dda0dacfb2
+		sourceColumn: "Week Number"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Day
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 8279ce39-bd1b-47c2-ac02-676ad21a8e40
+		sortByColumn: 'Day of Week'
+		sourceColumn: Day
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'End of Month'
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= Long Date
+		isDataTypeInferred: false
+		lineageTag: d4ed365f-f3fd-4aae-bdc0-b514108fd36e
+		sourceColumn: "End of Month"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="D" /></DateTimes></Format>
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Financial Period'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: 0a89a1c0-7798-4881-a9fb-c7f449c3a99d
+		sourceColumn: "Financial Period"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Financial Period & Year'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 281fee7c-ddf3-45f3-8fe7-6cb2a805ee26
+		sourceColumn: "Financial Period & Year"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Day of Week'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: db48e0be-58b4-4e36-976b-ae6b33cb294f
+		sourceColumn: "Day of Week"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Week Commencing'
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= Long Date
+		isDataTypeInferred: false
+		lineageTag: 65ac1f1c-4b04-4d30-b378-20f2fc5d3851
+		sourceColumn: "Week Commencing"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="D" /></DateTimes></Format>
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'G4S Dataset'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: 5d884472-d0b6-41b8-a4dc-84b0fe5c22d2
+		sourceColumn: "G4S Dataset"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Attendance Comparison'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 55425253-17fb-4781-be87-70b003b6817a
+		sourceColumn: "Attendance Comparison"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'KS4 Performance Comparison'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 2c826d9c-ee21-40db-9439-477791d01e05
+		sourceColumn: "KS4 Performance Comparison"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'KS5 Performance Comparison'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 772dad64-e496-427f-93b6-9181d30d6e39
+		sourceColumn: "KS5 Performance Comparison"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'KS2 Performance Comparison'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: c83dc258-283d-4d48-afe8-5aae99ec8e0a
+		sourceColumn: "KS2 Performance Comparison"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'KS1 Performance Comparison'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 79dd9c8e-19c1-486c-9d64-9de0f7a9b11f
+		sourceColumn: "KS1 Performance Comparison"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'R Performance Comparison'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: db849073-3857-47ab-a551-4b1940603c11
+		sourceColumn: "R Performance Comparison"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Covid Impact' =
+		
+		//IF (
+		//    DimDates[Academic Year] IN { "2019/2020", "2020/2021" }, 
+		//    1, 
+		    0 
+		//    )
+
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		lineageTag: 22a2d2dd-462f-423b-8100-dab1648d7f31
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Week Filter' =
+		
+		VAR CurrentDate = TODAY()
+		
+		VAR WC = CurrentDate - WEEKDAY(CurrentDate, 2) + 1
+		
+		VAR LastWC = CurrentDate - WEEKDAY(CurrentDate, 2) + 1 - 7
+		
+		VAR Result =
+		    SWITCH (
+		        TRUE(),
+		        'Calendar'[Week Commencing] = WC, "Current Week ",
+		        'Calendar'[Week Commencing] = LastWC, "Last Week",
+		        FORMAT( 'Calendar'[Week Commencing], "dd/mm/yyyy" )&""   
+		    )
+		    
+		RETURN Result
+
+		dataType: String
+		lineageTag: 3244befb-18dd-47e2-92f2-8b589a54d785
+		sortByColumn: 'Week Commencing'
+		summarizeBy: None
+
+	column 'Previous Jan Census'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= #
+		isDataTypeInferred: false
+		lineageTag: 7abd825b-92b7-42ed-b83e-916a0f48f7d1
+		sourceColumn: "Previous Jan Census"
+		summarizeBy: None
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Conformed
+

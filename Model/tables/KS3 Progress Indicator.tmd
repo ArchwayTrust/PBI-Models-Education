@@ -1,0 +1,46 @@
+table 'KS3 Progress Indicator'
+	lineageTag: e4b2382d-2471-4d5d-974a-60f8db1c7c1b
+	ordinal: 39
+
+	partition 'KS3 Progress Indicator' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS3Data             
+				Dataflow = Workspace{[ dataflowName = "Edu-KS3Data" ]}[Data],
+				Entity = Dataflow{[ entity = "KS3 Progress Indicator" ]}[Data]
+			in
+				Entity
+
+
+	column KS3ProgressIndicatorId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e26efa8a-634a-4163-985e-48283d3317e2
+		sourceColumn: KS3ProgressIndicatorId
+		summarizeBy: None
+
+	column 'Progress Indicator'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: a8351df9-7c29-4c87-ac10-e186c9317664
+		sortByColumn: ProgressOrder
+		sourceColumn: "Progress Indicator"
+		summarizeBy: None
+
+	column ProgressOrder
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: e45122b9-d5ca-4105-8c10-bc58516c902b
+		sourceColumn: ProgressOrder
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = KS3
+

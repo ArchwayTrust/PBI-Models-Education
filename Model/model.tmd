@@ -1,0 +1,48 @@
+model Model
+	compatibilityLevel: 1600
+	culture: en-GB
+	dataAccessOptions:
+		returnErrorValuesAsNull
+	defaultPowerBIDataSourceVersion: PowerBI_V3
+	discourageImplicitMeasures
+	ID: 24fdc2e6-5978-4615-a566-01acf5c4403f
+	sourceQueryCulture: en-GB
+
+queryGroup Dimensions
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Dimensions\Static'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup Facts
+
+	annotation PBI_QueryGroupOrder = 2
+
+queryGroup MeasureTables
+
+	annotation PBI_QueryGroupOrder = 3
+
+annotation PBI_QueryOrder = ["KS4 Statistics","Grade Types","CAF Slot","Exclusion","DfE LA Exclusions","Ofsted Inspections","PAN","DfE LA Attendance","Enrolment","DfE LA KS4 Statistics","Site","Calendar","Local Authorities","Student","DfE School Type","DfE Attendance Year Breakdown","Ofsted Rating","On Roll Mode","Behaviour Created By","Behaviour Event Type","Behaviour School Note","Behaviour Teaching Group","SIMS Attendance Code","ALT Membership","DfE KS4 Pupil Level","Behaviour","Attendance","RangeStart","RangeEnd"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBIDesktopVersion = 2.98.1004.0 (21.10)
+
+annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["REDUCE_NUMBER_OF_CALCULATED_COLUMNS"]}
+
+annotation TabularEditor_SerializeOptions = {"IgnoreInferredObjects":true,"IgnoreInferredProperties":true,"IgnoreTimestamps":true,"SplitMultilineStrings":true,"PrefixFilenames":false,"LocalTranslations":false,"LocalPerspectives":false,"LocalRelationships":false,"Levels":["Data Sources","Shared Expressions","Perspectives","Relationships","Roles","Tables","Tables/Columns","Tables/Hierarchies","Tables/Measures","Tables/Partitions","Tables/Calculation Items","Translations"]}
+
+annotation __LastRPTime = 133284136723677819
+
+extendedProperty TabularEditor_DeploymentMetadata =
+	{
+	  "User": "BCA\\bdobbs",
+	  "Time": "2023-05-03T15:59:28.7194087+01:00",
+	  "ClientMachine": "ALT-LAP-S44831",
+	  "DeploymentMode": "SaveUI",
+	  "TabularEditorBuild": "3.6.0.27344"
+	}
+
+

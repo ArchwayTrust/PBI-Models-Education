@@ -1,0 +1,76 @@
+table 'Metric Parameter'
+	lineageTag: b955911b-98bd-4f02-8f7d-bae7fb4ace88
+	ordinal: 55
+
+	partition 'Metric Parameter' = Calculated
+		mode: Import
+		expression:=
+			
+			{
+			    ("Number of Negative Student Events", NAMEOF('Behaviour'[Number of Negative Student Events]), 0),
+			    ("Number Of Students", NAMEOF('Enrolment'[Number Of Students]), 1),
+			    ("NGRT Stanine", NAMEOF('GL NGRT'[NGRT Stanine]), 2),
+			    ("PTM Stanine", NAMEOF('GL PTM'[PTM Stanine]), 3),
+			    ("PTE English Skills Stanine", NAMEOF('GL PTE'[PTE English Skills Stanine]), 4),
+			    ("PTE Reading Comprehension Stanine", NAMEOF('GL PTE'[PTE Reading Comprehension Stanine]), 5),
+			    ("Basics 4+", NAMEOF('KS4 Statistics'[Basics 4+]), 6),
+			    ("Basics 5+", NAMEOF('KS4 Statistics'[Basics 5+]), 7),
+			    ("Attainment 8", NAMEOF('KS4 Statistics'[Attainment 8]), 8),
+			    ("A8 English", NAMEOF('KS4 Statistics'[A8 English]), 9),
+			    ("A8 Maths", NAMEOF('KS4 Statistics'[A8 Maths]), 10),
+			    ("A8 EBacc", NAMEOF('KS4 Statistics'[A8 EBacc]), 11),
+			    ("A8 Open", NAMEOF('KS4 Statistics'[A8 Open]), 12),
+			    ("Progress 8", NAMEOF('KS4 Statistics'[Progress 8]), 13),
+			    ("P8 English", NAMEOF('KS4 Statistics'[P8 English]), 14),
+			    ("P8 Mathematics", NAMEOF('KS4 Statistics'[P8 Mathematics]), 15),
+			    ("P8 EBacc", NAMEOF('KS4 Statistics'[P8 EBacc]), 16),
+			    ("P8 Open", NAMEOF('KS4 Statistics'[P8 Open]), 17),
+			    ("1+ FTE Rate", NAMEOF('Suspension'[1+ FTE Rate]), 18),
+			    ("Attendance", NAMEOF('Attendance'[% Attendance]), 19)
+			}
+
+
+	column Metric
+		dataType: String
+		isNameInferred: false
+		lineageTag: 5a4e0bbf-8119-4f93-bd94-eeff41ce8715
+		relatedColumnDetails:
+			groupByColumns:
+			- groupingColumn: 'Metric Fields'
+		sortByColumn: 'Metric Order'
+		sourceColumn: [Value1]
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Metric Fields'
+		dataType: String
+		isHidden
+		isNameInferred: false
+		lineageTag: 758371a6-0236-4304-93b0-83d615364031
+		sortByColumn: 'Metric Order'
+		sourceColumn: [Value2]
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		extendedProperty ParameterMetadata =
+			{
+			  "version": 3,
+			  "kind": 2
+			}
+
+
+	column 'Metric Order'
+		dataType: Int64
+		encodingHint: Value
+		isHidden
+		isNameInferred: false
+		lineageTag: 0fabb1d6-38c2-4773-b390-155eb4e1dc3b
+		sourceColumn: [Value3]
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+	annotation TabularEditor_TableGroup = Misc
+

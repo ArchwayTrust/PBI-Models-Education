@@ -1,0 +1,86 @@
+table 'G4S Groups'
+	lineageTag: 07f024a5-a90d-4e62-8154-2f2251920a0d
+	ordinal: 34
+
+	partition 'G4S Groups' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-G4SAttendance                   
+				Dataflow = Workspace{[ dataflowName = "Edu-G4SAttendance" ]}[Data],
+				Entity = Dataflow{[ entity = "dimG4SGroups" ]}[Data]
+			in
+				Entity
+
+
+	column Academy
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 456262d1-c892-4842-a709-fee01aee2cf1
+		sourceColumn: Academy
+		summarizeBy: None
+
+	column DataSet
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 16ea32a0-92d4-4578-ae21-6eb4eddcfbda
+		sourceColumn: DataSet
+		summarizeBy: None
+
+	column 'Department Name'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 47adcec5-ac2f-4855-85db-bde12d278b32
+		sourceColumn: "Department Name"
+		summarizeBy: None
+
+	column G4SGroupId
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ad80eb14-017f-492b-bbf0-31a1ade530b2
+		sourceColumn: G4SGroupId
+		summarizeBy: None
+
+	column Group
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: ad37347a-7037-4b0c-90c0-bc5fe2bad318
+		sourceColumn: Group
+		summarizeBy: None
+
+	column GroupId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		lineageTag: 32eb24e7-3755-4c3d-98d6-575d8ad70e58
+		sourceColumn: GroupId
+		summarizeBy: None
+
+	column QAN
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 3348858f-e394-4bc0-843f-9c4f72ec65ee
+		sourceColumn: QAN
+		summarizeBy: None
+
+	column 'Subject Name'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 2a272ed6-16bc-4f2a-adaa-565267153e2e
+		sourceColumn: "Subject Name"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Attendance
+

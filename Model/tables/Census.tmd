@@ -1,0 +1,275 @@
+table Census
+	lineageTag: cfd01ef0-4cb5-43dc-bf3b-e34a77b88096
+	ordinal: 69
+
+	partition Census = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-Census        
+				Dataflow = Workspace{[ dataflowName = "Edu-Census" ]}[Data],
+				Entity = Dataflow{[ entity = "fctCensus" ]}[Data]
+			in
+				Entity
+
+
+	measure 'Average IDACI' =
+		AVERAGE( Census[IDACI_S] )
+		
+
+		formatString:= #,##0.00
+		lineageTag: d9b07380-6e7d-4782-ada8-c0fb2da7fec2
+
+	measure 'IDACI Band %' =
+		VAR Numerator = 
+		        COUNTROWS ( Census )
+		
+		    
+		VAR Denominator = 
+		        CALCULATE (
+		        COUNTROWS ( Census ),
+		        REMOVEFILTERS ( 'IDACI Bands')
+		    )
+		    
+		VAR Result = DIVIDE ( Numerator, Denominator)
+		
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: b8704a49-c259-40fa-ab74-efb726ac9add
+
+	measure 'Census Slicer Filter' = INT ( NOT ( ISEMPTY ( Census )))
+		lineageTag: 1dee1a09-5bbf-41df-92e5-8ec6fc73335b
+
+	measure 'IDACI 2.5% Most Deprived' =
+		VAR Numerator = 
+		    CALCULATE(
+		        COUNTROWS( Census ),
+		        Census[IDACI_R] <= 32844 * 0.025
+		    )
+		
+		    
+		VAR Denominator = 
+		        COUNTROWS ( Census )
+		    
+		VAR Result = DIVIDE ( Numerator, Denominator)
+		
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: 680445cf-ce5f-495b-a843-a8943a165f63
+
+	measure 'IDACI 5% Most Deprived' =
+		VAR Numerator = 
+		    CALCULATE(
+		        COUNTROWS( Census ),
+		        Census[IDACI_R] <= 32844 * 0.05
+		    )
+		
+		    
+		VAR Denominator = 
+		        COUNTROWS ( Census )
+		    
+		VAR Result = DIVIDE ( Numerator, Denominator)
+		
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: 1119184a-7cca-44f9-8c12-ce92a95aaf97
+
+	measure 'IDACI 10% Most Deprived' =
+		VAR Numerator = 
+		    CALCULATE(
+		        COUNTROWS( Census ),
+		        Census[IDACI_R] <= 32844 * 0.1
+		    )
+		
+		VAR Denominator = 
+		        COUNTROWS ( Census )
+		    
+		VAR Result = DIVIDE ( Numerator, Denominator)
+		
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: 3a3789a5-4c50-4455-a37e-20afd2b3236e
+
+	measure 'IDACI 20% Most Deprived' =
+		VAR Numerator = 
+		    CALCULATE(
+		        COUNTROWS( Census ),
+		        Census[IDACI_R] <= 32844 * 0.2
+		    )
+		
+		    
+		VAR Denominator = 
+		        COUNTROWS ( Census )
+		    
+		VAR Result = DIVIDE ( Numerator, Denominator)
+		
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: 7a220e03-ff4e-48b7-abca-d850e21a6eca
+
+	measure 'IDACI 50% Most Deprived' =
+		VAR Numerator = 
+		    CALCULATE(
+		        COUNTROWS( Census ),
+		        Census[IDACI_R] <= 32844 * 0.5
+		    )
+		
+		    
+		VAR Denominator = 
+		        COUNTROWS ( Census )
+		    
+		VAR Result = DIVIDE ( Numerator, Denominator)
+		
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: 25143d03-3660-459e-89ff-24c1ae9b25c7
+
+	measure 'IDACI 1% Most Deprived' =
+		VAR Numerator = 
+		    CALCULATE(
+		        COUNTROWS( Census ),
+		        Census[IDACI_R] <= 32844 * 0.01
+		    )
+		
+		VAR Denominator = 
+		        COUNTROWS ( Census )
+		    
+		VAR Result = DIVIDE ( Numerator, Denominator)
+		
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: 769b7942-a1cf-4657-9b12-7a4b9a1d84d3
+
+	measure 'IDACI 25% Most Deprived' =
+		VAR Numerator = 
+		    CALCULATE(
+		        COUNTROWS( Census ),
+		        Census[IDACI_R] <= 32844 * 0.25
+		    )
+		
+		    
+		VAR Denominator = 
+		        COUNTROWS ( Census )
+		    
+		VAR Result = DIVIDE ( Numerator, Denominator)
+		
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: e375560c-28f2-40f7-bd93-042225710790
+
+	column AcademicYear
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 8daadc00-850f-4061-a770-9cbaaa1b4302
+		sourceColumn: AcademicYear
+		summarizeBy: None
+
+	column CensusTerm
+		dataType: String
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ae955465-db6a-444a-83d2-50e5693b4571
+		sourceColumn: CensusTerm
+		summarizeBy: None
+
+	column EnrolStatus
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5247f029-da66-482d-b782-bd258d48b417
+		sourceColumn: EnrolStatus
+		summarizeBy: None
+
+	column IDACI_R
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 54474968-59be-4ac6-b4c0-949f19769538
+		sourceColumn: IDACI_R
+		summarizeBy: None
+
+	column IDACI_S
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a0b06a6c-ec8f-40df-ba21-13dfa557a59e
+		sourceColumn: IDACI_S
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a2e5141b-5ca7-4ed0-9b27-93682a452c79
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 50c77a45-edc5-4cd5-8b93-8fd8bacac581
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	column URN
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1529a3ff-da8e-49ce-80a3-9f5d38fae6f9
+		sourceColumn: URN
+		summarizeBy: None
+
+	column NCyearActual
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1bea2020-065d-4553-95f8-657b22cbc306
+		sourceColumn: NCyearActual
+		summarizeBy: None
+
+	column UPN
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c6c03e64-87f4-44ee-b2c4-84a1e0e7851b
+		sourceColumn: UPN
+		summarizeBy: None
+
+	column IDACI_BAND
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 39b56451-2f14-4bd9-b13e-32d49758239b
+		sourceColumn: IDACI_BAND
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Census
+

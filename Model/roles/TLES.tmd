@@ -1,0 +1,11 @@
+role TLES
+	modelPermission: Read
+
+	tablePermission '(RLS) Site' = '(RLS) Site'[Academy Code] = "TLES"
+		table: '(RLS) Site'
+
+	tablePermission '(RLS) Student Name' = '(RLS) Student Name'[Academy] = "TLES"
+		table: '(RLS) Student Name'
+
+	annotation PBI_Id = e89b40706781476ba7a489e5c50cee86
+

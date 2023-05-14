@@ -1,0 +1,218 @@
+/// Ofsted inspection data.
+/// (FACT)
+table 'Ofsted Inspections'
+	lineageTag: 8fbc55ff-9a68-491a-aef1-996329b053b5
+	ordinal: 15
+
+	partition 'Ofsted Inspections' = M
+		mode: Import
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-ICFP          
+				Dataflow = Workspace{[ dataflowName = "Edu-ICFP" ]}[Data],
+				Entity = Dataflow{[ entity = "factInspections" ]}[Data]
+			in
+				Entity
+
+		queryGroup: Facts
+
+	measure 'Ofsted Rating' =
+		
+		VAR LastVisibleDate = MAX(Calendar[Date])
+		VAR LastInspectionDateOfAcYear = 
+		    CALCULATE(
+		        CALCULATE(
+		            MAX(Calendar[Date]),
+		            'Ofsted Inspections'
+		        ),
+		        REMOVEFILTERS(Calendar),
+		        Calendar[Date] <= LastVisibleDate 
+		    )
+		VAR OfstedRating =
+		    CALCULATE(
+		        CALCULATE(
+		            SELECTEDVALUE('Ofsted Rating'[Ofsted Rating Number]),
+		            'Ofsted Inspections'
+		            ),
+		        Calendar[Date] = LastInspectionDateOfAcYear
+		    )
+		RETURN
+		    IF(
+		        ISINSCOPE(Site[Academy Code]), 
+		        OfstedRating
+		    )
+
+		formatString:= 0
+		lineageTag: 3a66d7e5-a642-41df-8077-50dfed7d51fd
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'Latest Ofsted Rating' =
+		
+		VAR MostRecentInspectionDate = 
+		    CALCULATE(
+		        CALCULATE(
+		            MAX(Calendar[Date]),
+		            'Ofsted Inspections'
+		        ),
+		        REMOVEFILTERS(Calendar)
+		    )
+		
+		VAR Result = 
+		CALCULATE(
+		    CALCULATE(
+		        SELECTEDVALUE('Ofsted Rating'[Ofsted Rating]),
+		        'Ofsted Inspections'
+		        ),
+		    Calendar[Date] = MostRecentInspectionDate
+		)
+		
+		RETURN 
+		    IF(
+		        HASONEVALUE ( Site[SiteId] ),
+		        IF( ISBLANK( Result ), "Not Yet Inspected", Result ),
+		        BLANK()
+		    )
+
+		lineageTag: 7e1ab5fe-0f2b-40a7-98ca-b1d2191f90b4
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION","PROVIDE_FORMAT_STRING_FOR_MEASURES"]}
+
+	measure 'Latest Inspection Date' =
+		
+		
+		VAR MostRecentInspectionDate = 
+		CALCULATE(
+		    CALCULATE(
+		        MAX(Calendar[Date]),
+		        'Ofsted Inspections'
+		    ),
+		    REMOVEFILTERS(Calendar)
+		)
+		
+		RETURN MostRecentInspectionDate
+
+		formatString:= dd/mm/yyyy
+		lineageTag: 9317e942-e8a3-4368-a663-9e4f5a35a482
+
+		annotation Format = <Format Format="DateTimeCustom"><DateTimes><DateTime LCID="2057" Group="ShortDate" FormatString="dd/MM/yyyy" /></DateTimes></Format>
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'Next Inspection Date' =
+		
+		VAR NextInspectionDate = 
+		CALCULATE(
+		    MAX('Ofsted Inspections'[Next Inspection]),
+		    REMOVEFILTERS(Calendar)
+		)
+		
+		RETURN BLANK()
+
+		lineageTag: da7c98c2-0144-4f0f-ae88-e671a0e2306d
+
+	column 'Inspection Date'
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= Long Date
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 25fca90e-9ce5-4073-9592-8faa09d25928
+		sourceColumn: "Inspection Date"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="D" /></DateTimes></Format>
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE"]}
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1dc8a456-d039-4f9f-93cd-f7074544d9b2
+		sourceColumn: SiteId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column OfstedRatingId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b3f35037-9adc-42dd-aed9-d814cba60a77
+		sourceColumn: OfstedRatingId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column ALTMembership =
+		
+		VAR JoinDate = RELATED( Site[Date Joined ALT] )
+		
+		RETURN
+		IF ('Ofsted Inspections'[Inspection Date] >= JoinDate, 1, 0)
+
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isHidden
+		lineageTag: c1a453cf-b619-4e69-9f31-78a59deca725
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["REDUCE_USAGE_OF_CALCULATED_COLUMNS_THAT_USE_THE_RELATED_FUNCTION"]}
+
+	column 'Next Inspection'
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= dd/mm/yyyy
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: f22679a0-0473-4606-acd8-fc3674d16be5
+		sourceColumn: "Next Inspection"
+		summarizeBy: None
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Inspections
+

@@ -1,0 +1,116 @@
+table 'KS2 Multiplication'
+	lineageTag: 1fb1c1f8-3177-4f0c-8225-2a73e6531c1b
+	ordinal: 68
+
+	partition 'KS2 Multiplication' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS2Data-Ingest           
+				Dataflow = Workspace{[ dataflowName = "Edu-Primary-Ingest" ]}[Data],
+				Entity = Dataflow{[ entity = "fctPrimaryKS2Multiplication" ]}[Data]
+			in
+				Entity
+
+
+	measure 'KS2 Multiplication Average Mark' =
+		CALCULATE(
+		    AVERAGE( 'KS2 Multiplication'[MarksOutOf25] ),
+		    'KS2 Multiplication'[PupilIncluded] = 1
+		)
+
+		formatString:= #,##0.0
+		lineageTag: 6da2a81a-70cf-409d-a5b6-b4b05481bcb7
+
+	measure 'KS2 Multiplication # Below' =
+		CALCULATE (
+		    SUM ( 'KS2 Multiplication'[PupilIncluded] ),
+		    'KS2 Multiplication Marks'[Band] = "Below"
+		)
+
+		formatString:= #,##0
+		lineageTag: 5e44fbc1-ed1a-44ce-8791-5a347c0d25dd
+
+	measure 'KS2 Multiplication Internal Pass %' =
+		VAR NumberPassed =
+		    CALCULATE (
+		        SUM ( 'KS2 Multiplication'[PupilIncluded] ),
+		        'KS2 Multiplication Marks'[Pass] = 1
+		    )
+		    
+		VAR NumberStudents =
+		    
+		    SUM ( 'KS2 Multiplication'[PupilIncluded] )
+		    
+		VAR Result = DIVIDE (NumberPassed, NumberStudents)
+		    
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: 1bff53ca-dc8b-4bc0-ada9-f9a5adc680cb
+
+	column DataSet
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1947fc3d-f4a8-4795-bc17-74da45de17ec
+		sourceColumn: DataSet
+		summarizeBy: None
+
+	column MarksOutOf25
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: fa429703-b0ea-478a-84da-a0cafaaeb0d7
+		sourceColumn: MarksOutOf25
+		summarizeBy: None
+
+	column PupilIncluded
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 99e87e5a-7658-4611-afa3-b2925e19fad1
+		sourceColumn: PupilIncluded
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: bae3deaa-0c18-4a99-ae7b-f5e8053eec90
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: f07d6f1c-eac4-4645-b632-6514906fc328
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	column MarkId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 08ef31c4-3c99-4198-97af-307f7de89fb0
+		sourceColumn: MarkId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Primary
+

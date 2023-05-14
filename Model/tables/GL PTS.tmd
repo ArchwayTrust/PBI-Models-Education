@@ -1,0 +1,218 @@
+table 'GL PTS'
+	lineageTag: 94394964-07b1-48d7-aa22-32909ff7e9c8
+	ordinal: 29
+
+	partition 'GL PTS' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-GL        
+				Dataflow = Workspace{[ dataflowName = "Edu-GL" ]}[Data],
+				Entity = Dataflow{[ entity = "factGLPTS" ]}[Data]
+			in
+				Entity
+
+
+	measure 'PTS SAS' =
+		
+		AVERAGE ('GL PTS'[StandardAgeScore])
+
+		lineageTag: ef20f872-9c6c-4206-a661-6ba2f757cced
+
+	measure 'PTS Stanine' =
+		
+		AVERAGE ( 'GL PTS'[OverallStanine])
+
+		lineageTag: 51fcc999-6f1f-4f41-ba8d-a50484bcd3ea
+
+	measure 'PTS Chemistry Stanine' =
+		
+		AVERAGE('GL PTS'[ChemistryStanine])
+
+		lineageTag: c0c666a1-f9e8-48e1-a7ca-6998b388607b
+
+	measure 'PTS Physics Stanine' =
+		
+		AVERAGE ('GL PTS'[PhysicsStanine])
+
+		lineageTag: ccccb63b-3292-4f4d-84ba-f213cab5dcb1
+
+	measure 'PTS Biology Stanine' =
+		
+		AVERAGE ( 'GL PTS'[BiologyStanine] )
+		
+
+		lineageTag: e9ce7b3a-f4a3-4d5e-a2eb-490eb2a11869
+
+	column 'Academic Year'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a53eecec-7f10-48d3-9885-d15d972e8ddc
+		sourceColumn: "Academic Year"
+		summarizeBy: None
+
+	column BiologyStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b31559a6-2242-477a-bdad-156e769852f5
+		sourceColumn: BiologyStanine
+		summarizeBy: None
+
+	column ChemistryStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 28387fbc-f643-4a7a-bf91-59d246a3ca89
+		sourceColumn: ChemistryStanine
+		summarizeBy: None
+
+	column DateOfTest
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 21d5c4a5-7ca7-43fc-ad72-6a7f970e2a53
+		sourceColumn: DateOfTest
+		summarizeBy: None
+
+	column GLProgressCategoryId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: f9dbb6c1-d32a-41db-9383-3b58cb58ed8a
+		sourceColumn: GLProgressCategoryId
+		summarizeBy: None
+
+	column NationalPercentileRank
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a2060218-f75d-4c12-8cf1-5b5fa0506406
+		sourceColumn: NationalPercentileRank
+		summarizeBy: None
+
+	column OverallStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: f8ff4e6f-83a7-4f95-9969-20bdafd7562a
+		sourceColumn: OverallStanine
+		summarizeBy: None
+
+	column PhysicsStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 4b6885c6-d4bf-41db-bf95-da9c172d61e9
+		sourceColumn: PhysicsStanine
+		summarizeBy: None
+
+	column 'Previous Test Name'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ef3ab049-dfb9-4018-8946-e28ce22d1fa3
+		sourceColumn: "Previous Test Name"
+		summarizeBy: None
+
+	column PreviousTestDate
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6bb4fb6f-470c-4090-a4da-eef2019b2717
+		sourceColumn: PreviousTestDate
+		summarizeBy: None
+
+	column PreviousTestSAS
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 24eb9077-0504-4136-bb9b-1decb14c7e93
+		sourceColumn: PreviousTestSAS
+		summarizeBy: None
+
+	column PreviousTestStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b0e611ed-6089-42a9-adb6-e41fe59e7dae
+		sourceColumn: PreviousTestStanine
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 85da29bb-657d-49cb-81f2-afbb47c197a3
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StandardAgeScore
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: db7e9e03-bcbb-429f-8769-26ebef48cf8e
+		sourceColumn: StandardAgeScore
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 57ea52a6-5994-4053-91f0-8c70b6a51f15
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	column 'Test Name'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 570f9758-cce4-45a1-8f2a-9c3e2b1f68a6
+		sourceColumn: "Test Name"
+		summarizeBy: None
+
+	column WorkingScientificallyStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2b5ad84d-6c1a-44d9-ab4f-4c4c18eb2f59
+		sourceColumn: WorkingScientificallyStanine
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = GL
+

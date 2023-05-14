@@ -1,0 +1,74 @@
+/// List of attendance year breakdown for use with DfE Attendance data.
+/// (DIMENSION)
+table 'DfE Attendance Year Breakdown'
+	lineageTag: 2924a8e0-0ffa-491a-882c-6a320e7a7179
+	ordinal: 8
+
+	partition 'DfE Attendance Year Breakdown' = M
+		mode: Import
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows ( null ), 
+			  Workspaces = Source{[ Id = "Workspaces" ]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data], 
+			  //Edu-DfEStatistics
+			  Dataflow = Workspace{[ dataflowName = "Edu-DfEStatistics" ]}[Data], 
+			  Entity = Dataflow{[ entity = "dimAttendanceYearBreakdown" ]}[Data]
+			in
+			  Entity
+
+		queryGroup: Dimensions
+
+	column AttendanceYearBreakdownId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		lineageTag: 43dc2f8b-0732-4aa2-8d6e-3d93cf8a6c47
+		sourceColumn: AttendanceYearBreakdownId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column 'Year Breakdown'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: d2de2579-ab5d-4e58-b4cc-51747b3410c0
+		sourceColumn: "Year Breakdown"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Half Terms'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: 67ab16dc-bf41-4363-9a5d-d5ab9955f688
+		sourceColumn: "Half Terms"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = DfE
+

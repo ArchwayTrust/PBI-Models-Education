@@ -1,0 +1,159 @@
+table 'GL PTM'
+	lineageTag: 32be1a18-c8d5-49de-97bd-423e8f7ef080
+	ordinal: 28
+
+	partition 'GL PTM' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-GL        
+				Dataflow = Workspace{[ dataflowName = "Edu-GL" ]}[Data],
+				Entity = Dataflow{[ entity = "factGLPTM" ]}[Data]
+			in
+				Entity
+
+
+	measure 'PTM SAS' =
+		
+		AVERAGE('GL PTM'[StandardAgeScore])
+
+		lineageTag: 488bff23-62c7-486f-97d4-a46787017776
+
+	measure 'PTM Stanine' =
+		
+		AVERAGE ('GL PTM'[OverallStanine])
+
+		lineageTag: cae090f8-e911-4957-8e8d-d164e7cd8935
+
+	column 'Academic Year'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c5f304e7-1039-44f2-9676-a1af5fbbf84f
+		sourceColumn: "Academic Year"
+		summarizeBy: None
+
+	column DateOfTest
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a07efb57-2c4e-439b-8ea8-5350b69bfe60
+		sourceColumn: DateOfTest
+		summarizeBy: None
+
+	column GLProgressCategoryId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2ce9bed7-b2d3-4b1f-866e-2d0462ee5567
+		sourceColumn: GLProgressCategoryId
+		summarizeBy: None
+
+	column NationalPercentileRank
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 46789303-bfff-41d0-b41d-18eecbed56c9
+		sourceColumn: NationalPercentileRank
+		summarizeBy: None
+
+	column OverallStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: be2d1318-5c19-4ddc-9e86-10583048568b
+		sourceColumn: OverallStanine
+		summarizeBy: None
+
+	column 'Previous Test Name'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e1d9a9ce-f9fa-48c6-9c77-fac947c11bba
+		sourceColumn: "Previous Test Name"
+		summarizeBy: None
+
+	column PreviousTestDate
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: f2e998f5-92f8-4fb1-9eae-5173208ac597
+		sourceColumn: PreviousTestDate
+		summarizeBy: None
+
+	column PreviousTestSAS
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3af6fbd4-de2f-43af-97fd-0b83ec05566f
+		sourceColumn: PreviousTestSAS
+		summarizeBy: None
+
+	column PreviousTestStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 132d353b-8826-4b14-b23b-3ac62b597d4f
+		sourceColumn: PreviousTestStanine
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e5f30e61-628c-42f3-94e9-18898ff71217
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StandardAgeScore
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 17f47cab-0a30-4126-93aa-4dafc36d8b35
+		sourceColumn: StandardAgeScore
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5b8c895c-e3e4-44da-91e4-af49251bdd12
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	column 'Test Name'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 126f405e-a376-4887-ba60-09f1801764f1
+		sourceColumn: "Test Name"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = GL
+

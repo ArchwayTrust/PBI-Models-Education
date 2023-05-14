@@ -1,0 +1,12 @@
+/// This role secures the student name columns.
+role NoStudentNames
+	modelPermission: Read
+
+	tablePermission 'Behaviour School Note'
+		metadataPermission: None
+		table: 'Behaviour School Note'
+
+	tablePermission '(RLS) Student Name'
+		metadataPermission: None
+		table: '(RLS) Student Name'
+

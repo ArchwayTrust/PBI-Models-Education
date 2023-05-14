@@ -1,0 +1,707 @@
+table 'KS2 Outcomes'
+	lineageTag: ec5183b2-a4f5-44c9-a73c-10a524ce57ea
+	ordinal: 62
+
+	partition 'KS2 Outcomes' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS2Data-Ingest           
+				Dataflow = Workspace{[ dataflowName = "Edu-Primary-Ingest" ]}[Data],
+				Entity = Dataflow{[ entity = "fctPrimaryKS2Outcomes" ]}[Data]
+			in
+				Entity
+
+
+	measure 'KS2 Outcomes % EXS+ Maths' =
+		VAR NumberOfStudents = SUM ( 'KS2 Outcomes'[StudentIncluded] )
+		VAR NumberEXS = 
+		    CALCULATE(
+		        SUM( 'KS2 Outcomes'[MathsEXS+] ),
+		        'KS2 Outcomes'[StudentIncluded] = 1
+		    )
+		VAR Result = 
+		    DIVIDE (
+		        NumberEXS,
+		        NumberOfStudents
+		    )
+		    
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		KPI:
+			statusExpression:=
+				VAR Nat = AVERAGE ( 'DFE KS2 National'[MathsEXS%] )
+				VAR Act = [KS2 Outcomes % EXS+ Maths] 
+				
+				RETURN
+				SWITCH ( 
+				TRUE(),
+				Act >= Nat, 1,
+				Act < Nat, -1
+				)
+
+			statusGraphic: "Traffic Light - Single"
+			targetExpression:= AVERAGE ( 'DFE KS2 National'[MathsEXS%] )
+			targetFormatString: "#,##0.0 %"
+		lineageTag: 15cd1d1f-2016-48cf-aa5b-c065cbb187eb
+
+	measure 'KS2 Outcomes % EXS+ Reading' =
+		VAR NumberOfStudents = SUM ( 'KS2 Outcomes'[StudentIncluded] )
+		VAR NumberEXS =     
+		    CALCULATE(
+		        SUM( 'KS2 Outcomes'[ReadingEXS+] ),
+		        'KS2 Outcomes'[StudentIncluded] = 1
+		    )
+		VAR Result = 
+		    DIVIDE (
+		        NumberEXS,
+		        NumberOfStudents
+		    )
+		    
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		KPI:
+			statusExpression:=
+				VAR Nat = AVERAGE ( 'DFE KS2 National'[ReadingEXS%] )
+				VAR Act = [KS2 Outcomes % EXS+ Reading] 
+				
+				RETURN
+				SWITCH ( 
+				TRUE(),
+				Act >= Nat, 1,
+				Act < Nat, -1
+				)
+
+			statusGraphic: "Traffic Light - Single"
+			targetExpression:= AVERAGE ( 'DFE KS2 National'[ReadingEXS%] )
+			targetFormatString: "#,##0.0 %"
+		lineageTag: 0d5780ab-8726-4124-9eb6-78542b57d577
+
+	measure 'KS2 Outcomes % EXS+ Writing' =
+		VAR NumberOfStudents = SUM ( 'KS2 Outcomes'[StudentIncluded] )
+		VAR NumberEXS =     CALCULATE(
+		        SUM( 'KS2 Outcomes'[WritingEXS+] ),
+		        'KS2 Outcomes'[StudentIncluded] = 1
+		    )
+		VAR Result = 
+		    DIVIDE (
+		        NumberEXS,
+		        NumberOfStudents
+		    )
+		    
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		KPI:
+			statusExpression:=
+				VAR Nat = AVERAGE ( 'DFE KS2 National'[WritingEXS%] )
+				VAR Act = [KS2 Outcomes % EXS+ Writing] 
+				
+				RETURN
+				SWITCH ( 
+				TRUE(),
+				Act >= Nat, 1,
+				Act < Nat, -1
+				)
+
+			statusGraphic: "Traffic Light - Single"
+			targetExpression:= AVERAGE ( 'DFE KS2 National'[WritingEXS%] )
+			targetFormatString: "#,##0.0 %"
+		lineageTag: 29192245-435e-44c3-8f9e-b3fdfa842b0a
+
+	measure 'KS2 Outcomes % EXS+ RWM' =
+		VAR NumberOfStudents = SUM ( 'KS2 Outcomes'[StudentIncluded] )
+		VAR NumberEXS = 
+		    CALCULATE(
+		        SUM('KS2 Outcomes'[RWMExpectedStandard]),
+		        'KS2 Outcomes'[StudentIncluded] = 1
+		    )
+		
+		VAR Result = 
+		    DIVIDE (
+		        NumberEXS,
+		        NumberOfStudents
+		    )
+		    
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		KPI:
+			statusExpression:=
+				VAR Nat = AVERAGE ( 'DFE KS2 National'[RWMEXS%] )
+				VAR Act = [KS2 Outcomes % EXS+ RWM] 
+				
+				RETURN
+				SWITCH ( 
+				TRUE(),
+				Act >= Nat, 1,
+				Act < Nat, -1
+				)
+
+			statusGraphic: "Traffic Light - Single"
+			targetExpression:= AVERAGE ( 'DFE KS2 National'[RWMEXS%] )
+			targetFormatString: "#,##0.0 %"
+		lineageTag: c704e18c-2bfb-4c9e-88f8-35c0c693a54a
+
+	measure 'KS2 Outcomes Progress Maths' =
+		CALCULATE (
+		    AVERAGE ( 'KS2 Outcomes'[MathsProgress]),
+		    'KS2 Outcomes'[StudentIncluded] = 1
+		)
+
+		formatString:= #,##0.00
+		KPI:
+			statusDescription: "Shows statistical significance."
+			statusExpression:=
+				VAR CI = [KS2 Outcomes CI Maths]
+				VAR Progress = [KS2 Outcomes Progress Maths]
+				
+				VAR Result =
+				    SWITCH (
+				        TRUE(),
+				        Progress + CI < 0, -1,
+				        Progress - CI < 0, 0,
+				        1
+				    )
+				    
+				RETURN Result
+
+			statusGraphic: "Traffic Light - Single"
+		lineageTag: a6328cb4-2079-4cdc-a9f6-4719d4328eca
+
+	measure 'KS2 Outcomes Progress Reading' =
+		CALCULATE (
+		    AVERAGE ( 'KS2 Outcomes'[ReadingProgress]),
+		    'KS2 Outcomes'[StudentIncluded] = 1
+		)
+
+		formatString:= #,##0.00
+		KPI:
+			statusDescription: "Shows statistical significance."
+			statusExpression:=
+				VAR CI = [KS2 Outcomes CI Reading]
+				VAR Progress = [KS2 Outcomes Progress Reading]
+				
+				VAR Result =
+				    SWITCH (
+				        TRUE(),
+				        Progress + CI < 0, -1,
+				        Progress - CI < 0, 0,
+				        1
+				    )
+				    
+				RETURN Result
+
+			statusGraphic: "Traffic Light - Single"
+		lineageTag: 663816f8-33c9-4c25-875b-e59d95e04436
+
+	measure 'KS2 Outcomes Progress Writing' =
+		CALCULATE (
+		    AVERAGE ( 'KS2 Outcomes'[WritingProgress]),
+		    'KS2 Outcomes'[StudentIncluded] = 1
+		)
+
+		formatString:= #,##0.00
+		KPI:
+			statusExpression:=
+				VAR CI = [KS2 Outcomes CI Writing]
+				VAR Progress = [KS2 Outcomes Progress Writing]
+				
+				VAR Result =
+				    SWITCH (
+				        TRUE(),
+				        Progress + CI < 0, -1,
+				        Progress - CI < 0, 0,
+				        1
+				    )
+				    
+				RETURN Result
+
+			statusGraphic: "Traffic Light - Single"
+		lineageTag: 7258e196-75a0-40aa-b8da-4e98c1056a62
+
+	measure 'KS2 Outcomes Average Maths Scaled Score' =
+		CALCULATE (
+		    AVERAGE ( 'KS2 Outcomes'[KS2MathsScaledScore]),
+		    'KS2 Outcomes'[StudentIncluded] = 1
+		)
+
+		formatString:= #,##0.0
+		KPI:
+			statusExpression:=
+				VAR Nat = AVERAGE ( 'DFE KS2 National'[AvgMathsSS] )
+				VAR Act = [KS2 Outcomes Average Maths Scaled Score] 
+				
+				RETURN
+				SWITCH ( 
+				TRUE(),
+				Act >= Nat, 1,
+				Act < Nat, -1
+				)
+
+			targetExpression:=
+				AVERAGE ( 'DFE KS2 National'[AvgMathsSS] )
+				
+				
+
+		lineageTag: 3db7cf38-717e-47b6-ab5c-76aec243e12a
+
+	measure 'KS2 Outcomes Average Reading Scaled Score' =
+		CALCULATE (
+		    AVERAGE ( 'KS2 Outcomes'[KS2ReadingScaledScore]),
+		    'KS2 Outcomes'[StudentIncluded] = 1
+		)
+
+		formatString:= #,##0.0
+		KPI:
+			statusExpression:=
+				VAR Nat = AVERAGE ( 'DFE KS2 National'[AvgReadSS] )
+				VAR Act = [KS2 Outcomes Average Reading Scaled Score] 
+				
+				RETURN
+				SWITCH ( 
+				TRUE(),
+				Act >= Nat, 1,
+				Act < Nat, -1
+				)
+
+			statusGraphic: "Traffic Light - Single"
+			targetExpression:= AVERAGE ( 'DFE KS2 National'[AvgReadSS] )
+			targetFormatString: #,##0
+		lineageTag: 16e57cc3-faf7-4eab-856a-740f3d743c82
+
+	measure 'KS2 Outcomes Average GPS Scaled Score' =
+		CALCULATE (
+		    AVERAGE ( 'KS2 Outcomes'[KS2GPSScaledScore]),
+		    'KS2 Outcomes'[StudentIncluded] = 1
+		)
+
+		formatString:= #,##0.0
+		KPI:
+			statusExpression:=
+				VAR Nat = AVERAGE ( 'DFE KS2 National'[AvgGPSSS] )
+				VAR Act = [KS2 Outcomes Average GPS Scaled Score] 
+				
+				RETURN
+				SWITCH ( 
+				TRUE(),
+				Act >= Nat, 1,
+				Act < Nat, -1
+				)
+
+			statusGraphic: "Traffic Light - Single"
+			targetExpression:= AVERAGE ( 'DFE KS2 National'[AvgGPSSS] )
+			targetFormatString: #,##0
+		lineageTag: dad8372c-b9b5-4d38-8693-883a0ee3fccf
+
+	measure 'KS2 Outcomes % GDS RWM' =
+		VAR NumberOfStudents = SUM ( 'KS2 Outcomes'[StudentIncluded] )
+		VAR NumberEXS = 
+		    CALCULATE(
+		        SUM('KS2 Outcomes'[RWMGreaterDepth]),
+		        'KS2 Outcomes'[StudentIncluded] = 1
+		    )
+		
+		VAR Result = 
+		    DIVIDE (
+		        NumberEXS,
+		        NumberOfStudents
+		    )
+		    
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		KPI:
+			statusExpression:=
+				VAR Nat = AVERAGE ( 'DFE KS2 National'[RWMGDS%] )
+				VAR Act = [KS2 Outcomes % GDS RWM] 
+				
+				RETURN
+				SWITCH ( 
+				TRUE(),
+				Act >= Nat, 1,
+				Act < Nat, -1
+				)
+				
+
+			statusGraphic: "Traffic Light - Single"
+			targetExpression:= AVERAGE ( 'DFE KS2 National'[RWMGDS%] )
+			targetFormatString: "#,##0.0 %"
+		lineageTag: 44705291-6936-40ab-b8e6-528c1cd7d510
+
+	measure 'KS2 Outcomes CI Maths' =
+		VAR SQRTPupils = 
+		    CALCULATE (
+		        SQRT( COUNTROWS( 'KS2 Outcomes' ) ),
+		        'KS2 Outcomes'[IncludedInMathsProgress] = 1
+		    )
+		    
+		VAR NatStDev = 
+		    AVERAGE ( 'DFE KS2 National'[ProgressStDevMaths] )
+		    
+		VAR Result = 1.96 * DIVIDE ( NatStDev, SQRTPupils)
+		
+		RETURN Result
+
+		formatString:= #,##0.00
+		lineageTag: b9cf9432-0716-446f-aa8c-0f62bf90ed33
+
+	measure 'KS2 Outcomes CI Reading' =
+		VAR SQRTPupils = 
+		    CALCULATE (
+		        SQRT( COUNTROWS( 'KS2 Outcomes' ) ),
+		        'KS2 Outcomes'[IncludedInReadingProgress] = 1
+		    )
+		    
+		VAR NatStDev = 
+		    AVERAGE ( 'DFE KS2 National'[ProgressStDevRead] )
+		    
+		VAR Result = 1.96 * DIVIDE ( NatStDev, SQRTPupils)
+		
+		RETURN Result
+
+		formatString:= #,##0.00
+		lineageTag: 66e96932-1da4-40ff-836e-fc19ccd0abdc
+
+	measure 'KS2 Outcomes CI Writing' =
+		VAR SQRTPupils = 
+		    CALCULATE (
+		        SQRT( COUNTROWS( 'KS2 Outcomes' ) ),
+		        'KS2 Outcomes'[IncludedInWritingProgress] = 1
+		    )
+		    
+		VAR NatStDev = 
+		    AVERAGE ( 'DFE KS2 National'[ProgressStDevWriting] )
+		    
+		VAR Result = 1.96 * DIVIDE ( NatStDev, SQRTPupils)
+		
+		RETURN Result
+
+		formatString:= #,##0.00
+		lineageTag: 7a54bf23-abd1-4b32-aecf-4d3eda8104ef
+
+	measure 'KS2 Outcomes Slicer Filter' = INT ( NOT ( ISEMPTY ( 'KS2 Outcomes' ) ) )
+		lineageTag: 9e52599d-5af1-46d3-b26f-93255dd2228a
+
+	column KS2GPSScaledScore
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2274245d-947d-40d0-b440-107f074f9c3b
+		sourceColumn: KS2GPSScaledScore
+		summarizeBy: None
+
+	column KS2MathsScaledScore
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c6c650c2-70dc-41da-8e1c-bd595a026d3e
+		sourceColumn: KS2MathsScaledScore
+		summarizeBy: None
+
+	column KS2MathsTA
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: afac0dd2-92e9-4fd0-be48-86673f8b9e13
+		sourceColumn: KS2MathsTA
+		summarizeBy: None
+
+	column KS2ReadingScaledScore
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 0fa121b4-4b7a-45bf-9c8b-497e0e3938ba
+		sourceColumn: KS2ReadingScaledScore
+		summarizeBy: None
+
+	column KS2ReadingTA
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 0a028e1e-07d6-42fd-b57f-d35b7166a9c6
+		sourceColumn: KS2ReadingTA
+		summarizeBy: None
+
+	column KS2ScienceTA
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: f01c4c75-2646-4a71-ad83-74c4ab37f4cf
+		sourceColumn: KS2ScienceTA
+		summarizeBy: None
+
+	column KS2WritingTA
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: cd2f727a-0976-4544-8b50-4b126c5ebbfb
+		sourceColumn: KS2WritingTA
+		summarizeBy: None
+
+	column 'MathsEXS+'
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 51118c89-8d9b-49d6-b1b3-618b831338f4
+		sourceColumn: MathsEXS+
+		summarizeBy: None
+
+	column PerformanceTableYear
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 736ba5de-b614-4acf-9bb9-a59e481d036d
+		sourceColumn: PerformanceTableYear
+		summarizeBy: None
+
+	column 'ReadingEXS+'
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2241f7fb-4380-4f65-9f07-801bff9ad8a1
+		sourceColumn: ReadingEXS+
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3322f652-90e2-444a-9ffd-a21bc64ddcd2
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 0dbb47c8-a216-4a7a-ae6e-23d027cb6db1
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	column StudentIncluded
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c320ddf6-74d4-4fad-bc17-2945718302f8
+		sourceColumn: StudentIncluded
+		summarizeBy: None
+
+	column 'WritingEXS+'
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5e2772e8-cec8-46f2-92f6-6d5b82546902
+		sourceColumn: WritingEXS+
+		summarizeBy: None
+
+	column IncludedInMathsProgress
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1875511a-cd67-4cfd-b480-f137c134c75e
+		sourceColumn: IncludedInMathsProgress
+		summarizeBy: None
+
+	column IncludedInReadingProgress
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e5801eed-25c1-4e35-b9f0-9e3287606acc
+		sourceColumn: IncludedInReadingProgress
+		summarizeBy: None
+
+	column IncludedInWritingProgress
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 520f560d-9aa6-4137-8d78-6b962f7813e6
+		sourceColumn: IncludedInWritingProgress
+		summarizeBy: None
+
+	column KS1AvgPoints
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: db0bc9cd-93b4-4339-8e05-5fc8b8bee096
+		sourceColumn: KS1AvgPoints
+		summarizeBy: None
+
+	column KS1PABand
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c65efdac-b076-497f-bf42-140d0638e5ba
+		sourceColumn: KS1PABand
+		summarizeBy: None
+
+	column KS2MathsAttainmentForProgress
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 09d2163b-79da-472e-82f9-233dd893c18d
+		sourceColumn: KS2MathsAttainmentForProgress
+		summarizeBy: None
+
+	column KS2ReadingAttainmentForProgress
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d4a26cfa-66ca-4ca5-b6b8-8007a3a34aa9
+		sourceColumn: KS2ReadingAttainmentForProgress
+		summarizeBy: None
+
+	column KS2WritingAttainemtnForProgress
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 55e0e19c-a133-43a2-8fef-2d0cf43b0ea8
+		sourceColumn: KS2WritingAttainemtnForProgress
+		summarizeBy: None
+
+	column MathsProgress
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d56eb259-68f1-4519-88bf-d224999814f6
+		sourceColumn: MathsProgress
+		summarizeBy: None
+
+	column MobilePupil
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 0bd9c377-05c3-4ac0-a2d6-534ae4353115
+		sourceColumn: MobilePupil
+		summarizeBy: None
+
+	column PredictedKS2Maths
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ed43720a-9fab-4815-9b66-73fc26e56c8d
+		sourceColumn: PredictedKS2Maths
+		summarizeBy: None
+
+	column PredictedKS2Reading
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3f324ffb-c43b-4c37-913e-3671d09ad937
+		sourceColumn: PredictedKS2Reading
+		summarizeBy: None
+
+	column PredictedKS2Writing
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 9a7b6faa-b142-4270-a18a-0213e27a19ec
+		sourceColumn: PredictedKS2Writing
+		summarizeBy: None
+
+	column ProgressPAGroup
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6e89f4fc-9649-4f55-9362-0d8d36b2f131
+		sourceColumn: ProgressPAGroup
+		summarizeBy: None
+
+	column ReadingProgress
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 0a74191b-1dd6-4bba-bbae-85bea530b746
+		sourceColumn: ReadingProgress
+		summarizeBy: None
+
+	column RWMExpectedStandard
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 305a5f0d-5402-446b-adaf-5225ac713419
+		sourceColumn: RWMExpectedStandard
+		summarizeBy: None
+
+	column RWMGreaterDepth
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c352887c-a06f-4b38-a61c-6969c2137784
+		sourceColumn: RWMGreaterDepth
+		summarizeBy: None
+
+	column WritingProgress
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 8ce4d7fa-913a-49fc-bf86-0162186c281d
+		sourceColumn: WritingProgress
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Primary
+

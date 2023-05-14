@@ -1,0 +1,463 @@
+/// Exclusion data.
+/// (FACT)
+table Suspension
+	lineageTag: 7e733e64-7022-4a97-af68-9567a1907e97
+	ordinal: 51
+
+	partition Suspension = M
+		mode: Import
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows ( null ), 
+			  Workspaces = Source{[ Id = "Workspaces" ]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data], 
+			  //Edu-Exclusions
+			  Dataflow = Workspace{[ dataflowName = "Edu-Exclusions" ]}[Data], 
+			  Entity = Dataflow{[ entity = "factExclusions", version = "" ]}[Data]
+			in
+			  Entity
+
+		queryGroup: Facts
+
+	measure '# Students Suspended' =
+		
+		CALCULATE(
+		    DISTINCTCOUNT( Suspension[StudentId] ),
+		    NOT Suspension[EnrollmentStatus] = "Guest",
+		    NOT (
+		        ISBLANK( Suspension[StartDate] )
+		    ),
+		    Suspension[TypeCode] IN { "FIXD", "SUSP" }
+		)
+		
+
+		formatString:= 0
+		lineageTag: bf39dc04-4862-4a24-b3ba-6cc75a63a31d
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure '# Suspensions' =
+		
+		CALCULATE(
+		    DISTINCTCOUNT( Suspension[ExclusionId] ),
+		    NOT Suspension[EnrollmentStatus] = "Guest",
+		    NOT ( ISBLANK( Suspension[StartDate] ) ),
+		    Suspension[TypeCode] IN { "FIXD", "SUSP" }
+		)
+
+		formatString:= 0
+		lineageTag: 0ab37d1e-50b6-49e2-a26a-583d1daec2a2
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure '1+ FTE Rate' =
+		
+		VAR ListOfAcademies =
+		    FILTER (
+		        CROSSJOIN (
+		            VALUES ( Site[Academy Code] ),
+		            VALUES ( Student[NC Year] )
+		        ),
+		        [# Students From Attendance] > 0 
+		            && [# Students Suspended] >= 0
+		    )
+		VAR Result = 
+		CALCULATE(
+		    DIVIDE(
+		    [# Students Suspended],
+		    [# Students From Attendance]),
+		    ListOfAcademies
+		)
+		
+		RETURN Result
+
+		displayFolder: "1+ FTE Rate"
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: f083d5de-f08c-4df5-859c-8f6586d93aab
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'LA 1+ FTE Rate' =
+		
+		VAR NormalResult =
+		    DIVIDE (
+		        SUM( 'DfE LA Suspension'[One Plus Suspensions] ),
+		        SUM( 'DfE LA Suspension'[Headcount] )
+		    )
+		    
+		VAR MaxDataSet = 
+		    CALCULATE(
+		        MAX( 'DfE LA Suspension'[DataSet] ),
+		        REMOVEFILTERS()
+		    )
+		
+		VAR LatestResult = 
+		    CALCULATE (
+		        DIVIDE (
+		            SUM( 'DfE LA Suspension'[One Plus Suspensions] ),
+		            SUM( 'DfE LA Suspension'[Headcount] )
+		        ),
+		        REMOVEFILTERS ('Calendar'),
+		        'Calendar'[G4S Dataset] = MaxDataSet
+		    )
+		    
+		RETURN 
+		
+		    IF(
+		        ISBLANK( NormalResult ),
+		        LatestResult,
+		        NormalResult
+		    )
+
+		displayFolder: "1+ FTE Rate"
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: 6b99f8c4-a107-4757-9da0-131bbbe81eaf
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'National 1+ FTE Rate' =
+		CALCULATE(
+		    [LA 1+ FTE Rate],
+		    REMOVEFILTERS( Site ),
+		    REMOVEFILTERS( '(RLS) Site' )
+		)
+
+		displayFolder: "1+ FTE Rate"
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: 766f074c-7dd5-4f43-b8d3-4cc6edba5418
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure '# Students Perm Ex' =
+		
+		CALCULATE(
+		    DISTINCTCOUNT( Suspension[StudentId] ),
+		    NOT Suspension[EnrollmentStatus] = "Guest",
+		    NOT (
+		        ISBLANK( Suspension[StartDate] )
+		    ),
+		    Suspension[TypeCode] = "PERM"
+		)
+
+		lineageTag: 99904e28-9518-4842-a1be-e8e178456226
+
+	measure 'Suspensions Slicer Filter' = INT ( NOT ( ISEMPTY ( Suspension ) ) )
+		lineageTag: 99c08508-a127-4b5a-8721-4fa1dc5e60a0
+
+	measure 'Show PX' =
+		
+		INT 
+		    (
+		        NOT (
+		            CALCULATE(
+		                ISEMPTY( Suspension ),
+		                Suspension[TypeCode] = "PERM",
+		                TREATAS ( VALUES( '(RLS) Student Name'[StudentId] ), Student[StudentId] )  
+		            )
+		        )
+		    )
+
+		lineageTag: 01d6f6fb-ff3d-47bd-8330-eaf58eecf1fc
+
+	measure '# Repeat Suspensions' =
+		
+		VAR StudentsWithRepeatExclusions =
+		    CALCULATETABLE(
+		        FILTER(
+		            DISTINCT( Suspension[StudentId] ),
+		            [# Suspensions] > 1
+		        ),
+		        NOT Suspension[EnrollmentStatus] = "Guest",
+		        NOT ( ISBLANK( Suspension[StartDate] ) ),
+		        Suspension[TypeCode] IN { "FIXD", "SUSP" }
+		    )
+		
+		RETURN
+		    COUNTROWS ( StudentsWithRepeatExclusions )
+
+		lineageTag: 69f97d51-c98b-4caa-b26b-ae7dc758bad6
+
+	measure '# Days Suspended' =
+		VAR TopLevelResult =
+		CALCULATE (
+		    SUM( Suspension[Days] ),
+		    Suspension[TypeCode] IN { "FIXD", "SUSP" },
+		    Suspension[ReasonOrder] = 1
+		)
+		
+		VAR ReasonResult =
+		CALCULATE (
+		    SUM( Suspension[Days] ),
+		    Suspension[TypeCode] IN { "FIXD", "SUSP" }
+		)
+		
+		RETURN 
+		    IF (HASONEVALUE('Suspension Reasons'[Reason]), ReasonResult, TopLevelResult)
+
+		formatString:= #,##0.0
+		lineageTag: 8f411fcf-694a-4bd6-96a0-bd9b6aa193fd
+
+	measure '% of Suspensions' =
+		
+		VAR SelectedNum = [# Suspensions]
+		
+		VAR TotalVisible = 
+		    CALCULATE (
+		        [# Suspensions],
+		        ALLSELECTED()
+		    )
+		    
+		VAR Result =
+		    DIVIDE (SelectedNum, TotalVisible)
+		    
+		RETURN Result
+
+		formatString:= #,##0.0 %
+		lineageTag: 946f8580-5086-4a3f-9ea1-348831c16f3d
+
+	measure '# Suspensions (PEX Page) ' =
+		VAR _CurrentStu = TREATAS ( VALUES( '(RLS) Student Name'[StudentId] ), Student[StudentId] )  
+		
+		VAR _HasPX = 
+		    NOT (
+		        CALCULATE(
+		            ISEMPTY( Suspension ),
+		            REMOVEFILTERS(),
+		            Suspension[TypeCode] = "PERM",
+		            _CurrentStu
+		        )
+		    )
+		
+		
+		VAR _Result = IF ( _HasPX, [# Suspensions], BLANK() )
+		
+		RETURN _Result
+
+		displayFolder: "PEX Related"
+		formatString:= #,##0.0
+		lineageTag: fda75f83-7a6d-4685-a1d1-544ad558939e
+
+	measure '# Days Suspended (PEX Page)' =
+		VAR _CurrentStu = TREATAS ( VALUES( '(RLS) Student Name'[StudentId] ), Student[StudentId] )  
+		
+		VAR _HasPX = 
+		    NOT (
+		        CALCULATE(
+		            ISEMPTY( Suspension ),
+		            REMOVEFILTERS(),
+		            Suspension[TypeCode] = "PERM",
+		            _CurrentStu
+		        )
+		    )
+		
+		
+		VAR _Result = IF ( _HasPX, [# Days Suspended], BLANK() )
+		
+		RETURN _Result
+
+		displayFolder: "PEX Related"
+		formatString:= #,##0.0
+		lineageTag: eba6deee-a0ca-48ba-a7ff-53a825d1b7b2
+
+	column EnrollmentStatus
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 0076532b-4cf6-46c1-8ff1-7e557c4a1988
+		sourceColumn: EnrollmentStatus
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column TypeCode
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c395466f-a994-492f-a57a-913970390052
+		sourceColumn: TypeCode
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column Days
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1c346a4d-a401-4e7e-9838-419424aad19b
+		sourceColumn: Days
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="General" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column Sessions
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1bf3f316-86e0-441a-946d-0e47df44317a
+		sourceColumn: Sessions
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["UNNECESSARY_COLUMNS"]}
+
+	column StartDate
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= Long Date
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 638586b9-e807-4bce-b155-96566043cbd2
+		sourceColumn: StartDate
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="dd MMMM yyyy" /></DateTimes></Format>
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE"]}
+
+	column ALTMembership =
+		
+		VAR JoinDate = RELATED( Site[Date Joined ALT] )
+		
+		RETURN
+		IF( Suspension[StartDate] >= JoinDate, 1, 0 )
+
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isHidden
+		lineageTag: 96c6b959-2161-447d-9eb5-8b8235ded620
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["REDUCE_USAGE_OF_CALCULATED_COLUMNS_THAT_USE_THE_RELATED_FUNCTION"]}
+
+	column ExclusionId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a1905db2-f13a-4b61-8468-2a57ab2d4745
+		sourceColumn: ExclusionId
+		summarizeBy: None
+
+	column FinalGovReviewResult
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1c1d34a6-14a8-478f-8df2-fbdf5f9e3608
+		sourceColumn: FinalGovReviewResult
+		summarizeBy: None
+
+	column GovReviewResult
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2219fdc0-d0d4-44de-bd34-9b6fc747e4db
+		sourceColumn: GovReviewResult
+		summarizeBy: None
+
+	column IRPReviewResult
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1f53e377-8dc6-45f1-b1d7-ec84d0e0bb39
+		sourceColumn: IRPReviewResult
+		summarizeBy: None
+
+	column ReasonId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: adbcf4af-9475-4697-9da6-fc2f294fcc88
+		sourceColumn: ReasonId
+		summarizeBy: None
+
+	column ReasonOrder
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 4bbaf9f4-eba2-4cfc-8d88-329326af2db9
+		sourceColumn: ReasonOrder
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 8dd607d2-cf7f-4aec-88b3-e2d4b28b85c7
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 931dcd8d-2e0b-4757-b745-da14fb2f5236
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Behaviour
+

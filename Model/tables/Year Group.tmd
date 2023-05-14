@@ -1,0 +1,36 @@
+table 'Year Group'
+	lineageTag: 7f2c2235-9adc-4c88-a561-452606deb4e6
+	ordinal: 50
+
+	partition 'Year Group' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-General             
+				Dataflow = Workspace{[ dataflowName = "Edu-General" ]}[Data],
+				Entity = Dataflow{[ entity = "helperYearGroups" ]}[Data]
+			in
+				Entity
+
+
+	column 'NC Year'
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: 2d38417c-c495-49ad-92a1-f850b8be4274
+		sourceColumn: "NC Year"
+		summarizeBy: None
+
+	column 'Year Group'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 015f458c-7e3c-4b48-a28f-c9fc9beaacb0
+		sortByColumn: 'NC Year'
+		sourceColumn: "Year Group"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Conformed
+

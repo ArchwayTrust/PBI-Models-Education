@@ -1,0 +1,42 @@
+table 'KS5 Cohorts'
+	lineageTag: 8bba6f38-b5de-46b2-8337-9685ef507fdf
+	ordinal: 61
+
+	partition 'KS5 Cohorts' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS4Data             
+				Dataflow = Workspace{[ dataflowName = "Edu-KS5Data" ]}[Data],
+				Entity = Dataflow{[ entity = "KS5Cohorts" ]}[Data]
+			in
+				Entity
+
+
+	column DisplayOrder
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: ce39a19f-762c-4054-99cc-196ca8998254
+		sourceColumn: DisplayOrder
+		summarizeBy: None
+
+	column NormalYear13In
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 36e984e0-8685-48bc-82ef-94a059009646
+		sourceColumn: NormalYear13In
+		summarizeBy: None
+
+	column PowerBIDisplay
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 769fd2f4-608c-4357-a3dd-cce232888aef
+		sourceColumn: PowerBIDisplay
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = KS5
+

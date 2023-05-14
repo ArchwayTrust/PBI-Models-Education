@@ -1,0 +1,11 @@
+role NES
+	modelPermission: Read
+
+	tablePermission '(RLS) Site' = '(RLS) Site'[Academy Code] = "NES"
+		table: '(RLS) Site'
+
+	tablePermission '(RLS) Student Name' = '(RLS) Student Name'[Academy] = "NES"
+		table: '(RLS) Student Name'
+
+	annotation PBI_Id = 5023052285924981b0c65cc9934cf547
+

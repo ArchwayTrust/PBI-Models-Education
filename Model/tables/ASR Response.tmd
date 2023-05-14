@@ -1,0 +1,44 @@
+table 'ASR Response'
+	lineageTag: c44037cf-d413-4c8a-a8d8-a30fca7aa867
+	ordinal: 73
+
+	partition 'ASR Response' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],                     
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-QA" ]}[Data],       
+				Dataflow = Workspace{[ dataflowName = "QA-ASR" ]}[Data],
+				Entity = Dataflow{[ entity = "dimASRResponse" ]}[Data]
+			in
+				Entity
+
+
+	column ASRResponseId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c07be762-b68a-4a6b-b3f1-83712618121e
+		sourceColumn: ASRResponseId
+		summarizeBy: None
+
+	column Response
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 618aad65-24c0-4b5f-9b5a-da8dbe21b259
+		sortByColumn: 'Response Value'
+		sourceColumn: Response
+		summarizeBy: None
+
+	column 'Response Value'
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: 19722be9-093b-4690-b1de-4ac86b530397
+		sourceColumn: "Response Value"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = ASR
+

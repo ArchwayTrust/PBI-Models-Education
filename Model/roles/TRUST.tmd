@@ -1,0 +1,5 @@
+role TRUST
+	modelPermission: Read
+
+	annotation PBI_Id = 93c97b49e09046d28674492fb9d1c7de
+

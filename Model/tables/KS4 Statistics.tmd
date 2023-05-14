@@ -1,0 +1,1017 @@
+/// KS4 attainment and progress statistics.
+/// (FACT)
+table 'KS4 Statistics'
+	lineageTag: 4e5c07b7-0adf-41c3-8a6c-d801b20ec110
+	ordinal: 1
+
+	partition 'KS4 Statistics' = M
+		mode: Import
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS4Data             
+				Dataflow = Workspace{[ dataflowName = "Edu-KS4Data" ]}[Data],
+				Entity = Dataflow{[ entity = "factKS4Stats" ]}[Data]
+			in
+				Entity
+
+		queryGroup: Facts
+
+	measure 'Basics 4+' =
+		
+		VAR InternalBasics4 =
+		    CALCULATE(
+		        DIVIDE(
+		            SUM( 'KS4 Statistics'[Basics4] ),
+		            COUNTROWS( 'KS4 Statistics' )
+		        ),
+		        Student[In KPI]
+		    )
+		    
+		VAR CountDfEBasics4 =
+		    CALCULATE(
+		        COUNTROWS( 'DfE KS4 Pupil Level' ),
+		        'DfE KS4 Pupil Level'[EngMat9To4]
+		    )
+		    
+		VAR CountDfEStudents =
+		    COUNTROWS( 'DfE KS4 Pupil Level' )
+		    
+		VAR DfEBasics4 =
+		    DIVIDE(
+		        CountDfEBasics4,
+		        CountDfEStudents
+		    )
+		
+		VAR Result =   
+		    IF(
+		        ISBLANK( DfEBasics4 ),
+		        InternalBasics4,
+		        DfEBasics4
+		    )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: Basics
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: 24788ce9-3fe0-44a0-9b19-690bcf25313a
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'Progress 8' =
+		
+		VAR InternalProg8 =
+		    CALCULATE(
+		        AVERAGE( 'KS4 Statistics'[P8] ),
+		        Student[In KPI]
+		    )
+		    
+		VAR DfEProg8 =
+		    CALCULATE (
+		        AVERAGE ('DfE KS4 Pupil Level'[PupilProgress8Score]),
+		        'DfE KS4 Pupil Level'[PupilIncludedInProgress8Calculations]
+		        )
+		    
+		VAR Result = 
+		    IF (ISBLANK(DfEProg8), InternalProg8, DfEProg8)
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: P8
+		formatString:= 0.00
+		lineageTag: 43a3147b-97f7-47ee-b2e8-11f8ed3e9df7
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation Format = <Format Format="NumberDecimal" Accuracy="2" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'Attainment 8' =
+		
+		VAR InternalAtt8 = 
+		CALCULATE (
+		    DIVIDE(
+		        AVERAGE( 'KS4 Statistics'[A8] ),
+		        10
+		    ),
+		    Student[In KPI]
+		)
+		
+		VAR DfEAtt8 =
+		    DIVIDE(
+		        AVERAGE( 'DfE KS4 Pupil Level'[Attainment8Score] ),
+		        10
+		    )
+		
+		VAR Result =  
+		    IF( ISBLANK( DfEAtt8 ), InternalAtt8, DfEAtt8 )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: A8
+		formatString:= 0.00
+		lineageTag: 18580d9e-e8c5-4b5d-a9d8-52d76aa2e9f9
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation Format = <Format Format="NumberDecimal" Accuracy="2" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'LA Attainment 8' =
+		
+		DIVIDE( 
+		    SUM('DfE LA KS4 Statistics'[t_Att8]),
+		    SUM('DfE LA KS4 Statistics'[t_pupils])*10
+		)
+		
+		
+
+		displayFolder: A8
+		formatString:= 0.00
+		lineageTag: f49e7f2b-0895-478b-a0bf-f940f9603f93
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation Format = <Format Format="NumberDecimal" Accuracy="2" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'National Progress 8' =
+		
+		CALCULATE (
+		    [LA Progress 8],
+		    REMOVEFILTERS(Site),
+		    REMOVEFILTERS( '(RLS) Site' )
+		)
+
+		displayFolder: P8
+		formatString:= 0.00
+		lineageTag: 140221ec-e872-416b-8fa9-ffe04f152939
+
+		annotation Format = <Format Format="NumberDecimal" Accuracy="2" />
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'LA Progress 8' =
+		
+		DIVIDE (
+		    SUM('DfE LA KS4 Statistics'[t_p8score]),
+		    SUM('DfE LA KS4 Statistics'[t_inp8calc])
+		)
+
+		displayFolder: P8
+		formatString:= 0.00
+		lineageTag: ef32a671-f096-4f9a-95b5-1337a07eac83
+
+		annotation Format = <Format Format="NumberDecimal" Accuracy="2" />
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'National Attainment 8' =
+		
+		VAR Result = 
+		CALCULATE(
+		    [LA Attainment 8],
+		    REMOVEFILTERS(Site),
+		    REMOVEFILTERS( '(RLS) Site' )
+		)
+		
+		RETURN Result
+
+		displayFolder: A8
+		formatString:= #,##0.00
+		lineageTag: aea8f8d6-6cd9-4076-9980-e2fddad99bf6
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["INTEGER_FORMATTING","OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'LA Basics 4+' =
+		
+		DIVIDE(
+		    SUM( 'DfE LA KS4 Statistics'[t_l2basics_94] ),
+		    SUM( 'DfE LA KS4 Statistics'[t_pupils] )
+		)
+
+		displayFolder: Basics
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: adff2a7a-1728-4de3-8e28-e81dbcb427de
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'National Basics 4+' =
+		
+		CALCULATE(
+		    [LA Basics 4+],
+		    REMOVEFILTERS(Site),
+		    REMOVEFILTERS( '(RLS) Site' )
+		)
+		
+
+		displayFolder: Basics
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: d0c7db79-338b-43dc-b8fb-4235895b084c
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	measure 'Basics 5+' =
+		
+		VAR InternalBasics5 =
+		    CALCULATE(
+		        DIVIDE(
+		            SUM( 'KS4 Statistics'[Basics5] ),
+		            COUNTROWS( 'KS4 Statistics' )
+		        ),
+		        Student[In KPI]
+		    )
+		    
+		VAR CountDfEBasics5 =
+		    CALCULATE(
+		        COUNTROWS( 'DfE KS4 Pupil Level' ),
+		        'DfE KS4 Pupil Level'[EngMat9To5]
+		    )
+		    
+		VAR CountDfEStudents =
+		    COUNTROWS( 'DfE KS4 Pupil Level' )
+		    
+		VAR DfEBasics5 =
+		    DIVIDE(
+		        CountDfEBasics5,
+		        CountDfEStudents
+		    )
+		
+		VAR Result =   
+		    IF(
+		        ISBLANK( DfEBasics5 ),
+		        InternalBasics5,
+		        DfEBasics5
+		    )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: Basics
+		formatString:= #,##0.0 %
+		lineageTag: a8265a8c-a5ec-4401-809b-7351e83a4ba3
+
+	measure 'LA Basics 5+' =
+		
+		DIVIDE(
+		    SUM( 'DfE LA KS4 Statistics'[t_l2basics_95] ),
+		    SUM( 'DfE LA KS4 Statistics'[t_pupils] )
+		)
+
+		displayFolder: Basics
+		lineageTag: 30552ed9-f833-4b6f-bd4a-b021be2af320
+
+	measure 'National Basics 5+' =
+		
+		CALCULATE(
+		    [LA Basics 5+],
+		    REMOVEFILTERS(Site),
+		    REMOVEFILTERS( '(RLS) Site' )
+		)
+		
+
+		displayFolder: Basics
+		lineageTag: 0443d4f6-93ac-4fc7-822a-881c6b711626
+
+	measure 'EBacc 4+' =
+		
+		//VAR InternalBasics4 =
+		//    CALCULATE(
+		//        DIVIDE(
+		//            SUM( 'KS4 Statistics'[Basics4] ),
+		//            COUNTROWS( 'KS4 Statistics' )
+		//        ),
+		//        Student[In KPI]
+		//    )
+		    
+		VAR CountDfEEBacc4 =
+		    CALCULATE(
+		        COUNTROWS( 'DfE KS4 Pupil Level' ),
+		        'DfE KS4 Pupil Level'[EnglishBacc9To4]
+		    )
+		    
+		VAR CountDfEStudents =
+		    COUNTROWS( 'DfE KS4 Pupil Level' )
+		    
+		VAR DfEEBacc4 =
+		    DIVIDE(
+		        CountDfEEBacc4,
+		        CountDfEStudents
+		    )
+		
+		VAR Result =   
+		    IF(
+		        ISBLANK( DfEEBacc4 ),
+		        BLANK(),
+		        DfEEBacc4
+		    )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE( 'CAF Slot'[CAFSlot] ) && HASONEVALUE( 'Grade Types'[GradeType] ),
+		        Result,
+		        ERROR( "Add filters to CAF Slot and Grade Type" )
+		    )
+
+		displayFolder: EBacc
+		formatString:= #,##0.0 %
+		lineageTag: 3c310864-f011-4f5c-8fb3-382228c249fb
+
+	measure 'EBacc Entry' =
+		
+		//VAR InternalBasics4 =
+		//    CALCULATE(
+		//        DIVIDE(
+		//            SUM( 'KS4 Statistics'[Basics4] ),
+		//            COUNTROWS( 'KS4 Statistics' )
+		//        ),
+		//        Student[In KPI]
+		//    )
+		    
+		VAR CountDfEEBaccEntry =
+		    CALCULATE(
+		        COUNTROWS( 'DfE KS4 Pupil Level' ),
+		        'DfE KS4 Pupil Level'[EntryAllEBacc]
+		    )
+		    
+		VAR CountDfEStudents =
+		    COUNTROWS( 'DfE KS4 Pupil Level' )
+		    
+		VAR DfEEBaccEntry =
+		    DIVIDE(
+		        CountDfEEBaccEntry,
+		        CountDfEStudents
+		    )
+		
+		VAR Result =   
+		    IF(
+		        ISBLANK( DfEEBaccEntry ),
+		        BLANK(),
+		        DfEEBaccEntry
+		    )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE( 'CAF Slot'[CAFSlot] ) && HASONEVALUE( 'Grade Types'[GradeType] ),
+		        Result,
+		        ERROR( "Add filters to CAF Slot and Grade Type" )
+		    )
+
+		displayFolder: EBacc
+		formatString:= #,##0.0 %
+		lineageTag: 7d68a2ff-b91e-44df-97c0-44fe7918168d
+
+	measure 'LA EBacc Entry' =
+		
+		DIVIDE(
+		    SUM( 'DfE LA KS4 Statistics'[t_ebacc_e_ptq_ee] ),
+		    SUM( 'DfE LA KS4 Statistics'[t_pupils] )
+		)
+
+		displayFolder: EBacc
+		formatString:= #,##0.0 %
+		lineageTag: 2bce17f6-3f4d-4eb2-972c-9029a2af0ddb
+
+	measure 'National EBacc Entry' =
+		
+		CALCULATE(
+		    [LA EBacc Entry],
+		    REMOVEFILTERS(Site),
+		    REMOVEFILTERS( '(RLS) Site' )
+		)
+
+		displayFolder: EBacc
+		formatString:= #,##0.0 %
+		lineageTag: 042a3f4a-9857-418c-9cd4-6614ee8374de
+
+	measure 'LA EBacc 4+' =
+		
+		DIVIDE(
+		    SUM( 'DfE LA KS4 Statistics'[t_ebacc_94] ),
+		    SUM( 'DfE LA KS4 Statistics'[t_pupils] )
+		)
+
+		displayFolder: EBacc
+		formatString:= #,##0.0 %
+		lineageTag: 357dce64-3bda-49f4-ade4-4f73accbe1f5
+
+	measure 'National EBacc 4+' =
+		
+		CALCULATE(
+		    [LA EBacc 4+],
+		    REMOVEFILTERS(Site),
+		    REMOVEFILTERS( '(RLS) Site' )
+		)
+
+		displayFolder: EBacc
+		formatString:= #,##0.0 %
+		lineageTag: 626c4a80-1747-412b-b600-6e9635d6aa40
+
+	measure 'A8 English' =
+		
+		VAR Internal = 
+		CALCULATE (
+		    DIVIDE (
+		        AVERAGE( 'KS4 Statistics'[A8_Eng] ),
+		        2
+		    ),
+		    Student[In KPI]
+		)
+		
+		VAR DfE =
+		    DIVIDE(
+		        AVERAGE( 'DfE KS4 Pupil Level'[ScoreAchievedInEnglish] ),
+		        2
+		    )
+		
+		VAR Result =  
+		    IF( ISBLANK( DfE ), Internal, DfE )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: A8
+		formatString:= #,##0.0
+		lineageTag: de781e75-86c7-42f0-a657-a88a32aaf2c7
+
+	measure 'A8 Maths' =
+		
+		VAR Internal = 
+		CALCULATE (
+		    DIVIDE (
+		        AVERAGE( 'KS4 Statistics'[A8_Mat] ),
+		        2
+		    ),
+		    Student[In KPI]
+		)
+		
+		VAR DfE =
+		    DIVIDE(
+		        AVERAGE( 'DfE KS4 Pupil Level'[ScoreAchievedInMathematics] ),
+		        2
+		    )
+		
+		VAR Result =  
+		    IF( ISBLANK( DfE ), Internal, DfE )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: A8
+		formatString:= #,##0.0
+		lineageTag: 3b2ad796-2099-4061-a629-d7a6884fe913
+
+	measure 'A8 EBacc' =
+		
+		VAR Internal = 
+		CALCULATE (
+		    DIVIDE (
+		        AVERAGE( 'KS4 Statistics'[A8_Eb] ),
+		        3
+		    ),
+		    Student[In KPI]
+		)
+		
+		VAR DfE =
+		    DIVIDE(
+		        AVERAGE( 'DfE KS4 Pupil Level'[ScoreAchievedInEbaccSlots] ),
+		        3
+		    )
+		
+		VAR Result =  
+		    IF( ISBLANK( DfE ), Internal, DfE )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: A8
+		formatString:= #,##0.0
+		lineageTag: 3fd06e62-2b6e-4fd6-92fe-f48424a5f53a
+
+	measure 'A8 Open' =
+		
+		VAR Internal = 
+		CALCULATE (
+		    DIVIDE (
+		        AVERAGE( 'KS4 Statistics'[A8_Oth] ),
+		        3
+		    ),
+		    Student[In KPI]
+		)
+		
+		VAR DfE =
+		    DIVIDE(
+		        AVERAGE( 'DfE KS4 Pupil Level'[ScoreAchievedInOpenSlots] ),
+		        3
+		    )
+		
+		VAR Result =  
+		    IF( ISBLANK( DfE ), Internal, DfE )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: A8
+		formatString:= #,##0.0
+		lineageTag: a685b9ad-e094-4040-b10a-32bb8612bd6f
+
+	measure 'P8 English' =
+		
+		VAR Internal = 
+		CALCULATE (
+		    AVERAGE( 'KS4 Statistics'[P8_Eng] ),
+		    Student[In KPI]
+		)
+		
+		VAR DfE =
+		    AVERAGE( 'DfE KS4 Pupil Level'[Progress8ScoreForEnglish] )
+		
+		VAR Result =  
+		    IF( ISBLANK( DfE ), Internal, DfE )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: P8
+		lineageTag: 3629ca15-d8de-46ac-a6b1-e270f9b063e9
+
+	measure 'P8 Mathematics' =
+		
+		VAR Internal = 
+		CALCULATE (
+		    AVERAGE( 'KS4 Statistics'[P8_Mat] ),
+		    Student[In KPI]
+		)
+		
+		VAR DfE =
+		    AVERAGE( 'DfE KS4 Pupil Level'[Progress8ScoreForMathematics] )
+		
+		VAR Result =  
+		    IF( ISBLANK( DfE ), Internal, DfE )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: P8
+		lineageTag: 7484ea71-015a-437b-a775-fb78d40be744
+
+	measure 'P8 EBacc' =
+		
+		VAR Internal = 
+		CALCULATE (
+		    AVERAGE( 'KS4 Statistics'[P8_Eb] ),
+		    Student[In KPI]
+		)
+		
+		VAR DfE =
+		    AVERAGE( 'DfE KS4 Pupil Level'[Progress8ScoreForEbaccSlots] )
+		
+		VAR Result =  
+		    IF( ISBLANK( DfE ), Internal, DfE )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: P8
+		lineageTag: 05bdc44b-dd3d-4e8b-b27b-dc033a77eb92
+
+	measure 'P8 Open' =
+		
+		VAR Internal = 
+		CALCULATE (
+		    AVERAGE( 'KS4 Statistics'[P8_Oth] ),
+		    Student[In KPI]
+		)
+		
+		VAR DfE =
+		    AVERAGE( 'DfE KS4 Pupil Level'[Progress8ScoreForOpenSlots] )
+		
+		VAR Result =  
+		    IF( ISBLANK( DfE ), Internal, DfE )
+		    
+		RETURN
+		    IF(
+		        HASONEVALUE('CAF Slot'[CAFSlot]) && HASONEVALUE('Grade Types'[GradeType]),
+		        Result,
+		        ERROR("Add filters to CAF Slot and Grade Type")
+		    )
+
+		displayFolder: P8
+		lineageTag: 3012b615-f6f5-4f3b-a63f-d3c7345703cc
+
+	column id
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: bdda2c0e-5351-4f25-90d1-f12c5254c46e
+		sourceColumn: id
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["UNNECESSARY_COLUMNS"]}
+
+	column StuAcYearKey
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3258e201-2c0d-4e68-9cfa-7a17b3c3e8b2
+		sourceColumn: StuAcYearKey
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE"]}
+
+	column CohortYear
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b1b8b095-665e-4364-bbcf-c97a39a8c152
+		sourceColumn: CohortYear
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["UNNECESSARY_COLUMNS"]}
+
+	column ResultYear
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 68f817c6-f62a-4c95-9f7e-5e78a54219a8
+		sourceColumn: ResultYear
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE"]}
+
+	column CAFSlot
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e60c7ae3-b99c-45ae-b8a7-04cf1c3b63ac
+		sourceColumn: CAFSlot
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE"]}
+
+	column Academy = RELATED(Student[Academy])
+		dataType: String
+		isAvailableInMDX: false
+		isHidden
+		lineageTag: 97332048-4edf-412d-b5ab-a98baaa25202
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE","REDUCE_USAGE_OF_CALCULATED_COLUMNS_THAT_USE_THE_RELATED_FUNCTION"]}
+
+	column GradeType
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b5ec195b-6053-40e4-aac0-db49c2795c28
+		sourceColumn: GradeType
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE"]}
+
+	column P8
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 396d5093-c953-420d-b9f9-bfdd1796d2d7
+		sourceColumn: P8
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="General" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column A8
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d04d1881-693e-4165-bd53-8fc6e5c090e1
+		sourceColumn: A8
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="General" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column Basics4
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c3c979ee-d72e-43a0-b067-d589b70716ca
+		sourceColumn: Basics4
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="General" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column ALTMembership =
+		
+		VAR JoinDate = 
+		    RELATED( Site[Date Joined ALT] )
+		
+		VAR ResultYear = 'KS4 Statistics'[ResultYear]
+		VAR ResultDate = 
+		    CALCULATE(
+		        MAX(Calendar[Date]),
+		        Calendar[Academic Year] = ResultYear
+		    )
+		
+		RETURN
+		IF(ResultDate >= JoinDate, 1, 0)
+
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isHidden
+		lineageTag: 08d790b2-faeb-4725-8dea-0f21d8725daf
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["REDUCE_USAGE_OF_CALCULATED_COLUMNS_THAT_USE_THE_RELATED_FUNCTION"]}
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a20a44bd-2081-4d9e-9494-8390ab778490
+		sourceColumn: StudentId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION","REMOVE_REDUNDANT_COLUMNS_IN_RELATED_TABLES"]}
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column A8_Eb
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d2d210de-3859-42e8-9257-5df07f882a53
+		sourceColumn: A8_Eb
+		summarizeBy: None
+
+	column A8_Eng
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 7e159e02-b861-40b4-b4ac-87ad796ed1b4
+		sourceColumn: A8_Eng
+		summarizeBy: None
+
+	column A8_Mat
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5df019cd-7ea9-4691-9187-6bce1c6a6827
+		sourceColumn: A8_Mat
+		summarizeBy: None
+
+	column A8_Oth
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a8a89444-bc2a-4fa6-8c76-19e26ecfbda1
+		sourceColumn: A8_Oth
+		summarizeBy: None
+
+	column Basics5
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 04d687b2-34ab-423d-b568-b23ec19741d8
+		sourceColumn: Basics5
+		summarizeBy: None
+
+	column EBacc_AchSci
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 9ad1a304-668c-464f-a04b-3fdffbbfe9f6
+		sourceColumn: EBacc_AchSci
+		summarizeBy: None
+
+	column EBacc_AvgEng
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: a4dfedff-3bd7-4853-a7ce-cda312078761
+		sourceColumn: EBacc_AvgEng
+		summarizeBy: None
+
+	column EBacc_AvgSci
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d6ae4251-c845-4b20-ba49-93c65d6a4dff
+		sourceColumn: EBacc_AvgSci
+		summarizeBy: None
+
+	column EBacc_BestEng
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 65ced9ea-b6f0-4f59-8265-d116b5af3d43
+		sourceColumn: EBacc_BestEng
+		summarizeBy: None
+
+	column EBacc_BestSci
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 58eb6be9-3e38-4e34-bf8b-6d69d357a52a
+		sourceColumn: EBacc_BestSci
+		summarizeBy: None
+
+	column P8_Eb
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: af50120e-341d-4415-9c70-7b066883cd28
+		sourceColumn: P8_Eb
+		summarizeBy: None
+
+	column P8_Eng
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 77a6096a-578e-4876-bd27-7228e4a570ee
+		sourceColumn: P8_Eng
+		summarizeBy: None
+
+	column P8_Mat
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ce59e785-659c-4f34-b7df-6c7f42e43424
+		sourceColumn: P8_Mat
+		summarizeBy: None
+
+	column P8_Oth
+		dataType: Decimal
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: dc9f6f92-aef4-491b-94e6-7b67a7439388
+		sourceColumn: P8_Oth
+		summarizeBy: None
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = KS4
+

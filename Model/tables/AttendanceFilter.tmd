@@ -1,0 +1,129 @@
+table AttendanceFilter
+	isHidden
+	lineageTag: c211d7c3-bd90-446d-b559-6873a09bd9d1
+	ordinal: 63
+
+	partition AttendanceFilter = Calculated
+		mode: Import
+		expression:=
+			DATATABLE(
+			    "NCYear", INTEGER,
+			    "HalfTerm", STRING,
+			    {
+			        { -1, "Aut1" },
+			        { -1, "Aut2" },
+			        { -1, "Spr1" },
+			        { -1, "Spr2" },
+			        { -1, "Sum1" },
+			        { -1, "Sum2" },
+			        { 0, "Aut1" },
+			        { 0, "Aut2" },
+			        { 0, "Spr1" },
+			        { 0, "Spr2" },
+			        { 0, "Sum1" },
+			        { 0, "Sum2" },
+			        { 1, "Aut1" },
+			        { 1, "Aut2" },
+			        { 1, "Spr1" },
+			        { 1, "Spr2" },
+			        { 1, "Sum1" },
+			        { 1, "Sum2" },
+			        { 2, "Aut1" },
+			        { 2, "Aut2" },
+			        { 2, "Spr1" },
+			        { 2, "Spr2" },
+			        { 2, "Sum1" },
+			        { 2, "Sum2" },
+			        { 3, "Aut1" },
+			        { 3, "Aut2" },
+			        { 3, "Spr1" },
+			        { 3, "Spr2" },
+			        { 3, "Sum1" },
+			        { 3, "Sum2" },
+			        { 4, "Aut1" },
+			        { 4, "Aut2" },
+			        { 4, "Spr1" },
+			        { 4, "Spr2" },
+			        { 4, "Sum1" },
+			        { 4, "Sum2" },
+			        { 5, "Aut1" },
+			        { 5, "Aut2" },
+			        { 5, "Spr1" },
+			        { 5, "Spr2" },
+			        { 5, "Sum1" },
+			        { 5, "Sum2" },
+			        { 6, "Aut1" },
+			        { 6, "Aut2" },
+			        { 6, "Spr1" },
+			        { 6, "Spr2" },
+			        { 6, "Sum1" },
+			        { 6, "Sum2" },
+			        { 7, "Aut1" },
+			        { 7, "Aut2" },
+			        { 7, "Spr1" },
+			        { 7, "Spr2" },
+			        { 7, "Sum1" },
+			        { 7, "Sum2" },
+			        { 8, "Aut1" },
+			        { 8, "Aut2" },
+			        { 8, "Spr1" },
+			        { 8, "Spr2" },
+			        { 8, "Sum1" },
+			        { 8, "Sum2" },
+			        { 9, "Aut1" },
+			        { 9, "Aut2" },
+			        { 9, "Spr1" },
+			        { 9, "Spr2" },
+			        { 9, "Sum1" },
+			        { 9, "Sum2" },
+			        { 10, "Aut1" },
+			        { 10, "Aut2" },
+			        { 10, "Spr1" },
+			        { 10, "Spr2" },
+			        { 10, "Sum1" },
+			        { 10, "Sum2" },
+			        { 11, "Aut1" },
+			        { 11, "Aut2" },
+			        { 11, "Spr1" },
+			        { 11, "Spr2" },
+			        { 11, "Sum1" },
+			        //{ 11, "Sum2" },
+			        { 12, "Aut1" },
+			        { 12, "Aut2" },
+			        { 12, "Spr1" },
+			        { 12, "Spr2" },
+			        { 12, "Sum1" },
+			        { 12, "Sum2" },
+			        { 13, "Aut1" },
+			        { 13, "Aut2" },
+			        { 13, "Spr1" },
+			        { 13, "Spr2" },
+			        { 13, "Sum1" },
+			        //{ 13, "Sum2" },
+			        { 14, "Aut1" },
+			        { 14, "Aut2" },
+			        { 14, "Spr1" },
+			        { 14, "Spr2" },
+			        { 14, "Sum1" }
+			        //{ 14, "Sum2" }
+			    }
+			)
+
+
+	column NCYear
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		lineageTag: de7cfd3c-2a8a-4c27-a294-198026ccc101
+		sourceColumn: [NCYear]
+		summarizeBy: None
+
+	column HalfTerm
+		dataType: String
+		isAvailableInMDX: false
+		lineageTag: 8b9f0bea-d250-4250-a2f1-a9f523a7b549
+		sourceColumn: [HalfTerm]
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Attendance
+

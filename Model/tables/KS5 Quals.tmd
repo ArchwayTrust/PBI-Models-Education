@@ -1,0 +1,86 @@
+table 'KS5 Quals'
+	lineageTag: e6b2b13a-fb66-49ea-9e97-f0c01c241044
+	ordinal: 58
+
+	partition 'KS5 Quals' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS4Data             
+				Dataflow = Workspace{[ dataflowName = "Edu-KS5Data" ]}[Data],
+				Entity = Dataflow{[ entity = "dimKS5Quals" ]}[Data]
+			in
+				Entity
+
+
+	column 'G4S QAN'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 8c95568a-b98e-4a1d-99a8-62d4d1dee504
+		sourceColumn: "G4S QAN"
+		summarizeBy: None
+
+	column 'KS5 Discount Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 8d3b89d4-7786-460f-97fd-fea5f80cc039
+		sourceColumn: "KS5 Discount Code"
+		summarizeBy: None
+
+	column KS5QualId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 15675ea2-a4fe-42d2-85d5-837eaa1909db
+		sourceColumn: KS5QualId
+		summarizeBy: None
+
+	column QAN
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 9ce9a332-d727-468a-a27c-b27e61033abf
+		sourceColumn: QAN
+		summarizeBy: None
+
+	column Qualification
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: d7362977-0d8c-4fc9-8636-a69f55a5978e
+		sourceColumn: Qualification
+		summarizeBy: None
+
+	column 'Qualification Level'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 41f53134-e558-4c47-bcd9-20d2ee1dfa75
+		sourceColumn: "Qualification Level"
+		summarizeBy: None
+
+	column Subject
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 5de75cd5-b71c-42de-97fd-3abbdca4432e
+		sourceColumn: Subject
+		summarizeBy: None
+
+	column Type
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: cf1886d4-11a9-47d8-b9fe-a206de97322d
+		sourceColumn: Type
+		summarizeBy: None
+
+	column VAQualId
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 933307dd-2b0f-4b3b-a9d0-f8eb480f6ea7
+		sourceColumn: VAQualId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = KS5
+

@@ -1,0 +1,32 @@
+expression RangeStart = #datetime(2021, 9, 1, 0, 0, 0) meta [IsParameterQuery=true, Type="DateTime", IsParameterQueryRequired=true]
+	lineageTag: a846930f-c753-4c57-958f-2e15e9e04db6
+
+	annotation PBI_ResultType = DateTime
+
+expression RangeEnd = #datetime(2021, 10, 1, 0, 0, 0) meta [IsParameterQuery=true, Type="DateTime", IsParameterQueryRequired=true]
+	lineageTag: fcb39945-b32f-446c-bf4b-bcc2be06427b
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = DateTime
+
+expression fxAttendancePartition =
+	let
+	  Source = (pDateFrom as date, pDateTo as date) =>
+	    let
+	      Source          = PowerPlatform.Dataflows(null), 
+	      Workspaces      = Source{[Id = "Workspaces"]}[Data], 
+	      //DW-Dataflows-Education
+	      Workspace       = Workspaces{[workspaceName = "DW-Dataflows-Education"]}[Data], 
+	      //Edu-Attendance
+	      Dataflow        = Workspace{[dataflowName = "Edu-Attendance"]}[Data], 
+	      Entity          = Dataflow{[entity = "factSIMSAttendance", version = ""]}[Data], 
+	      ToDate          = Table.TransformColumnTypes(Entity, {{"Date", type date}}), 
+	      PartitionFilter = Table.SelectRows(ToDate, each [Date] <= pDateTo and [Date] >= pDateFrom)
+	    in
+	      PartitionFilter
+	in
+	  Source
+
+	lineageTag: 695e9cce-865a-4790-a539-d955ce7d12a9
+

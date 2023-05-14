@@ -1,0 +1,44 @@
+table 'Leaver Removal Grounds'
+	lineageTag: 858432ce-f2a9-4536-9a0a-1ad13a2d717c
+	ordinal: 44
+
+	partition 'Leaver Removal Grounds' = M
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows(null), 
+			  Workspaces = Source{[Id = "Workspaces"]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[workspaceName = "DW-Dataflows-Education"]}[Data], 
+			  //Edu-Leavers
+			  Dataflow = Workspace{[dataflowName = "Edu-Leavers"]}[Data], 
+			  Entity = Dataflow{[entity = "dimLeaverRemovalGrounds"]}[Data]
+			in
+			  Entity
+
+
+	column 'Grounds for Removal'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e54986c8-65c9-44b6-88b2-de7ec7f02377
+		sourceColumn: "Grounds for Removal"
+		summarizeBy: None
+
+	column 'Grounds for Removal Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 3c8dfc1a-e9b4-4a92-a919-de7ae861c2b4
+		sourceColumn: "Grounds for Removal Code"
+		summarizeBy: None
+
+	column LeaverRemovalGroundsId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d196751c-1cfc-4d5b-8f7f-0e435aec0506
+		sourceColumn: LeaverRemovalGroundsId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Enrolment
+

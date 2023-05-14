@@ -1,0 +1,182 @@
+table 'GL PTE'
+	lineageTag: 65395a9e-3851-4906-b931-f37be74608c5
+	ordinal: 27
+
+	partition 'GL PTE' = M
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows ( null ), 
+			  Workspaces = Source{[ Id = "Workspaces" ]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data], 
+			  //Edu-GL
+			  Dataflow = Workspace{[ dataflowName = "Edu-GL" ]}[Data], 
+			  Entity = Dataflow{[ entity = "factGLPTE" ]}[Data]
+			in
+			  Entity
+
+
+	measure 'PTE SAS' = AVERAGE ('GL PTE'[StandardAgeScore])
+		lineageTag: 29674788-8f29-4a48-968b-5fc93bcdccf5
+
+	measure 'PTE English Skills Stanine' =
+		
+		AVERAGE ( 'GL PTE'[EnglishSkillsStanine])
+
+		lineageTag: d05e2f5f-430c-4f65-ab20-e2941575ab69
+
+	measure 'PTE Reading Comprehension Stanine' =
+		
+		AVERAGE ( 'GL PTE'[ReadingComprehensionStanine] )
+
+		lineageTag: 7d0bef9b-0133-4f67-9b99-27b177ed5409
+
+	column 'Academic Year'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 6a75d160-92bd-40cc-abc5-b06a9aafe9fa
+		sourceColumn: "Academic Year"
+		summarizeBy: None
+
+	column DateOfTest
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d562e4b6-e3c5-496b-a162-0cbe22f161df
+		sourceColumn: DateOfTest
+		summarizeBy: None
+
+	column EnglishSkillsStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 76fd0a13-0afa-42a3-bb9a-3fac80b2810c
+		sourceColumn: EnglishSkillsStanine
+		summarizeBy: None
+
+	column GLProgressCategoryId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: fae69295-e018-4d2c-ae82-7ab5a1d69bbd
+		sourceColumn: GLProgressCategoryId
+		summarizeBy: None
+
+	column NationalPercentileRank
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 97076ef0-db11-4662-b8d0-52d42317efbf
+		sourceColumn: NationalPercentileRank
+		summarizeBy: None
+
+	column OverallStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 823c9629-cbdd-44dd-a122-f5c4b5861174
+		sourceColumn: OverallStanine
+		summarizeBy: None
+
+	column 'Previous Test Name'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ed5715cc-160e-441d-9834-02ac98c94b63
+		sourceColumn: "Previous Test Name"
+		summarizeBy: None
+
+	column PreviousTestDate
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2f128e19-3c6e-46da-8665-2acacbe21bab
+		sourceColumn: PreviousTestDate
+		summarizeBy: None
+
+	column PreviousTestSAS
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 32a87485-a827-4117-b5a8-1cfc6fc45ff5
+		sourceColumn: PreviousTestSAS
+		summarizeBy: None
+
+	column PreviousTestStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 89cf8e75-4fa9-4fa1-afb7-5cba105eb1dc
+		sourceColumn: PreviousTestStanine
+		summarizeBy: None
+
+	column ReadingComprehensionStanine
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 33229e24-b3c1-4394-ad3e-bf10f59f9a74
+		sourceColumn: ReadingComprehensionStanine
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 7bad1265-a31e-4b4d-8cd7-8a7cbe1d6890
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StandardAgeScore
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 725b0ad5-740d-4142-8db6-be5321e15831
+		sourceColumn: StandardAgeScore
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: c01a634b-5c7f-40c2-b13d-8eabf697acfe
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	column 'Test Name'
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5921d726-b819-4d41-98d3-c4ca32cf68e0
+		sourceColumn: "Test Name"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = GL
+

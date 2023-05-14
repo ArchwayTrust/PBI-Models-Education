@@ -1,0 +1,63 @@
+/// List of CAF Slots
+/// Filters "KS4 Statistics".
+/// (DIMENSION)
+table 'CAF Slot'
+	lineageTag: de3bd57a-b171-4162-aca0-45c64cde4b71
+	ordinal: 3
+
+	partition 'CAF Slot' = M
+		mode: Import
+		expression:=
+			let
+			  Source = #table (
+			    type table [ #"CAFSlot" = text, #"DisplayOrder" = Int64.Type ], 
+			    {
+			      { "Y11Act", 1 }, 
+			      { "Y11Sum", 2 }, 
+			      { "Y11Spr", 3 }, 
+			      { "Y11Aut", 4 }, 
+			      { "Y10Sum", 5 }, 
+			      { "Y10Spr", 6 }, 
+			      { "Y10Aut", 7 }
+			    }
+			  )
+			in
+			  Source
+
+		queryGroup: 'Dimensions\Static'
+
+	column CAFSlot
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 64fef866-f3ce-49ef-8b4d-4150e8e121f6
+		sortByColumn: DisplayOrder
+		sourceColumn: CAFSlot
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE","ISAVAILABLEINMDX_FALSE_NONATTRIBUTE_COLUMNS"]}
+
+	column DisplayOrder
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: e9399cde-e850-4678-90de-9f76211e5045
+		sourceColumn: DisplayOrder
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = KS4
+

@@ -1,0 +1,183 @@
+table 'KS1 Outcomes'
+	lineageTag: 4ccb5fd8-9da4-40ad-88aa-4df9ec0d2044
+	ordinal: 67
+
+	partition 'KS1 Outcomes' = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-KS2Data-Ingest           
+				Dataflow = Workspace{[ dataflowName = "Edu-Primary-Ingest" ]}[Data],
+				Entity = Dataflow{[ entity = "fctPrimaryKS1Outcomes" ]}[Data]
+			in
+				Entity
+
+
+	measure 'KS1 % EXS+ Maths' =
+		VAR NumberEXS = 
+		    CALCULATE (
+		        COUNTROWS ( 'KS1 Outcomes' ),
+		        'KS1 Outcomes'[MathOutcome] IN {"EXS", "GDS"}
+		    )
+		    
+		VAR TotalStudents = COUNTROWS ( 'KS1 Outcomes' )
+		
+		VAR Result = 
+		    DIVIDE ( NumberEXS, TotalStudents )
+		    
+		RETURN Result
+		    
+		
+
+		formatString:= #,##0.0 %
+		lineageTag: 17789d50-3023-4184-9ccc-19898d1d8997
+
+	measure 'KS1 % EXS+ Reading' =
+		VAR NumberEXS = 
+		    CALCULATE (
+		        COUNTROWS ( 'KS1 Outcomes' ),
+		        'KS1 Outcomes'[ReadOutcome] IN {"EXS", "GDS"}
+		    )
+		    
+		VAR TotalStudents = COUNTROWS ( 'KS1 Outcomes' )
+		
+		VAR Result = 
+		    DIVIDE ( NumberEXS, TotalStudents )
+		    
+		RETURN Result
+		    
+		
+
+		formatString:= #,##0.0 %
+		lineageTag: 84f276ea-4cf5-4a02-b504-971bb32d709c
+
+	measure 'KS1 % EXS+ Writing' =
+		VAR NumberEXS = 
+		    CALCULATE (
+		        COUNTROWS ( 'KS1 Outcomes' ),
+		        'KS1 Outcomes'[WriteOutcome] IN {"EXS", "GDS"}
+		    )
+		    
+		VAR TotalStudents = COUNTROWS ( 'KS1 Outcomes' )
+		
+		VAR Result = 
+		    DIVIDE ( NumberEXS, TotalStudents )
+		    
+		RETURN Result
+		    
+		
+
+		formatString:= #,##0.0 %
+		lineageTag: 22f07bb0-54ce-4551-bece-09b2a72b4054
+
+	measure 'KS1 % EXS+ Science' =
+		VAR NumberEXS = 
+		    CALCULATE (
+		        COUNTROWS ( 'KS1 Outcomes' ),
+		        'KS1 Outcomes'[SciOutcome] IN {"EXS", "GDS"}
+		    )
+		    
+		VAR TotalStudents = COUNTROWS ( 'KS1 Outcomes' )
+		
+		VAR Result = 
+		    DIVIDE ( NumberEXS, TotalStudents )
+		    
+		RETURN Result
+		    
+		
+
+		formatString:= #,##0.0 %
+		lineageTag: bca44d92-8380-4188-b974-922a43a9925f
+
+	measure 'KS1 % EXS+ RWM' =
+		VAR NumberEXS = 
+		    CALCULATE (
+		        COUNTROWS ( 'KS1 Outcomes' ),
+		        'KS1 Outcomes'[MathOutcome] IN {"EXS", "GDS"},
+		        'KS1 Outcomes'[ReadOutcome] IN {"EXS", "GDS"},
+		        'KS1 Outcomes'[WriteOutcome] IN {"EXS", "GDS"}
+		    )
+		    
+		VAR TotalStudents = COUNTROWS ( 'KS1 Outcomes' )
+		
+		VAR Result = 
+		    DIVIDE ( NumberEXS, TotalStudents )
+		    
+		RETURN Result
+		    
+		
+
+		formatString:= #,##0.0 %
+		lineageTag: e6cfef61-261d-4c66-807c-026a597075f3
+
+	column DataSet
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: b88ba11c-4589-4ef1-9539-af3f2491d78c
+		sourceColumn: DataSet
+		summarizeBy: None
+
+	column MathOutcome
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 82f390da-945c-43d2-918d-dd99f9f16fd7
+		sourceColumn: MathOutcome
+		summarizeBy: None
+
+	column ReadOutcome
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 4b2a1d57-c1ac-4a4a-adf4-f1012db78009
+		sourceColumn: ReadOutcome
+		summarizeBy: None
+
+	column SciOutcome
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2c2610ee-fc50-4bf2-b494-df63c141fb8b
+		sourceColumn: SciOutcome
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2bf3b344-0338-4e3e-bf59-e56f581b3649
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1e3ade71-a444-4d6b-b7fc-3725cc1e3d37
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	column WriteOutcome
+		dataType: String
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d0a0b9cd-2045-4714-8d69-026822947020
+		sourceColumn: WriteOutcome
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Primary
+

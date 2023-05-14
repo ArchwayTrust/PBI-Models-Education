@@ -1,0 +1,61 @@
+table 'Parent View Question'
+	lineageTag: 8677b374-d428-46fd-8a80-2196bb57b2d2
+	ordinal: 47
+
+	partition 'Parent View Question' = M
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows(null), 
+			  Workspaces = Source{[Id = "Workspaces"]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[workspaceName = "DW-Dataflows-Education"]}[Data], 
+			  //Edu-ParentView
+			  Dataflow = Workspace{[dataflowName = "Edu-ParentView"]}[Data], 
+			  Entity = Dataflow{[entity = "dimParentViewQuestions"]}[Data]
+			in
+			  Entity
+
+
+	column 'Full Question'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e689cfa3-d7a3-4b26-b898-c7f9fb51e946
+		sortByColumn: QuestionId
+		sourceColumn: "Full Question"
+		summarizeBy: None
+
+	column Question
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 9fa99e59-0bb1-4225-be18-e509f25ec806
+		sortByColumn: QuestionId
+		sourceColumn: Question
+		summarizeBy: None
+
+	column QuestionId
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ffb12cae-9d06-481b-9dad-f962f5d1ebb7
+		sourceColumn: QuestionId
+		summarizeBy: None
+
+	column 'Short Question'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: a9b583c6-4bdc-48ac-a971-916cddfc9b54
+		sortByColumn: QuestionId
+		sourceColumn: "Short Question"
+		summarizeBy: None
+
+	column 'Short Question With Number'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 4bbcd03e-b668-43d9-a88d-18c8b3851c49
+		sortByColumn: QuestionId
+		sourceColumn: "Short Question With Number"
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Parent View
+

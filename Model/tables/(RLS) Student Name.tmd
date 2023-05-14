@@ -1,0 +1,155 @@
+table '(RLS) Student Name'
+	lineageTag: 1b20eb2d-a147-442c-aaca-59ebf6cb00d3
+	ordinal: 36
+
+	partition '(RLS) Student Name' = M
+		mode: Import
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows ( null ), 
+			  Workspaces = Source{[ Id = "Workspaces" ]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data], 
+			  //Edu-General
+			  Dataflow = Workspace{[ dataflowName = "Edu-General" ]}[Data], 
+			  Entity = Dataflow{[ entity = "dimStudents" ]}[Data]
+			in
+			  Entity
+
+		queryGroup: Dimensions
+
+	measure 'RLS Student Visual Filter' =
+		
+		INT(
+		    NOT (
+		        CALCULATE (
+		            ISEMPTY ( Student ),
+		            USERELATIONSHIP ( '(RLS) Student Name'[StudentId], Student[StudentId] )
+		        )
+		    )
+		)
+
+		lineageTag: cab22cee-4bf9-40e6-a5c3-04a8610178c1
+
+	measure 'Selected First Name' = SELECTEDVALUE ( '(RLS) Student Name'[First Name] )
+		displayFolder: "Excel Cube Measures"
+		lineageTag: b5f0a7b3-c01a-4e6f-89c5-c9705cac8083
+
+	measure 'Selected Last Name' = SELECTEDVALUE ( '(RLS) Student Name'[Last Name] )
+		displayFolder: "Excel Cube Measures"
+		lineageTag: 08dc6578-f903-4a97-940c-a24f36f996e1
+
+	measure 'Selected NC Year' = SELECTEDVALUE ( Student[NC Year] )
+		displayFolder: "Excel Cube Measures"
+		lineageTag: e5ec2282-0d1c-4bb4-8221-6e68bbb61b69
+
+	measure 'Selected Tutor Group' = SELECTEDVALUE ( Student[Registration Group] )
+		displayFolder: "Excel Cube Measures"
+		lineageTag: 7f26fd83-aee7-44c1-8849-8d0e06e8484e
+
+	measure 'Selected Leaving Date' = SELECTEDVALUE ( Student[Leaving Date] )
+		displayFolder: "Excel Cube Measures"
+		formatString:= dd/MM/yyyy
+		lineageTag: 36e85025-7fee-493c-9543-e266e563935d
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		isUnique
+		lineageTag: 48468268-d769-4a86-9f0a-299d70b460e0
+		sourceColumn: StudentId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = User
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column Academy
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 6f33edb3-bce7-4947-b10f-b7c556f0e67b
+		sourceColumn: Academy
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column UPN
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: a43e8123-692b-4ba4-8a12-f764bfa2918c
+		sourceColumn: UPN
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'First Name'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 8ac764da-2bdc-4ebf-b18d-cc7ddc0f7b12
+		sourceColumn: "First Name"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Last Name'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: b7f1cd76-b5e7-44b5-97ed-9bab56c7126a
+		sourceColumn: "Last Name"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Date of Birth'
+		dataType: DateTime
+		encodingHint: Value
+		isDataTypeInferred: false
+		lineageTag: 4941ad6f-3426-4cfb-a92d-92b3dcc0384b
+		sourceColumn: "Date of Birth"
+		summarizeBy: None
+
+	column 'Display Name' =
+		
+		'(RLS) Student Name'[Last Name] & ", " & '(RLS) Student Name'[First Name] & " (" & '(RLS) Student Name'[UPN] & ")"
+
+		dataType: String
+		isDefaultLabel
+		lineageTag: 645b97f4-cb02-4e21-96f1-ef85a993cb76
+		summarizeBy: None
+
+	column 'Academic Year'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 8fdeef88-e60d-4163-81b5-6ebe97bcecc7
+		sourceColumn: "Academic Year"
+		summarizeBy: None
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Conformed
+

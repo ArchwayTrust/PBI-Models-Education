@@ -1,0 +1,70 @@
+table 'DfE School Type'
+	lineageTag: 730f7f52-cbe6-4b34-ab19-f90e3b6636f1
+	ordinal: 7
+
+	partition 'DfE School Type' = M
+		mode: Import
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-DfEStatistics                   
+				Dataflow = Workspace{[ dataflowName = "Edu-DfEStatistics" ]}[Data],
+				Entity = Dataflow{[ entity = "dimSchoolTypes" ]}[Data]
+			in
+				Entity
+
+		queryGroup: Dimensions
+
+	column SchoolTypeId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		lineageTag: 474b815e-4e11-4843-bec2-52dc3ed4a5ac
+		sourceColumn: SchoolTypeId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column 'School Type'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 21edffc0-dc12-42f1-a60a-bc433f871cbd
+		sourceColumn: "School Type"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'KS4 School Type'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: db47d9b7-68cb-413b-959c-afc602631f30
+		sourceColumn: "KS4 School Type"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = DfE
+

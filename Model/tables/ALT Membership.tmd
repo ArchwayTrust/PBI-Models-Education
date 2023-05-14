@@ -1,0 +1,56 @@
+/// Flag to only show data from after joining ALT.
+/// (DIMENSION)
+table 'ALT Membership'
+	lineageTag: 691d138c-6188-4aff-966f-3b76b55f4616
+	ordinal: 17
+
+	partition 'ALT Membership' = M
+		mode: Import
+		expression:=
+			let
+			  Source = #table(
+			    type table [#"ALTMembershipId" = Int64.Type, #"Membership" = text], 
+			    {{0, "Data From Pre Join"}, {1, "Data After Join"}}
+			  )
+			in
+			  Source
+
+		queryGroup: 'Dimensions\Static'
+
+	column ALTMembershipId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		isKey
+		lineageTag: 9cdf6f1f-abb0-4597-aff3-a68e3d9e93b7
+		sourceColumn: ALTMembershipId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column Membership
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 3cead985-1e3a-47c3-b610-ef38ec4d7683
+		sourceColumn: Membership
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Conformed
+

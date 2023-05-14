@@ -1,0 +1,77 @@
+table SIAMS
+	lineageTag: 7424cdfe-1689-434a-ae80-4eb559f56dd3
+	ordinal: 80
+
+	partition SIAMS = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],                     
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],       
+				Dataflow = Workspace{[ dataflowName = "Edu-Inspections" ]}[Data],
+				Entity = Dataflow{[ entity = "fctSIAMS" ]}[Data]
+			in
+				Entity
+
+
+	measure 'Impact of Collective Worship' = SELECTEDVALUE ( SIAMS[CollectiveWorship] )
+		lineageTag: 293c823f-57f5-4ecc-b440-fab995f2ba00
+
+	measure 'Next Inspection' = SELECTEDVALUE ( SIAMS[NextInpsection] )
+		formatString:= 0
+		lineageTag: ccae092d-add4-46d1-9f41-a0dc30724ec5
+
+	measure 'Overall Grade' = SELECTEDVALUE ( SIAMS[OverallGrade] )
+		lineageTag: 61a83fef-c9ce-4045-ba30-df8d1e5493b4
+
+	measure 'Effectiveness of RE' = SELECTEDVALUE ( SIAMS[ReligiousEducation] )
+		lineageTag: 817b8687-ded3-42be-9372-b8da74b167cf
+
+	measure 'SIAMS Inspection Date' = SELECTEDVALUE ( SIAMS[InspectionDate] )
+		formatString:= mmmm yyyy
+		lineageTag: 2c664c94-0149-43f0-8615-475ce450f705
+
+	column CollectiveWorship
+		dataType: String
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e12de723-bd08-43a6-8ff6-b646714f6c72
+		sourceColumn: CollectiveWorship
+
+	column InspectionDate
+		dataType: DateTime
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e7992ba9-887a-44a4-84ef-a512559f6a3b
+		sourceColumn: InspectionDate
+
+	column NextInpsection
+		dataType: Int64
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 0306d27e-1327-490b-9281-d4f0b80b9f03
+		sourceColumn: NextInpsection
+
+	column OverallGrade
+		dataType: String
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 622ae609-cbc2-4cd1-ad2a-b5d1f2f4be4a
+		sourceColumn: OverallGrade
+
+	column ReligiousEducation
+		dataType: String
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 8dfe1411-aa7d-4d04-a6dc-97775480dd0c
+		sourceColumn: ReligiousEducation
+
+	column SiteId
+		dataType: Int64
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e2e13cbe-f7cb-44ac-b6bd-130ac8ec637f
+		sourceColumn: SiteId
+
+	annotation TabularEditor_TableGroup = Inspections
+

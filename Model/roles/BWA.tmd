@@ -1,0 +1,11 @@
+role BWA
+	modelPermission: Read
+
+	tablePermission '(RLS) Site' = '(RLS) Site'[Academy Code] = "BWA"
+		table: '(RLS) Site'
+
+	tablePermission '(RLS) Student Name' = '(RLS) Student Name'[Academy] = "BWA"
+		table: '(RLS) Student Name'
+
+	annotation PBI_Id = c4c188902fea423f9c770a28de8ea37a
+

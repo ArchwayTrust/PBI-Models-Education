@@ -1,0 +1,69 @@
+table 'Ofsted Rating'
+	lineageTag: 635623a4-7d9f-469c-9642-b387d87335b8
+	ordinal: 16
+
+	partition 'Ofsted Rating' = M
+		mode: Import
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],
+				//DW-Dataflows-Education                        
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data],
+				//Edu-ICFP          
+				Dataflow = Workspace{[ dataflowName = "Edu-ICFP" ]}[Data],
+				Entity = Dataflow{[ entity = "dimOfstedRatings" ]}[Data]
+			in
+				Entity
+
+		queryGroup: Dimensions
+
+	column OfstedRatingId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isKey
+		lineageTag: 04eac524-cd89-4530-9af8-850c70745e8e
+		sourceColumn: OfstedRatingId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+	column 'Ofsted Rating Number'
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isDataTypeInferred: false
+		lineageTag: 153012b6-2b0a-42af-ad92-00dd17635d09
+		sourceColumn: "Ofsted Rating Number"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Ofsted Rating'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: bf61260d-34f0-4ea7-be82-796d04d2827b
+		sourceColumn: "Ofsted Rating"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Inspections
+

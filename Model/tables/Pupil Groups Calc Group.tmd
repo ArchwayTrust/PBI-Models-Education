@@ -1,0 +1,117 @@
+table 'Pupil Groups Calc Group'
+	lineageTag: f17569ac-272f-4ba0-8470-5956f96787e9
+	ordinal: 45
+
+	partition Partition = CalculationGroup
+		mode: Import
+
+	calculationGroup
+		precedence: 1
+
+		calculationItem 'All pupils' = SELECTEDMEASURE()
+
+		calculationItem EHCP =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[DFE SEND] = "E"
+			)
+
+
+		calculationItem 'SEN Support' =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[DFE SEND] = "K"
+			)
+
+
+		calculationItem 'Pupil Premium' =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[Pupil Premium] = "PP"
+			)
+
+
+		calculationItem 'No SEND' =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[DfE SEND] = "N"
+			)
+
+
+		calculationItem 'Not Pupil Premium' =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[Pupil Premium] = "Not PP"
+			)
+
+
+		calculationItem Male =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[Gender] = "M"
+			)
+
+
+		calculationItem Female =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[Gender] = "F"
+			)
+
+
+		calculationItem 'Not FSM Ever6' =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[FSM Ever 6] = "Not FSM Ever6"
+			)
+
+
+		calculationItem 'FSM Ever6' =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[FSM Ever 6] = "FSM Ever6"
+			)
+
+
+		calculationItem EAL =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[EAL] = "EAL"
+			)
+
+
+		calculationItem 'Not EAL' =
+			
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    Student[EAL] = "Not EAL"
+			)
+
+
+	column 'Pupil Group'
+		dataType: String
+		isDataTypeInferred: false
+		sortByColumn: Ordinal
+		sourceColumn: Name
+		summarizeBy: None
+
+	column Ordinal
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		sourceColumn: Ordinal
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Calculation Groups
+

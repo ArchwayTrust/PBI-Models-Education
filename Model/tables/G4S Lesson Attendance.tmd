@@ -1,0 +1,96 @@
+table 'G4S Lesson Attendance'
+	lineageTag: dda3d8d2-1198-4883-ab1d-dfa7d9031b53
+	ordinal: 31
+
+	partition 'G4S Lesson Attendance' = M
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows ( null ), 
+			  Workspaces = Source{[ Id = "Workspaces" ]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data], 
+			  //Edu-G4SAttendance
+			  Dataflow = Workspace{[ dataflowName = "Edu-G4SAttendance" ]}[Data], 
+			  Entity = Dataflow{[ entity = "factLessonAttendance" ]}[Data]
+			in
+			  Entity
+
+
+	measure 'Lesson Minutes Late' =
+		
+		SUM ( 'G4S Lesson Attendance'[LessonMinutesLate] )
+
+		lineageTag: b91a6edb-c217-433b-a90e-fc829ba65efe
+
+	column G4SAttendanceCodeId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 311df026-3e05-4818-9a9a-065c7c43603d
+		sourceColumn: G4SAttendanceCodeId
+		summarizeBy: None
+
+	column GroupId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 9f2dca42-7c5b-486f-999e-25579034e49c
+		sourceColumn: GroupId
+		summarizeBy: None
+
+	column LessonMinutesLate
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 97bf8b39-53a8-4187-be14-6e10a50409a4
+		sourceColumn: LessonMinutesLate
+		summarizeBy: None
+
+	column PeriodId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: fe85a062-4b89-4cf5-af3d-76af5b5d8e66
+		sourceColumn: PeriodId
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 5ea4a9e9-b2b7-4ebb-ba09-e77a4dc13fd6
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 1da9c161-d894-4fee-af50-b30ecea63ade
+		sourceColumn: StudentId
+		summarizeBy: None
+
+	column Date
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d3e2f3ef-1188-4fd5-befd-9fcf9e82f514
+		sourceColumn: Date
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Attendance
+

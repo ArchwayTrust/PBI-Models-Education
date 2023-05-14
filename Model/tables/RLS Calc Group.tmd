@@ -1,0 +1,58 @@
+table 'RLS Calc Group'
+	lineageTag: 9413b245-d914-4c50-be38-2f354e53948c
+	ordinal: 41
+
+	partition Partition = CalculationGroup
+		mode: Import
+
+	calculationGroup
+
+		calculationItem 'Activate Name Relationship' =
+			
+			VAR StudentIdsToMove = 
+			    CALCULATETABLE (
+			        DISTINCT ('(RLS) Student Name'[StudentId]),
+			        TREATAS ( VALUES ( Site[Academy Code] ), '(RLS) Site'[Academy Code]),
+			        TREATAS (VALUES (Calendar[Academic Year]), '(RLS) Student Name'[Academic Year])
+			    )
+			
+			RETURN
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    KEEPFILTERS( TREATAS( StudentIdsToMove, Student[StudentId] ) )
+			)
+
+
+		calculationItem 'Apply Directly For Exclusions' =
+			
+			VAR StudentIdsToMove = 
+			    CALCULATETABLE (
+			        DISTINCT ('(RLS) Student Name'[StudentId]),
+			        TREATAS ( VALUES ( Site[Academy Code] ), '(RLS) Site'[Academy Code]),
+			        TREATAS (VALUES (Calendar[Academic Year]), '(RLS) Student Name'[Academic Year])
+			    )
+			
+			RETURN
+			CALCULATE (
+			    SELECTEDMEASURE(),
+			    KEEPFILTERS( TREATAS( StudentIdsToMove, Suspension[StudentId] ) )
+			)
+
+
+	column 'Calc Item'
+		dataType: String
+		isDataTypeInferred: false
+		sortByColumn: Ordinal
+		sourceColumn: Name
+		summarizeBy: None
+
+	column Ordinal
+		dataType: Int64
+		encodingHint: Value
+		isDataTypeInferred: false
+		isHidden
+		sourceColumn: Ordinal
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = Calculation Groups
+

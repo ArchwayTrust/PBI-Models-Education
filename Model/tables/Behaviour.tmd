@@ -1,0 +1,425 @@
+/// Behaviour Events Data.
+/// One row per student per event.
+/// (FACT)
+table Behaviour
+	lineageTag: 499fe583-5431-45c2-b78f-ff682f38fde4
+	ordinal: 23
+
+	partition Behaviour = M
+		mode: Import
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows(null), 
+			  Workspaces = Source{[Id = "Workspaces"]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[workspaceName = "DW-Dataflows-Education"]}[Data], 
+			  //Edu-Behaviour
+			  Dataflow = Workspace{[dataflowName = "Edu-Behaviour"]}[Data], 
+			  Entity = Dataflow{[entity = "factBehEvents"]}[Data]
+			in
+			  Entity
+
+		queryGroup: Facts
+
+	measure 'Negative Points' =
+		
+		-1
+		    * CALCULATE(
+		        SUM( Behaviour[Score] ),
+		        NOT Behaviour[Cancelled],
+		        'Behaviour Event Type'[Significance] = "Negative"
+		    )
+
+		formatString:= #,##0
+		lineageTag: 161cd4c9-16a5-4f4b-b463-08b4ff32de43
+
+	measure 'Number of Negative Student Events' =
+		
+		CALCULATE(
+		    [Number of Student Events],
+		    'Behaviour Event Type'[Significance] = "Negative",
+		    Behaviour[Score] < 0
+		)
+
+		formatString:= #,##0
+		lineageTag: 7249a1a2-3ac4-441d-a320-e855b5417c5f
+
+	measure 'Number of Student Events' =
+		
+		CALCULATE(
+		    COUNTROWS( Behaviour ),
+		    NOT Behaviour[Cancelled]
+		)
+
+		formatString:= #,##0
+		lineageTag: 83713985-7fea-4904-9034-6429d237538d
+
+	measure 'Positive Points' =
+		
+		CALCULATE(
+		   SUM(Behaviour[Score]),
+		   NOT Behaviour[Cancelled],
+		   'Behaviour Event Type'[Significance] = "Positive"
+		)
+
+		formatString:= #,##0
+		lineageTag: 50ca893e-9ff0-4ddd-af45-01deb755fdec
+
+	measure 'Behaviour Slicer Filter' = INT ( NOT ( ISEMPTY ( Behaviour )))
+		formatString:= #,##0
+		lineageTag: 1b1741b1-df97-4eb9-88b4-686874378b82
+
+	measure 'Weekly Average Negative Events' =
+		
+		// Get week commencing of latest week in filter context. There is a trap so that if no filter is applied it will return the current week.
+		VAR CurrentWeek =
+		    CALCULATE(
+		        MAX( Calendar[Week Commencing] ),
+		        Calendar[Date] < TODAY( )
+		    )
+		   
+		VAR Result =
+		    CALCULATE(
+		        // Cycle through each week in currently selected academic years.
+		        AVERAGEX(
+		            VALUES( Calendar[Week Commencing] ),
+		            
+		            // Check if student was present in the currently iterated week.
+		            VAR HasAttendance =
+		                CALCULATE(
+		                    NOT ISEMPTY( Attendance ),
+		                    'SIMS Attendance Code'[Statistical Meaning] = "Present"
+		                )
+		            
+		            // For a non blank result for number of negative events when the student was present.
+		            VAR Result =
+		                IF(
+		                    HasAttendance,
+		                    [Number of Negative Student Events] + 0,
+		                    BLANK( )
+		                )
+		                
+		            RETURN
+		                Result
+		        ),
+		        
+		        // Remove all filters from calendar table and put back filter on academic year.
+		        REMOVEFILTERS( Calendar ),
+		        VALUES( Calendar[Academic Year] ),
+		        
+		        // Exclude current week from weekly average.
+		        Calendar[Week Commencing] < CurrentWeek
+		    )
+		RETURN
+		    Result
+
+		displayFolder: "Change Detection"
+		formatString:= #,##0.00
+		lineageTag: bc37d86c-1652-4641-81e2-1a4a79076680
+
+	measure 'Negative Event Weekly % Change' =
+		VAR WeeklyAverage =
+		    [Weekly Average Negative Events]
+		    
+		VAR CurrentWeek = 
+		    CALCULATETABLE(
+		        LASTDATE('CAlendar'[Week Commencing]),
+		        KEEPFILTERS( 'Calendar'[Date] <= TODAY() )
+		        )
+		
+		VAR CurrentWeekEvents = 
+		    CALCULATE(
+		        [Number of Negative Student Events],
+		        CurrentWeek
+		        )
+		
+		RETURN
+		    DIVIDE(
+		        CurrentWeekEvents - WeeklyAverage,
+		        WeeklyAverage
+		        )
+
+		displayFolder: "Change Detection"
+		formatString:= #,0.0%;-#,0.0%;#,0.0%
+		lineageTag: 50916338-e197-44df-b3d7-a9fa66a3da5f
+
+	measure 'Median Negative Events Per Student' =
+		
+		VAR StuIdList = 
+		    FILTER (
+		        VALUES ( Student[StudentId] ),
+		        [Number of Negative Student Events] > 0
+		    )
+		
+		RETURN
+		MEDIANX (
+		    StuIdList,
+		    [Number of Negative Student Events]
+		)
+
+		lineageTag: 2a7a7e5e-e57f-40d3-b669-4402dd300cb0
+
+	measure '# ILU Admissions' =
+		CALCULATE(
+		    SUM( Behaviour[ILUAdmission] ),
+		    NOT Behaviour[Cancelled]
+		)
+
+		formatString:= #,##0
+		lineageTag: f662d4a0-60ce-424a-a514-d2a674ca2fcd
+
+	measure '# ILU Days' =
+		CALCULATE(
+		    SUM( Behaviour[ILUDays] ),
+		    NOT Behaviour[Cancelled]
+		)
+
+		formatString:= #,##0.0
+		lineageTag: 188b1c45-989a-4bc6-90dd-0a965bbf9654
+
+	measure '# Students Admitted to ILU' =
+		CALCULATE(
+		    DISTINCTCOUNT( Behaviour[StudentId] ),
+		    Behaviour[ILUAdmission] = 1,
+		    NOT Behaviour[Cancelled]
+		)
+
+		formatString:= #,##0
+		lineageTag: bd9edec4-9a3b-45fc-8a38-5f7e2da145cc
+
+	column 'Event Date'
+		dataType: DateTime
+		encodingHint: Value
+		formatString:= Long Date
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ca28540e-d081-4088-bdb3-6c7fa62eae7d
+		sourceColumn: "Event Date"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation Format = <Format Format="DateTimeGeneralPattern"><DateTimes><DateTime LCID="2057" Group="LongDate" FormatString="D" /></DateTimes></Format>
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["RELATIONSHIP_COLUMNS_SHOULD_BE_OF_INTEGER_DATA_TYPE"]}
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column BehEventId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 7a923c96-ad17-4b20-bb89-27006834d8dd
+		sourceColumn: BehEventId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column StudentId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 0ff451d1-70dd-431c-8ef9-be3ed9b67689
+		sourceColumn: StudentId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ea36324a-1a8b-4cbe-a549-d26a5a1c180a
+		sourceColumn: SiteId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column BehCreatedById
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 2afb73ab-2a90-440e-aca9-775fce28ed63
+		sourceColumn: BehCreatedById
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column BehEventTypeId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: ed047cc4-561e-4d0f-b33a-434cbd3b7b8f
+		sourceColumn: BehEventTypeId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column BehTeachingGroupId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: eb31a0d2-b21e-4157-9a76-857d3e197ea8
+		sourceColumn: BehTeachingGroupId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column BehSchoolNoteId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 3281a7ab-b69e-436f-9b81-a606b8a7433d
+		sourceColumn: BehSchoolNoteId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION","REMOVE_REDUNDANT_COLUMNS_IN_RELATED_TABLES"]}
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column AuditId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 18e11e20-31f5-4b4f-8882-e665f54b71a5
+		sourceColumn: AuditId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column Score
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: eeac7239-2d2f-47ac-8cfe-be1c34de88e7
+		sourceColumn: Score
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION","REMOVE_REDUNDANT_COLUMNS_IN_RELATED_TABLES"]}
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column Cancelled
+		dataType: Boolean
+		formatString:= "TRUE";"TRUE";"FALSE"
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 510355b9-edbe-4aad-ae57-d4f15685b9c5
+		sourceColumn: Cancelled
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Boolean" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column Closed
+		dataType: Boolean
+		formatString:= "TRUE";"TRUE";"FALSE"
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: d38cf5fd-838f-4154-a6d6-624414ec01d1
+		sourceColumn: Closed
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Boolean" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+		annotation PBI_ChangedProperties = ["IsHidden"]
+
+	column ILUAdmission
+		dataType: Int64
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 486a9de2-f89a-4305-98ca-f7bdbff3894a
+		sourceColumn: ILUAdmission
+
+	column ILUDays
+		dataType: Double
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 702fc7c4-9ff3-454e-ab71-d322b564b356
+		sourceColumn: ILUDays
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Behaviour
+

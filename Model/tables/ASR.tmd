@@ -1,0 +1,114 @@
+table ASR
+	lineageTag: 4b4f1725-2456-4b66-8dc2-a2fed7820933
+	ordinal: 72
+
+	partition ASR = M
+		expression:=
+			let
+				Source = PowerPlatform.Dataflows ( null ),
+				Workspaces = Source{[ Id = "Workspaces" ]}[Data],                     
+				Workspace = Workspaces{[ workspaceName = "DW-Dataflows-QA" ]}[Data],       
+				Dataflow = Workspace{[ dataflowName = "QA-ASR" ]}[Data],
+				Entity = Dataflow{[ entity = "fctASR" ]}[Data]
+			in
+				Entity
+
+
+	measure 'ASR Response' =
+		VAR OverallScore = 
+		    CALCULATE (
+		        CALCULATE(
+		            SELECTEDVALUE( 'ASR Response'[Response] ),
+		            ASR
+		        ),
+		        'ASR Strand'[Strand] = "Overall"
+		    )
+		
+		VAR NormalScore = 
+		    CALCULATE(
+		        SELECTEDVALUE( 'ASR Response'[Response] ),
+		        ASR
+		    )
+		    
+		RETURN 
+		    IF(
+		        HASONEVALUE( Site[SiteId] ),  
+		            IF(
+		                HASONEVALUE( 'ASR Strand'[Strand] ),
+		                NormalScore,
+		                OverallScore
+		            ),
+		            BLANK()
+		    )
+
+		lineageTag: dfec2618-4966-4356-a8c8-54e3571ac6c4
+
+	measure 'ASR Colour' =
+		VAR Response = [ASR Response]
+		
+		RETURN 
+		SWITCH (
+		    TRUE(),
+		    Response = "Lead", "Green",
+		    Response = "Grow", "Yellow",
+		    Response = "Develop", "orange",
+		    Response = "Stabilise", "Red"
+		)
+
+		lineageTag: b999f031-c8f3-4b7d-88ae-7c46873a2046
+
+	measure 'ASR Slicer Filter' = INT ( NOT ( ISEMPTY ( ASR ) ) )
+		lineageTag: 3737c583-d14f-415f-8530-8e9c909c6d4f
+
+	column ASRMeetingId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: e2453b59-6a53-4291-8375-cd43d1ddc861
+		sourceColumn: ASRMeetingId
+		summarizeBy: None
+
+	column ASRResponseId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 66359376-aa61-48ee-b01d-126ade198459
+		sourceColumn: ASRResponseId
+		summarizeBy: None
+
+	column ASRStrandId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 984167f6-9bbf-4f86-98cf-9425e7b341d3
+		sourceColumn: ASRStrandId
+		summarizeBy: None
+
+	column Date
+		dataType: DateTime
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: cbfefea2-0b2f-4ccf-9aff-c0334a7d787d
+		sourceColumn: Date
+		summarizeBy: None
+
+	column SiteId
+		dataType: Int64
+		encodingHint: Value
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isHidden
+		lineageTag: 66c29d6d-15fc-4f53-9849-acdbc75b0ca7
+		sourceColumn: SiteId
+		summarizeBy: None
+
+	annotation TabularEditor_TableGroup = ASR
+

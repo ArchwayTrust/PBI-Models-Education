@@ -1,0 +1,83 @@
+/// List of teaching groups associated with behaviour events.
+/// Filters "Behaviour".
+/// (DIMENSION)
+table 'Behaviour Teaching Group'
+	lineageTag: ea40ccac-6d20-4375-bdc9-044f19cb3b82
+	ordinal: 22
+
+	partition 'Behaviour Teaching Group' = M
+		mode: Import
+		expression:=
+			let
+			  Source = PowerPlatform.Dataflows ( null ), 
+			  Workspaces = Source{[ Id = "Workspaces" ]}[Data], 
+			  //DW-Dataflows-Education
+			  Workspace = Workspaces{[ workspaceName = "DW-Dataflows-Education" ]}[Data], 
+			  //Edu-Behaviour
+			  Dataflow = Workspace{[ dataflowName = "Edu-Behaviour" ]}[Data], 
+			  Entity = Dataflow{[ entity = "dimBehTeachingGroups" ]}[Data]
+			in
+			  Entity
+
+		queryGroup: Dimensions
+
+	column BehTeachingGroupId
+		dataType: Int64
+		encodingHint: Value
+		formatString:= 0
+		isAvailableInMDX: false
+		isDataTypeInferred: false
+		isKey
+		lineageTag: 5343f2f2-2ad0-4c97-9c69-b0416fafa583
+		sourceColumn: BehTeachingGroupId
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
+
+	column 'Subject Code'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e960b9d9-203d-4a95-b51a-b6f6d47afec7
+		sourceColumn: "Subject Code"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column Subject
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: 592c8bc2-daff-4164-9076-3ec8346ad728
+		sourceColumn: Subject
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	column 'Group Name'
+		dataType: String
+		isDataTypeInferred: false
+		lineageTag: e2fe8a17-30b4-4727-b7e4-72a28eb54114
+		sourceColumn: "Group Name"
+		summarizeBy: None
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation Format = <Format Format="Text" />
+
+		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation PBI_ResultType = Table
+
+	annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["OBJECTS_WITH_NO_DESCRIPTION"]}
+
+	annotation TabularEditor_TableGroup = Behaviour
+
