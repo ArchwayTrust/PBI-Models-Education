@@ -29,7 +29,6 @@ table Suspension
 		    ),
 		    Suspension[TypeCode] IN { "FIXD", "SUSP" }
 		)
-		
 		formatString:= 0
 		lineageTag: bf39dc04-4862-4a24-b3ba-6cc75a63a31d
 
@@ -353,6 +352,7 @@ table Suspension
 		encodingHint: Value
 		formatString:= 0
 		isAvailableInMDX: false
+		isDataTypeInferred: false
 		isHidden
 		lineageTag: 96c6b959-2161-447d-9eb5-8b8235ded620
 		summarizeBy: None

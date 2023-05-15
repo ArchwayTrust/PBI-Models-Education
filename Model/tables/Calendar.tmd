@@ -353,6 +353,7 @@ table Calendar
 		dataType: Int64
 		encodingHint: Value
 		formatString:= 0
+		isDataTypeInferred: false
 		lineageTag: 22a2d2dd-462f-423b-8100-dab1648d7f31
 		summarizeBy: None
 
@@ -380,6 +381,7 @@ table Calendar
 		    
 		RETURN Result
 		dataType: String
+		isDataTypeInferred: false
 		lineageTag: 3244befb-18dd-47e2-92f2-8b589a54d785
 		sortByColumn: 'Week Commencing'
 		summarizeBy: None

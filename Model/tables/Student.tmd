@@ -561,6 +561,7 @@ table Student
 		    "KS5"
 		)
 		dataType: String
+		isDataTypeInferred: false
 		lineageTag: 2b154069-e1be-4bea-8194-7918e173bac3
 		summarizeBy: None
 
@@ -582,6 +583,7 @@ table Student
 		    "N"
 		)
 		dataType: String
+		isDataTypeInferred: false
 		lineageTag: 0d27b026-9b6e-4268-aa1b-0a1da88fc06a
 		summarizeBy: None
 
@@ -593,6 +595,7 @@ table Student
 		    "Not SEND"
 		)
 		dataType: String
+		isDataTypeInferred: false
 		lineageTag: f2e11504-1d7c-4cba-8566-50ba3aa8bea1
 		summarizeBy: None
 

@@ -1,4 +1,4 @@
-/// NGRT Data from GL. 
+/// NGRT Data from GL.
 /// New and untested.
 table 'GL NGRT'
 	lineageTag: 21bf1452-97cb-4d01-85f6-bf09cf735ef0
@@ -192,7 +192,6 @@ table 'GL NGRT'
 		    
 		RETURN
 		        Result
-		
 		lineageTag: 1c9443a9-d70b-4b91-9cdc-67bfb1aa700a
 
 	/// Set to 1 as visual level filter in conjunction with NGRT SAS Progress.
@@ -242,7 +241,6 @@ table 'GL NGRT'
 		    )
 		RETURN
 		        Result
-		
 		lineageTag: 71764cab-b145-4abb-bf21-cb65d8e5c4e8
 
 	measure 'NGRT Latest Test Date' = MAX ( 'GL NGRT'[Date of Test] )
@@ -266,8 +264,6 @@ table 'GL NGRT'
 		VAR _Result = DIVIDE ( _NumExpected, _NumStudents )
 		
 		RETURN _Result
-		    
-		    
 		formatString:= #,##0.0 %
 		lineageTag: d2e09368-1557-44c0-b411-0c2414171673
 
@@ -321,14 +317,6 @@ table 'GL NGRT'
 		    )
 		    
 		RETURN _Result
-		    
-		    
-		
-		
-		
-		
-		
-		
 		lineageTag: 0714a692-a11b-4390-bd7d-c4a58fd7e6a0
 
 	measure 'NGRT All Time Progress' =
@@ -413,8 +401,6 @@ table 'GL NGRT'
 		VAR _Result = DIVIDE ( _NumExpected, _NumStudents )
 		
 		RETURN _Result
-		    
-		    
 		formatString:= #,##0.0 %
 		lineageTag: 43241e1c-43ec-4de9-a2ab-46b9b8dc6cd3
 
@@ -453,8 +439,6 @@ table 'GL NGRT'
 		VAR _Result = DIVIDE ( _NumExpected, _NumStudents )
 		
 		RETURN _Result
-		    
-		    
 		formatString:= #,##0.0 %
 		lineageTag: 90d88cb2-f4bf-4452-8d05-95ae3088b351
 
@@ -495,9 +479,6 @@ table 'GL NGRT'
 		VAR _Result = DIVIDE ( _NumExpected, _NumStudents )
 		
 		RETURN _Result
-		    
-		    
-		    
 		formatString:= #,##0.0 %
 		lineageTag: cf587d7d-0b22-4546-8f1a-7b4b6e61b34b
 

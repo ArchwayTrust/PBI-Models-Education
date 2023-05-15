@@ -38,7 +38,6 @@ table 'GL PTS'
 	measure 'PTS Biology Stanine' =
 		
 		AVERAGE ( 'GL PTS'[BiologyStanine] )
-		
 		lineageTag: e9ce7b3a-f4a3-4d5e-a2eb-490eb2a11869
 
 	column 'Academic Year'

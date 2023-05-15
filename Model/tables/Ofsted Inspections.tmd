@@ -181,6 +181,7 @@ table 'Ofsted Inspections'
 		encodingHint: Value
 		formatString:= 0
 		isAvailableInMDX: false
+		isDataTypeInferred: false
 		isHidden
 		lineageTag: c1a453cf-b619-4e69-9f31-78a59deca725
 		summarizeBy: None
