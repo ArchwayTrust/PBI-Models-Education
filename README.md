@@ -3,7 +3,7 @@
 ## Getting Started
 This repository  contains the main Power BI Education model for Archway Learning Trust.
 
-Model is serialised into [Microsoft TMDL format](https://powerbi.microsoft.com/en-us/blog/announcing-public-preview-of-the-tabular-model-definition-language-tmdl/). This is human readable text but can also be opened by newer version of Tabular Editor 2 if the preview feature is enabled:
+Model is serialised into [Microsoft TMDL format](https://powerbi.microsoft.com/en-us/blog/announcing-public-preview-of-the-tabular-model-definition-language-tmdl/). This is human readable text but can also be opened by newer versions of Tabular Editor 2 if the preview feature is enabled:
 [Tabular Editor 2.x Releases](https://github.com/TabularEditor/TabularEditor/releases).
 
 ## Contributing
