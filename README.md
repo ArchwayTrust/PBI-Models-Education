@@ -7,8 +7,8 @@ Model is serialised into [Microsoft TMDL format](https://powerbi.microsoft.com/e
 [Tabular Editor 2.x Releases](https://github.com/TabularEditor/TabularEditor/releases).
 
 ## Contributing
-An issue should be created followed by a branch named Issue/Issue#.
-Once complete, use a pull request to merge into the current release branch.
+An issue should be created with a linked branch names Issue/Issue#-ShortName.
+Once complete, use a pull request to merge into the current release candidate branch should be created.
 
 ## Deployment
 Once TMDL is out of preview and can serialise role membership the intention is to enable continuous deployment into test and production workspaces.
