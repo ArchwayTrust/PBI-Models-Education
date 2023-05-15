@@ -210,5 +210,3 @@ table 'GL PTS'
 
 	annotation TabularEditor_TableGroup = GL
 
-	detailRowsDefinition = 'GL PTS'
-
