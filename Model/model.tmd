@@ -35,5 +35,3 @@ annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["REDUCE_NUMBER_OF_CALC
 
 annotation TabularEditor_SerializeOptions = {"IgnoreInferredObjects":true,"IgnoreInferredProperties":true,"IgnoreTimestamps":true,"SplitMultilineStrings":true,"PrefixFilenames":false,"LocalTranslations":false,"LocalPerspectives":false,"LocalRelationships":false,"Levels":["Data Sources","Perspectives","Relationships","Roles","Shared Expressions","Tables","Tables/Calculation Items","Tables/Columns","Tables/Hierarchies","Tables/Measures","Tables/Partitions","Translations"],"IgnoreLineageTags":true}
 
-extendedProperty TabularEditor_DeploymentMetadata = {"User":"BCA\\bdobbs","Time":"2023-05-15T19:07:58.6278337+01:00","ClientMachine":"ALT-LAP-S44831","DeploymentMode":"SaveUI","TabularEditorBuild":"3.6.0.27344"}
-
