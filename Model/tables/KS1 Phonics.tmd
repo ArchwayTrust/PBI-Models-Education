@@ -32,6 +32,7 @@ table 'KS1 Phonics'
 		VAR Result = DIVIDE( NumberWa, TotalStudents )
 		
 		RETURN Result
+		
 		formatString:= #,##0.0 %
 		lineageTag: dad0a249-4d50-45e0-a2b1-3e0bf91d0a21
 
@@ -52,6 +53,7 @@ table 'KS1 Phonics'
 		VAR Result = DIVIDE( NumberWa, TotalStudents )
 		
 		RETURN Result
+		
 		formatString:= #,##0.0 %
 		lineageTag: b936eddb-e68e-498d-a83c-2e6d313a22af
 

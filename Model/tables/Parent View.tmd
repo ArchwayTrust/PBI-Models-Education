@@ -30,6 +30,7 @@ table 'Parent View'
 		VAR Result = DIVIDE ( NumberOfResponses, TotalResponses)
 		    
 		RETURN Result
+		
 		formatString:= #,##0.00 %
 		lineageTag: d05f50a0-3738-49ad-a36d-90aa3834b722
 
@@ -84,6 +85,7 @@ table 'Parent View'
 		VAR Result = DIVIDE ( NumberOfResponses, TotalResponses)
 		    
 		RETURN Result
+		
 		formatString:= #,##0.00 %
 		lineageTag: 05e4daae-4513-4e6c-a5ec-f8afb58b84e4
 

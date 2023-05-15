@@ -46,6 +46,7 @@ table 'KS5 Grades'
 		    IF (ISBLANK(DfEPoints), InternalPoints, DfEPoints)
 		    
 		RETURN Result
+		
 		lineageTag: 821ec8db-6d64-4824-bec7-bb7dc978ffae
 
 	measure 'KS5 Applied General Avg Points' =
@@ -76,6 +77,7 @@ table 'KS5 Grades'
 		    IF (ISBLANK(DfEPoints), InternalPoints, DfEPoints)
 		    
 		RETURN Result
+		
 		lineageTag: d007f041-abb1-4567-ab46-abb71a2421ec
 
 	measure 'KS5 Slicer Filter' =

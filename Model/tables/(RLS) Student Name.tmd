@@ -133,7 +133,6 @@ table '(RLS) Student Name'
 		
 		'(RLS) Student Name'[Last Name] & ", " & '(RLS) Student Name'[First Name] & " (" & '(RLS) Student Name'[UPN] & ")"
 		dataType: String
-		isDataTypeInferred: false
 		isDefaultLabel
 		lineageTag: 645b97f4-cb02-4e21-96f1-ef85a993cb76
 		summarizeBy: None

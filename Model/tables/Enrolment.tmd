@@ -94,6 +94,7 @@ table Enrolment
 		    HASONEVALUE(Calendar[Academic Year]), 
 		    Result
 		)
+		
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: 42fb510c-a5a4-41e6-bd66-bc505ef5efa5
 
@@ -112,6 +113,7 @@ table Enrolment
 		        SUM( PAN[PAN] ),
 		        LatestAcademicYear
 		    )
+		
 		formatString:= 0
 		lineageTag: 6ff81b05-db3d-4558-b064-d29a56646460
 
@@ -426,6 +428,7 @@ table Enrolment
 	measure 'Enrolment Slicer Filter' =
 		
 		INT ( NOT ( ISEMPTY ( Enrolment ) ) )
+		
 		lineageTag: a2b36343-bf50-4d28-891e-f87e48756b45
 
 	measure Demo = 1000
@@ -802,7 +805,6 @@ table Enrolment
 		encodingHint: Value
 		formatString:= 0
 		isAvailableInMDX: false
-		isDataTypeInferred: false
 		isHidden
 		lineageTag: a01b316c-a6dd-47d9-a69e-6bdb8864d742
 		summarizeBy: None

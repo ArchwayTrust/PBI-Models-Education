@@ -113,8 +113,6 @@ table AttendanceFilter
 		dataType: Int64
 		encodingHint: Value
 		isAvailableInMDX: false
-		isDataTypeInferred: false
-		isNameInferred: false
 		lineageTag: de7cfd3c-2a8a-4c27-a294-198026ccc101
 		sourceColumn: [NCYear]
 		summarizeBy: None
@@ -122,8 +120,6 @@ table AttendanceFilter
 	column HalfTerm
 		dataType: String
 		isAvailableInMDX: false
-		isDataTypeInferred: false
-		isNameInferred: false
 		lineageTag: 8b9f0bea-d250-4250-a2f1-a9f523a7b549
 		sourceColumn: [HalfTerm]
 		summarizeBy: None

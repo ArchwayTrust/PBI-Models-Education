@@ -15,7 +15,9 @@ table Census
 			in
 				Entity
 
-	measure 'Average IDACI' = AVERAGE( Census[IDACI_S] )
+	measure 'Average IDACI' =
+		AVERAGE( Census[IDACI_S] )
+		
 		formatString:= #,##0.00
 		lineageTag: d9b07380-6e7d-4782-ada8-c0fb2da7fec2
 

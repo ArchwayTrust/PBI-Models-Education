@@ -227,7 +227,10 @@ table 'KS2 Outcomes'
 				Act >= Nat, 1,
 				Act < Nat, -1
 				)
-			targetExpression:= AVERAGE ( 'DFE KS2 National'[AvgMathsSS] )
+			targetExpression:=
+				AVERAGE ( 'DFE KS2 National'[AvgMathsSS] )
+				
+				
 		lineageTag: 3db7cf38-717e-47b6-ab5c-76aec243e12a
 
 	measure 'KS2 Outcomes Average Reading Scaled Score' =
@@ -301,6 +304,7 @@ table 'KS2 Outcomes'
 				Act >= Nat, 1,
 				Act < Nat, -1
 				)
+				
 			statusGraphic: "Traffic Light - Single"
 			targetExpression:= AVERAGE ( 'DFE KS2 National'[RWMGDS%] )
 			targetFormatString: "#,##0.0 %"

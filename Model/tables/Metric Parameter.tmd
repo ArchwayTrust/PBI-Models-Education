@@ -5,6 +5,7 @@ table 'Metric Parameter'
 	partition 'Metric Parameter' = Calculated
 		mode: Import
 		expression:=
+			
 			{
 			    ("Number of Negative Student Events", NAMEOF('Behaviour'[Number of Negative Student Events]), 0),
 			    ("Number Of Students", NAMEOF('Enrolment'[Number Of Students]), 1),
@@ -30,7 +31,6 @@ table 'Metric Parameter'
 
 	column Metric
 		dataType: String
-		isDataTypeInferred: false
 		isNameInferred: false
 		lineageTag: 5a4e0bbf-8119-4f93-bd94-eeff41ce8715
 		relatedColumnDetails:
@@ -44,7 +44,6 @@ table 'Metric Parameter'
 
 	column 'Metric Fields'
 		dataType: String
-		isDataTypeInferred: false
 		isHidden
 		isNameInferred: false
 		lineageTag: 758371a6-0236-4304-93b0-83d615364031
@@ -63,7 +62,6 @@ table 'Metric Parameter'
 	column 'Metric Order'
 		dataType: Int64
 		encodingHint: Value
-		isDataTypeInferred: false
 		isHidden
 		isNameInferred: false
 		lineageTag: 0fabb1d6-38c2-4773-b390-155eb4e1dc3b

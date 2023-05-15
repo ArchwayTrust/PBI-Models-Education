@@ -6,6 +6,7 @@ model Model
 	defaultPowerBIDataSourceVersion: PowerBI_V3
 	discourageImplicitMeasures
 	ID: 24fdc2e6-5978-4615-a566-01acf5c4403f
+	language: 1033
 	sourceQueryCulture: en-GB
 
 queryGroup Dimensions
@@ -32,16 +33,9 @@ annotation PBIDesktopVersion = 2.98.1004.0 (21.10)
 
 annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["REDUCE_NUMBER_OF_CALCULATED_COLUMNS"]}
 
-annotation TabularEditor_SerializeOptions = {"IgnoreInferredObjects":true,"IgnoreInferredProperties":true,"IgnoreTimestamps":true,"SplitMultilineStrings":true,"PrefixFilenames":false,"LocalTranslations":false,"LocalPerspectives":false,"LocalRelationships":false,"Levels":["Data Sources","Shared Expressions","Perspectives","Relationships","Roles","Tables","Tables/Columns","Tables/Hierarchies","Tables/Measures","Tables/Partitions","Tables/Calculation Items","Translations"]}
+annotation TabularEditor_SerializeOptions = {"IgnoreInferredObjects":true,"IgnoreInferredProperties":true,"IgnoreTimestamps":true,"SplitMultilineStrings":true,"PrefixFilenames":false,"LocalTranslations":false,"LocalPerspectives":false,"LocalRelationships":false,"Levels":["Data Sources","Perspectives","Relationships","Roles","Shared Expressions","Tables","Tables/Calculation Items","Tables/Columns","Tables/Hierarchies","Tables/Measures","Tables/Partitions","Translations"],"IgnoreLineageTags":true}
 
-annotation __LastRPTime = 133284136723677819
+annotation __LastRPTime = 133285868115650155
 
-extendedProperty TabularEditor_DeploymentMetadata =
-	{
-	  "User": "BCA\\bdobbs",
-	  "Time": "2023-05-03T15:59:28.7194087+01:00",
-	  "ClientMachine": "ALT-LAP-S44831",
-	  "DeploymentMode": "SaveUI",
-	  "TabularEditorBuild": "3.6.0.27344"
-	}
+extendedProperty TabularEditor_DeploymentMetadata = {"User":"BCA\\bdobbs","Time":"2023-05-03T15:59:28.7194087+01:00","ClientMachine":"ALT-LAP-S44831","DeploymentMode":"SaveUI","TabularEditorBuild":"3.6.0.27344"}
 

@@ -64,7 +64,6 @@ table Site
 
 		annotation Format = <Format Format="NumberWhole" Accuracy="0" />
 
-	/// This contains the standard ALT Academy Codes.
 	column 'Academy Code'
 		dataType: String
 		isDataTypeInferred: false
@@ -204,7 +203,6 @@ table Site
 		dataType: Int64
 		encodingHint: Value
 		formatString:= #,##0
-		isDataTypeInferred: false
 		lineageTag: 803beb42-8005-494c-8617-781872dd2eb6
 		summarizeBy: None
 
@@ -213,13 +211,11 @@ table Site
 		YEAR(Site[Date Joined ALT])
 		dataType: Int64
 		encodingHint: Value
-		isDataTypeInferred: false
 		lineageTag: 16b1362d-b4d2-481d-8a86-b81f8128a58b
 		summarizeBy: None
 
 	column 'Latest Inspection Grade' = [Latest Ofsted Rating]
 		dataType: String
-		isDataTypeInferred: false
 		lineageTag: 0e37aab4-4313-4313-97de-c061f3b376e7
 		summarizeBy: None
 

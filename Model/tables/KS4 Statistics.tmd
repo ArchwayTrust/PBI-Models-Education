@@ -139,6 +139,8 @@ table 'KS4 Statistics'
 		    SUM('DfE LA KS4 Statistics'[t_Att8]),
 		    SUM('DfE LA KS4 Statistics'[t_pupils])*10
 		)
+		
+		
 		displayFolder: A8
 		formatString:= 0.00
 		lineageTag: f49e7f2b-0895-478b-a0bf-f940f9603f93
@@ -217,6 +219,7 @@ table 'KS4 Statistics'
 		    REMOVEFILTERS(Site),
 		    REMOVEFILTERS( '(RLS) Site' )
 		)
+		
 		displayFolder: Basics
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: d0c7db79-338b-43dc-b8fb-4235895b084c
@@ -282,6 +285,7 @@ table 'KS4 Statistics'
 		    REMOVEFILTERS(Site),
 		    REMOVEFILTERS( '(RLS) Site' )
 		)
+		
 		displayFolder: Basics
 		lineageTag: 0443d4f6-93ac-4fc7-822a-881c6b711626
 
@@ -713,7 +717,6 @@ table 'KS4 Statistics'
 	column Academy = RELATED(Student[Academy])
 		dataType: String
 		isAvailableInMDX: false
-		isDataTypeInferred: false
 		isHidden
 		lineageTag: 97332048-4edf-412d-b5ab-a98baaa25202
 		summarizeBy: None
@@ -809,7 +812,6 @@ table 'KS4 Statistics'
 		encodingHint: Value
 		formatString:= 0
 		isAvailableInMDX: false
-		isDataTypeInferred: false
 		isHidden
 		lineageTag: 08d790b2-faeb-4725-8dea-0f21d8725daf
 		summarizeBy: None

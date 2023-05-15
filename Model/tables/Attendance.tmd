@@ -90,6 +90,8 @@ table Attendance
 		        HASONEVALUE('DfE Attendance Year Breakdown'[Half Terms]),
 		        Result
 		    )
+		
+		
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: 8093cf5b-0455-47c1-a058-29fe7fe3df0c
 
@@ -99,10 +101,10 @@ table Attendance
 
 	measure 'National Attendance' =
 		
-		CALCULATE (
-		    [LA Attendance],
-		    REMOVEFILTERS(Site)
-		)
+		    CALCULATE (
+		        [LA Attendance],
+		        REMOVEFILTERS(Site)
+		    )
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: c654f20c-e987-4def-a6de-50f4da3f56c8
 
@@ -147,6 +149,7 @@ table Attendance
 		    'SIMS Attendance Code'[Statistical Meaning] = "Present",
 		    KEEPFILTERS( AttFilter )
 		)
+		
 		formatString:= #,0
 		lineageTag: 1e90d170-f12e-4c21-b3d6-c5340755a569
 
@@ -183,9 +186,12 @@ table Attendance
 		        PossibleAttLatest > 0, LatestResult + 0,
 		        BLANK()
 		    )
+		
+		
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		KPI:
 			statusExpression:=
+				
 				VAR AttDiff = 
 				    IF(
 				        ISBLANK( [% Attendance] ),
@@ -345,10 +351,10 @@ table Attendance
 	/// Excludes X and No Marks
 	measure '% Absence' =
 		
-		DIVIDE(
-		    [# Authorised Absence] + [# Unauthorised Absence],
-		    [# Attendance Possible]
-		)
+		    DIVIDE(
+		        [# Authorised Absence] + [# Unauthorised Absence],
+		        [# Attendance Possible]
+		    )
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: 4ed327cc-dd69-44b8-b27a-b29bdce40a73
 
@@ -367,6 +373,7 @@ table Attendance
 		    'SIMS Attendance Code'[Mark] IN { "L" },
 		    KEEPFILTERS( AttFilter )
 		)
+		
 		lineageTag: 4d7ea675-4f77-40c2-acfc-d6566ce06201
 
 	measure '# Students PA' =
@@ -382,6 +389,7 @@ table Attendance
 		    )
 		    
 		RETURN NumberPA
+		
 		lineageTag: 2ae93a8a-805b-49df-8824-7779a3c9dfb6
 
 	measure '% Cumulative Attendance' =
@@ -406,6 +414,7 @@ table Attendance
 		    )
 		    
 		RETURN NumberStu
+		    
 		lineageTag: a1965ea9-41e6-4e7a-b625-c2be552856d0
 
 	measure 'Attendance Slicer Filter' = INT( NOT ( ISEMPTY( Attendance ) ) )
@@ -511,6 +520,7 @@ table Attendance
 		    )
 		        
 		RETURN _Result
+		    
 		displayFolder: "Absence Impact"
 		formatString:= #,##0
 		lineageTag: a703cf3f-d6ad-4a55-ad67-c6f261c1f74a
@@ -533,6 +543,9 @@ table Attendance
 		VAR _Result = _MaxAllowedFor90 - ( [# Authorised Absence] + [# Unauthorised Absence] )
 		
 		RETURN _Result
+		
+		    
+		    
 		displayFolder: "Absence Impact"
 		formatString:= #,##0
 		lineageTag: 6b53deca-fcf7-44b4-82b9-195932088224
