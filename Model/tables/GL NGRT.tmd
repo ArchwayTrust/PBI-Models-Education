@@ -23,6 +23,7 @@ table 'GL NGRT'
 	/// 
 	/// Average is calulcated based on the most recent test
 	/// by a student in the selected date period.
+	/// Test change.
 	measure 'NGRT SAS' =
 		
 		VAR Result =
