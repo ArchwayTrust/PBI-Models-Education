@@ -16,7 +16,6 @@ table 'DfE LA KS4 Statistics'
 				Entity = Dataflow{[ entity = "factLAKS4Stats" ]}[Data]
 			in
 				Entity
-
 		queryGroup: Facts
 
 	column 'Academic Year'

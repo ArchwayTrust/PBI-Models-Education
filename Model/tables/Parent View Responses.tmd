@@ -15,7 +15,6 @@ table 'Parent View Responses'
 			in
 			  Entity
 
-
 	column Response
 		dataType: String
 		isDataTypeInferred: false

@@ -15,7 +15,6 @@ table 'Leaver Reasons'
 			in
 			  Entity
 
-
 	column LeaverReasonId
 		dataType: Int64
 		encodingHint: Value

@@ -15,14 +15,12 @@ table 'PP Calc Group'
 			    Student[Pupil Premium] = "PP"
 			)
 
-
 		calculationItem 'Not PP' =
 			
 			CALCULATE (
 			    SELECTEDMEASURE(),
 			    Student[Pupil Premium] = "Not PP"
 			)
-
 
 		calculationItem 'PP Gap' =
 			
@@ -40,7 +38,6 @@ table 'PP Calc Group'
 			    
 			RETURN PP - NotPP
 
-
 		calculationItem 'PP-SEND' =
 			
 			CALCULATE(
@@ -49,14 +46,12 @@ table 'PP Calc Group'
 			    Student[Pupil Premium] = "PP"
 			)
 
-
 		calculationItem 'Not PP-SEND' =
 			
 			CALCULATE(
 			    SELECTEDMEASURE(),
 			    NOT (NOT Student[SEN Status] IN { BLANK(), "C", "O", "M", "N" } && Student[Pupil Premium] = "PP")
 			)
-
 
 		calculationItem 'PP-SEND Gap' =
 			
@@ -75,7 +70,6 @@ table 'PP Calc Group'
 			    )
 			    
 			RETURN PPSend - NotPPSend
-
 
 	column Name
 		dataType: String

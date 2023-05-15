@@ -12,7 +12,6 @@ table 'Grade Types'
 				)
 			in
 				Source
-
 		queryGroup: 'Dimensions\Static'
 
 	column GradeType

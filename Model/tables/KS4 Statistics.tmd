@@ -17,7 +17,6 @@ table 'KS4 Statistics'
 				Entity = Dataflow{[ entity = "factKS4Stats" ]}[Data]
 			in
 				Entity
-
 		queryGroup: Facts
 
 	measure 'Basics 4+' =
@@ -59,7 +58,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: Basics
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: 24788ce9-3fe0-44a0-9b19-690bcf25313a
@@ -89,7 +87,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: P8
 		formatString:= 0.00
 		lineageTag: 43a3147b-97f7-47ee-b2e8-11f8ed3e9df7
@@ -126,7 +123,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: A8
 		formatString:= 0.00
 		lineageTag: 18580d9e-e8c5-4b5d-a9d8-52d76aa2e9f9
@@ -143,9 +139,6 @@ table 'KS4 Statistics'
 		    SUM('DfE LA KS4 Statistics'[t_Att8]),
 		    SUM('DfE LA KS4 Statistics'[t_pupils])*10
 		)
-		
-		
-
 		displayFolder: A8
 		formatString:= 0.00
 		lineageTag: f49e7f2b-0895-478b-a0bf-f940f9603f93
@@ -163,7 +156,6 @@ table 'KS4 Statistics'
 		    REMOVEFILTERS(Site),
 		    REMOVEFILTERS( '(RLS) Site' )
 		)
-
 		displayFolder: P8
 		formatString:= 0.00
 		lineageTag: 140221ec-e872-416b-8fa9-ffe04f152939
@@ -180,7 +172,6 @@ table 'KS4 Statistics'
 		    SUM('DfE LA KS4 Statistics'[t_p8score]),
 		    SUM('DfE LA KS4 Statistics'[t_inp8calc])
 		)
-
 		displayFolder: P8
 		formatString:= 0.00
 		lineageTag: ef32a671-f096-4f9a-95b5-1337a07eac83
@@ -201,7 +192,6 @@ table 'KS4 Statistics'
 		)
 		
 		RETURN Result
-
 		displayFolder: A8
 		formatString:= #,##0.00
 		lineageTag: aea8f8d6-6cd9-4076-9980-e2fddad99bf6
@@ -214,7 +204,6 @@ table 'KS4 Statistics'
 		    SUM( 'DfE LA KS4 Statistics'[t_l2basics_94] ),
 		    SUM( 'DfE LA KS4 Statistics'[t_pupils] )
 		)
-
 		displayFolder: Basics
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: adff2a7a-1728-4de3-8e28-e81dbcb427de
@@ -228,8 +217,6 @@ table 'KS4 Statistics'
 		    REMOVEFILTERS(Site),
 		    REMOVEFILTERS( '(RLS) Site' )
 		)
-		
-
 		displayFolder: Basics
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: d0c7db79-338b-43dc-b8fb-4235895b084c
@@ -275,7 +262,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: Basics
 		formatString:= #,##0.0 %
 		lineageTag: a8265a8c-a5ec-4401-809b-7351e83a4ba3
@@ -286,7 +272,6 @@ table 'KS4 Statistics'
 		    SUM( 'DfE LA KS4 Statistics'[t_l2basics_95] ),
 		    SUM( 'DfE LA KS4 Statistics'[t_pupils] )
 		)
-
 		displayFolder: Basics
 		lineageTag: 30552ed9-f833-4b6f-bd4a-b021be2af320
 
@@ -297,8 +282,6 @@ table 'KS4 Statistics'
 		    REMOVEFILTERS(Site),
 		    REMOVEFILTERS( '(RLS) Site' )
 		)
-		
-
 		displayFolder: Basics
 		lineageTag: 0443d4f6-93ac-4fc7-822a-881c6b711626
 
@@ -341,7 +324,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR( "Add filters to CAF Slot and Grade Type" )
 		    )
-
 		displayFolder: EBacc
 		formatString:= #,##0.0 %
 		lineageTag: 3c310864-f011-4f5c-8fb3-382228c249fb
@@ -385,7 +367,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR( "Add filters to CAF Slot and Grade Type" )
 		    )
-
 		displayFolder: EBacc
 		formatString:= #,##0.0 %
 		lineageTag: 7d68a2ff-b91e-44df-97c0-44fe7918168d
@@ -396,7 +377,6 @@ table 'KS4 Statistics'
 		    SUM( 'DfE LA KS4 Statistics'[t_ebacc_e_ptq_ee] ),
 		    SUM( 'DfE LA KS4 Statistics'[t_pupils] )
 		)
-
 		displayFolder: EBacc
 		formatString:= #,##0.0 %
 		lineageTag: 2bce17f6-3f4d-4eb2-972c-9029a2af0ddb
@@ -408,7 +388,6 @@ table 'KS4 Statistics'
 		    REMOVEFILTERS(Site),
 		    REMOVEFILTERS( '(RLS) Site' )
 		)
-
 		displayFolder: EBacc
 		formatString:= #,##0.0 %
 		lineageTag: 042a3f4a-9857-418c-9cd4-6614ee8374de
@@ -419,7 +398,6 @@ table 'KS4 Statistics'
 		    SUM( 'DfE LA KS4 Statistics'[t_ebacc_94] ),
 		    SUM( 'DfE LA KS4 Statistics'[t_pupils] )
 		)
-
 		displayFolder: EBacc
 		formatString:= #,##0.0 %
 		lineageTag: 357dce64-3bda-49f4-ade4-4f73accbe1f5
@@ -431,7 +409,6 @@ table 'KS4 Statistics'
 		    REMOVEFILTERS(Site),
 		    REMOVEFILTERS( '(RLS) Site' )
 		)
-
 		displayFolder: EBacc
 		formatString:= #,##0.0 %
 		lineageTag: 626c4a80-1747-412b-b600-6e9635d6aa40
@@ -462,7 +439,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: A8
 		formatString:= #,##0.0
 		lineageTag: de781e75-86c7-42f0-a657-a88a32aaf2c7
@@ -493,7 +469,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: A8
 		formatString:= #,##0.0
 		lineageTag: 3b2ad796-2099-4061-a629-d7a6884fe913
@@ -524,7 +499,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: A8
 		formatString:= #,##0.0
 		lineageTag: 3fd06e62-2b6e-4fd6-92fe-f48424a5f53a
@@ -555,7 +529,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: A8
 		formatString:= #,##0.0
 		lineageTag: a685b9ad-e094-4040-b10a-32bb8612bd6f
@@ -580,7 +553,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: P8
 		lineageTag: 3629ca15-d8de-46ac-a6b1-e270f9b063e9
 
@@ -604,7 +576,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: P8
 		lineageTag: 7484ea71-015a-437b-a775-fb78d40be744
 
@@ -628,7 +599,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: P8
 		lineageTag: 05bdc44b-dd3d-4e8b-b27b-dc033a77eb92
 
@@ -652,7 +622,6 @@ table 'KS4 Statistics'
 		        Result,
 		        ERROR("Add filters to CAF Slot and Grade Type")
 		    )
-
 		displayFolder: P8
 		lineageTag: 3012b615-f6f5-4f3b-a63f-d3c7345703cc
 
@@ -744,6 +713,7 @@ table 'KS4 Statistics'
 	column Academy = RELATED(Student[Academy])
 		dataType: String
 		isAvailableInMDX: false
+		isDataTypeInferred: false
 		isHidden
 		lineageTag: 97332048-4edf-412d-b5ab-a98baaa25202
 		summarizeBy: None
@@ -835,11 +805,11 @@ table 'KS4 Statistics'
 		
 		RETURN
 		IF(ResultDate >= JoinDate, 1, 0)
-
 		dataType: Int64
 		encodingHint: Value
 		formatString:= 0
 		isAvailableInMDX: false
+		isDataTypeInferred: false
 		isHidden
 		lineageTag: 08d790b2-faeb-4725-8dea-0f21d8725daf
 		summarizeBy: None

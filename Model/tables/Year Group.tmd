@@ -15,7 +15,6 @@ table 'Year Group'
 			in
 				Entity
 
-
 	column 'NC Year'
 		dataType: Int64
 		encodingHint: Value

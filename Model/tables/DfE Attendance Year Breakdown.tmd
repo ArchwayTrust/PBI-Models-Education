@@ -17,7 +17,6 @@ table 'DfE Attendance Year Breakdown'
 			  Entity = Dataflow{[ entity = "dimAttendanceYearBreakdown" ]}[Data]
 			in
 			  Entity
-
 		queryGroup: Dimensions
 
 	column AttendanceYearBreakdownId

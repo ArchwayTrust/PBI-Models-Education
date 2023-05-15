@@ -15,7 +15,6 @@ table Leavers
 			in
 			  Entity
 
-
 	measure '# Leavers' = COUNTROWS( Leavers )
 		formatString:= #,##0
 		lineageTag: bb74bfa0-fb3c-45aa-94ad-2f96116c39c8

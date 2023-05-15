@@ -56,7 +56,6 @@ table 'DfE KS4 Pupil Level'
 			  )
 			in
 			  ChangedType
-
 		queryGroup: Facts
 
 		annotation BestPracticeAnalyzer_IgnoreRules = {"RuleIDs":["MINIMIZE_POWER_QUERY_TRANSFORMATIONS"]}

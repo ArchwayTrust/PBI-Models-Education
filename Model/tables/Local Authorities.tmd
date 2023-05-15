@@ -16,7 +16,6 @@ table 'Local Authorities'
 				Entity = Dataflow{[ entity = "dimLAs" ]}[Data]
 			in
 				Entity
-
 		queryGroup: Dimensions
 
 	column LAId

@@ -15,7 +15,6 @@ table 'KS5 Grades'
 			in
 				Entity
 
-
 	measure 'KS5 Avg Points' = AVERAGE ('KS5 Grades'[KS5Points])
 		lineageTag: ef6a6dfb-48f4-4069-a9af-d29990689276
 
@@ -47,8 +46,6 @@ table 'KS5 Grades'
 		    IF (ISBLANK(DfEPoints), InternalPoints, DfEPoints)
 		    
 		RETURN Result
-		
-
 		lineageTag: 821ec8db-6d64-4824-bec7-bb7dc978ffae
 
 	measure 'KS5 Applied General Avg Points' =
@@ -79,15 +76,12 @@ table 'KS5 Grades'
 		    IF (ISBLANK(DfEPoints), InternalPoints, DfEPoints)
 		    
 		RETURN Result
-		
-
 		lineageTag: d007f041-abb1-4567-ab46-abb71a2421ec
 
 	measure 'KS5 Slicer Filter' =
 		INT(
 		    NOT ( ISEMPTY( 'KS5 Grades' ) && ISEMPTY( 'DfE KS5 Pupil Level' ) )
 		)
-
 		formatString:= #,##0
 		lineageTag: 9a396aa3-6bbf-47ea-848d-b56eaf12d839
 

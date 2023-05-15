@@ -15,7 +15,6 @@ table 'KS5 Grade Type'
 			in
 				Entity
 
-
 	column 'Grade Type'
 		dataType: String
 		isDataTypeInferred: false

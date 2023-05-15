@@ -15,11 +15,9 @@ table 'G4S Lesson Attendance'
 			in
 			  Entity
 
-
 	measure 'Lesson Minutes Late' =
 		
 		SUM ( 'G4S Lesson Attendance'[LessonMinutesLate] )
-
 		lineageTag: b91a6edb-c217-433b-a90e-fc829ba65efe
 
 	column G4SAttendanceCodeId

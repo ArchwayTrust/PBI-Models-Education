@@ -17,7 +17,6 @@ table Suspension
 			  Entity = Dataflow{[ entity = "factExclusions", version = "" ]}[Data]
 			in
 			  Entity
-
 		queryGroup: Facts
 
 	measure '# Students Suspended' =
@@ -30,8 +29,6 @@ table Suspension
 		    ),
 		    Suspension[TypeCode] IN { "FIXD", "SUSP" }
 		)
-		
-
 		formatString:= 0
 		lineageTag: bf39dc04-4862-4a24-b3ba-6cc75a63a31d
 
@@ -47,7 +44,6 @@ table Suspension
 		    NOT ( ISBLANK( Suspension[StartDate] ) ),
 		    Suspension[TypeCode] IN { "FIXD", "SUSP" }
 		)
-
 		formatString:= 0
 		lineageTag: 0ab37d1e-50b6-49e2-a26a-583d1daec2a2
 
@@ -75,7 +71,6 @@ table Suspension
 		)
 		
 		RETURN Result
-
 		displayFolder: "1+ FTE Rate"
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: f083d5de-f08c-4df5-859c-8f6586d93aab
@@ -115,7 +110,6 @@ table Suspension
 		        LatestResult,
 		        NormalResult
 		    )
-
 		displayFolder: "1+ FTE Rate"
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: 6b99f8c4-a107-4757-9da0-131bbbe81eaf
@@ -130,7 +124,6 @@ table Suspension
 		    REMOVEFILTERS( Site ),
 		    REMOVEFILTERS( '(RLS) Site' )
 		)
-
 		displayFolder: "1+ FTE Rate"
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: 766f074c-7dd5-4f43-b8d3-4cc6edba5418
@@ -149,7 +142,6 @@ table Suspension
 		    ),
 		    Suspension[TypeCode] = "PERM"
 		)
-
 		lineageTag: 99904e28-9518-4842-a1be-e8e178456226
 
 	measure 'Suspensions Slicer Filter' = INT ( NOT ( ISEMPTY ( Suspension ) ) )
@@ -167,7 +159,6 @@ table Suspension
 		            )
 		        )
 		    )
-
 		lineageTag: 01d6f6fb-ff3d-47bd-8330-eaf58eecf1fc
 
 	measure '# Repeat Suspensions' =
@@ -185,7 +176,6 @@ table Suspension
 		
 		RETURN
 		    COUNTROWS ( StudentsWithRepeatExclusions )
-
 		lineageTag: 69f97d51-c98b-4caa-b26b-ae7dc758bad6
 
 	measure '# Days Suspended' =
@@ -204,7 +194,6 @@ table Suspension
 		
 		RETURN 
 		    IF (HASONEVALUE('Suspension Reasons'[Reason]), ReasonResult, TopLevelResult)
-
 		formatString:= #,##0.0
 		lineageTag: 8f411fcf-694a-4bd6-96a0-bd9b6aa193fd
 
@@ -222,7 +211,6 @@ table Suspension
 		    DIVIDE (SelectedNum, TotalVisible)
 		    
 		RETURN Result
-
 		formatString:= #,##0.0 %
 		lineageTag: 946f8580-5086-4a3f-9ea1-348831c16f3d
 
@@ -243,7 +231,6 @@ table Suspension
 		VAR _Result = IF ( _HasPX, [# Suspensions], BLANK() )
 		
 		RETURN _Result
-
 		displayFolder: "PEX Related"
 		formatString:= #,##0.0
 		lineageTag: fda75f83-7a6d-4685-a1d1-544ad558939e
@@ -265,7 +252,6 @@ table Suspension
 		VAR _Result = IF ( _HasPX, [# Days Suspended], BLANK() )
 		
 		RETURN _Result
-
 		displayFolder: "PEX Related"
 		formatString:= #,##0.0
 		lineageTag: eba6deee-a0ca-48ba-a7ff-53a825d1b7b2
@@ -362,11 +348,11 @@ table Suspension
 		
 		RETURN
 		IF( Suspension[StartDate] >= JoinDate, 1, 0 )
-
 		dataType: Int64
 		encodingHint: Value
 		formatString:= 0
 		isAvailableInMDX: false
+		isDataTypeInferred: false
 		isHidden
 		lineageTag: 96c6b959-2161-447d-9eb5-8b8235ded620
 		summarizeBy: None

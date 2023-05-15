@@ -14,7 +14,6 @@ table 'EYFS Goal'
 			in
 				Entity
 
-
 	column Core
 		dataType: Int64
 		encodingHint: Value

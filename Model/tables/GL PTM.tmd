@@ -15,17 +15,14 @@ table 'GL PTM'
 			in
 				Entity
 
-
 	measure 'PTM SAS' =
 		
 		AVERAGE('GL PTM'[StandardAgeScore])
-
 		lineageTag: 488bff23-62c7-486f-97d4-a46787017776
 
 	measure 'PTM Stanine' =
 		
 		AVERAGE ('GL PTM'[OverallStanine])
-
 		lineageTag: cae090f8-e911-4957-8e8d-d164e7cd8935
 
 	column 'Academic Year'

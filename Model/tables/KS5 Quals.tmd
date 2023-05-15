@@ -15,7 +15,6 @@ table 'KS5 Quals'
 			in
 				Entity
 
-
 	column 'G4S QAN'
 		dataType: String
 		isDataTypeInferred: false

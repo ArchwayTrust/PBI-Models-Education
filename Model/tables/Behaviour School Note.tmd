@@ -19,7 +19,6 @@ table 'Behaviour School Note'
 			  Entity = Dataflow{[ entity = "dimBehSchoolNotes" ]}[Data]
 			in
 			  Entity
-
 		queryGroup: Dimensions
 
 	column BehSchoolNoteId

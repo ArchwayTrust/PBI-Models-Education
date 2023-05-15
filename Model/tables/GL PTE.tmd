@@ -15,20 +15,17 @@ table 'GL PTE'
 			in
 			  Entity
 
-
 	measure 'PTE SAS' = AVERAGE ('GL PTE'[StandardAgeScore])
 		lineageTag: 29674788-8f29-4a48-968b-5fc93bcdccf5
 
 	measure 'PTE English Skills Stanine' =
 		
 		AVERAGE ( 'GL PTE'[EnglishSkillsStanine])
-
 		lineageTag: d05e2f5f-430c-4f65-ab20-e2941575ab69
 
 	measure 'PTE Reading Comprehension Stanine' =
 		
 		AVERAGE ( 'GL PTE'[ReadingComprehensionStanine] )
-
 		lineageTag: 7d0bef9b-0133-4f67-9b99-27b177ed5409
 
 	column 'Academic Year'

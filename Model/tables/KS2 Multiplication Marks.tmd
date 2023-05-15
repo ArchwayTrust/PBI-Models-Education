@@ -15,7 +15,6 @@ table 'KS2 Multiplication Marks'
 			in
 				Entity
 
-
 	column Band
 		dataType: String
 		isDataTypeInferred: false

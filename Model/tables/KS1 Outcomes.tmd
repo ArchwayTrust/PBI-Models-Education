@@ -15,7 +15,6 @@ table 'KS1 Outcomes'
 			in
 				Entity
 
-
 	measure 'KS1 % EXS+ Maths' =
 		VAR NumberEXS = 
 		    CALCULATE (
@@ -29,9 +28,6 @@ table 'KS1 Outcomes'
 		    DIVIDE ( NumberEXS, TotalStudents )
 		    
 		RETURN Result
-		    
-		
-
 		formatString:= #,##0.0 %
 		lineageTag: 17789d50-3023-4184-9ccc-19898d1d8997
 
@@ -48,9 +44,6 @@ table 'KS1 Outcomes'
 		    DIVIDE ( NumberEXS, TotalStudents )
 		    
 		RETURN Result
-		    
-		
-
 		formatString:= #,##0.0 %
 		lineageTag: 84f276ea-4cf5-4a02-b504-971bb32d709c
 
@@ -67,9 +60,6 @@ table 'KS1 Outcomes'
 		    DIVIDE ( NumberEXS, TotalStudents )
 		    
 		RETURN Result
-		    
-		
-
 		formatString:= #,##0.0 %
 		lineageTag: 22f07bb0-54ce-4551-bece-09b2a72b4054
 
@@ -86,9 +76,6 @@ table 'KS1 Outcomes'
 		    DIVIDE ( NumberEXS, TotalStudents )
 		    
 		RETURN Result
-		    
-		
-
 		formatString:= #,##0.0 %
 		lineageTag: bca44d92-8380-4188-b974-922a43a9925f
 
@@ -107,9 +94,6 @@ table 'KS1 Outcomes'
 		    DIVIDE ( NumberEXS, TotalStudents )
 		    
 		RETURN Result
-		    
-		
-
 		formatString:= #,##0.0 %
 		lineageTag: e6cfef61-261d-4c66-807c-026a597075f3
 

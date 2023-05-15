@@ -33,7 +33,6 @@ table '(RLS) Site'
 			  )
 			in
 			  RemovedOtherColumns
-
 		queryGroup: Dimensions
 
 	column SiteId

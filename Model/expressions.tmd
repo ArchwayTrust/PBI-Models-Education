@@ -27,6 +27,5 @@ expression fxAttendancePartition =
 	      PartitionFilter
 	in
 	  Source
-
 	lineageTag: 695e9cce-865a-4790-a539-d955ce7d12a9
 

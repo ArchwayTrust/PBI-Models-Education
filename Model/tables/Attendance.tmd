@@ -12,14 +12,12 @@ table Attendance
 			in
 			    Source
 
-
 	partition '2019 - 1' = M
 		expression:=
 			let
 			    Source = fxAttendancePartition(#date(2018, 9, 1), #date(2019, 3, 31))
 			in
 			    Source
-
 
 	partition '2020 - 1' = M
 		expression:=
@@ -28,14 +26,12 @@ table Attendance
 			in
 			    Source
 
-
 	partition '2021 - 1' = M
 		expression:=
 			let
 			    Source = fxAttendancePartition(#date(2020, 9, 1), #date(2021, 3, 31))
 			in
 			    Source
-
 
 	partition '2022 - 1' = M
 		expression:=
@@ -44,14 +40,12 @@ table Attendance
 			in
 			    Source
 
-
 	partition '2019 - 2' = M
 		expression:=
 			let
 			    Source = fxAttendancePartition(#date(2019, 4, 1), #date(2019, 8, 31))
 			in
 			    Source
-
 
 	partition '2020 - 2' = M
 		expression:=
@@ -60,7 +54,6 @@ table Attendance
 			in
 			    Source
 
-
 	partition '2021 - 2' = M
 		expression:=
 			let
@@ -68,14 +61,12 @@ table Attendance
 			in
 			    Source
 
-
 	partition '2022 - 2' = M
 		expression:=
 			let
 			    Source = fxAttendancePartition(#date(2022, 4, 1), #date(2022, 8, 31))
 			in
 			    Source
-
 
 	measure 'LA Attendance' =
 		
@@ -99,9 +90,6 @@ table Attendance
 		        HASONEVALUE('DfE Attendance Year Breakdown'[Half Terms]),
 		        Result
 		    )
-		
-		
-
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: 8093cf5b-0455-47c1-a058-29fe7fe3df0c
 
@@ -111,11 +99,10 @@ table Attendance
 
 	measure 'National Attendance' =
 		
-		    CALCULATE (
-		        [LA Attendance],
-		        REMOVEFILTERS(Site)
-		    )
-
+		CALCULATE (
+		    [LA Attendance],
+		    REMOVEFILTERS(Site)
+		)
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: c654f20c-e987-4def-a6de-50f4da3f56c8
 
@@ -138,7 +125,6 @@ table Attendance
 		    NOT 'SIMS Attendance Code'[Statistical Meaning] IN { "No mark", "Attendance not required" },
 		    KEEPFILTERS( AttFilter )
 		)
-
 		formatString:= #,0
 		lineageTag: 5ebe397c-3707-4fb0-995c-713938f6777c
 
@@ -161,8 +147,6 @@ table Attendance
 		    'SIMS Attendance Code'[Statistical Meaning] = "Present",
 		    KEEPFILTERS( AttFilter )
 		)
-		
-
 		formatString:= #,0
 		lineageTag: 1e90d170-f12e-4c21-b3d6-c5340755a569
 
@@ -199,13 +183,9 @@ table Attendance
 		        PossibleAttLatest > 0, LatestResult + 0,
 		        BLANK()
 		    )
-		
-		
-
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		KPI:
 			statusExpression:=
-				
 				VAR AttDiff = 
 				    IF(
 				        ISBLANK( [% Attendance] ),
@@ -221,7 +201,6 @@ table Attendance
 				    )
 				
 				RETURN StatusFlag
-
 			statusGraphic: "Traffic Light"
 			targetExpression:= [National Attendance]
 			targetFormatString: "#,##0.0 %"
@@ -244,7 +223,6 @@ table Attendance
 		    'SIMS Attendance Code'[Mark] IN { "L" },
 		    KEEPFILTERS( AttFilter )
 		)
-
 		lineageTag: 09a5e98c-eea0-4ced-928d-a5414100500e
 
 	measure '% Late' =
@@ -253,7 +231,6 @@ table Attendance
 		    [# Lates],
 		    [# Attendance Possible]
 		)
-
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: e39593bb-61fc-4b63-9a31-d720978995e6
 
@@ -263,7 +240,6 @@ table Attendance
 		    [# Students PA],
 		    [# Students From Attendance]
 		)
-
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: 747c07c8-d1a2-4744-9394-4ed38555f5c3
 
@@ -281,7 +257,6 @@ table Attendance
 		    'SIMS Attendance Code'[Statistical Meaning] = "Approved Educational Activity",
 		    KEEPFILTERS( AttFilter )
 		)
-
 		lineageTag: 4971e766-2613-4c0b-96d1-e7f1523c4fd0
 
 	measure '# Attendance Not Required' =
@@ -298,7 +273,6 @@ table Attendance
 		    'SIMS Attendance Code'[Statistical Meaning] = "Attendance Not Required",
 		    KEEPFILTERS( AttFilter )
 		)
-
 		lineageTag: 3e49fddc-6c43-42d0-847b-1cf4b3af0da0
 
 	measure '# Authorised Absence' =
@@ -316,7 +290,6 @@ table Attendance
 		    'SIMS Attendance Code'[Statistical Meaning] = "Authorised Absence",
 		    KEEPFILTERS( AttFilter )
 		)
-
 		lineageTag: 104a822e-5812-4953-a841-2a5fa4e9a688
 
 	measure '# Missing Marks' =
@@ -334,7 +307,6 @@ table Attendance
 		    'SIMS Attendance Code'[Statistical Meaning] = "No mark",
 		    KEEPFILTERS( AttFilter )
 		)
-
 		lineageTag: 00efbbe4-c754-4d29-90f2-5b0cacb09f37
 
 	measure '# Unauthorised Absence' =
@@ -352,7 +324,6 @@ table Attendance
 		    'SIMS Attendance Code'[Statistical Meaning] = "Unauthorised Absence",
 		    KEEPFILTERS( AttFilter )
 		)
-
 		lineageTag: 225b1a9e-dd9f-4213-a876-286950d225ed
 
 	measure '# X Codes' =
@@ -369,17 +340,15 @@ table Attendance
 		    'SIMS Attendance Code'[Mark] = "X",
 		    KEEPFILTERS( AttFilter )
 		)
-
 		lineageTag: 3d270129-e3fa-442f-ae75-9699955647b9
 
 	/// Excludes X and No Marks
 	measure '% Absence' =
 		
-		    DIVIDE(
-		        [# Authorised Absence] + [# Unauthorised Absence],
-		        [# Attendance Possible]
-		    )
-
+		DIVIDE(
+		    [# Authorised Absence] + [# Unauthorised Absence],
+		    [# Attendance Possible]
+		)
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: 4ed327cc-dd69-44b8-b27a-b29bdce40a73
 
@@ -398,8 +367,6 @@ table Attendance
 		    'SIMS Attendance Code'[Mark] IN { "L" },
 		    KEEPFILTERS( AttFilter )
 		)
-		
-
 		lineageTag: 4d7ea675-4f77-40c2-acfc-d6566ce06201
 
 	measure '# Students PA' =
@@ -415,8 +382,6 @@ table Attendance
 		    )
 		    
 		RETURN NumberPA
-		
-
 		lineageTag: 2ae93a8a-805b-49df-8824-7779a3c9dfb6
 
 	measure '% Cumulative Attendance' =
@@ -426,7 +391,6 @@ table Attendance
 		    Calendar[Date],
 		    "31/08"
 		)
-
 		formatString:= #,##0.00 %
 		lineageTag: 6aa2305b-245d-4a75-b16b-fb536d3d10da
 
@@ -442,8 +406,6 @@ table Attendance
 		    )
 		    
 		RETURN NumberStu
-		    
-
 		lineageTag: a1965ea9-41e6-4e7a-b625-c2be552856d0
 
 	measure 'Attendance Slicer Filter' = INT( NOT ( ISEMPTY( Attendance ) ) )
@@ -469,7 +431,6 @@ table Attendance
 		        NormalResult,
 		        LatestResult
 		    )
-
 		formatString:= #,##0.0 %
 		lineageTag: ed962843-cde9-4f4b-8ef0-c084f073a4aa
 
@@ -487,7 +448,6 @@ table Attendance
 		    'SIMS Attendance Code'[Mark] = "I",
 		    KEEPFILTERS( AttFilter )
 		)
-
 		formatString:= #,##0
 		lineageTag: d3b1cb8a-a8b2-4b95-b643-37b227c2b370
 
@@ -505,7 +465,6 @@ table Attendance
 		    'SIMS Attendance Code'[Subcode] = "I02",
 		    KEEPFILTERS( AttFilter )
 		)
-
 		lineageTag: 7d79628c-b26e-4644-8fd1-46b9e67f3f3b
 
 	measure 'Maximum Absence Sessions Remaining to Finish Above 95%' =
@@ -521,7 +480,6 @@ table Attendance
 		VAR _Result = _MaxAllowedFor90 - ( [# Authorised Absence] + [# Unauthorised Absence] )
 		
 		RETURN _Result
-
 		displayFolder: "Absence Impact"
 		lineageTag: 4de0a164-f3d5-4e8a-99b1-5082a227f0b0
 
@@ -553,8 +511,6 @@ table Attendance
 		    )
 		        
 		RETURN _Result
-		    
-
 		displayFolder: "Absence Impact"
 		formatString:= #,##0
 		lineageTag: a703cf3f-d6ad-4a55-ad67-c6f261c1f74a
@@ -577,10 +533,6 @@ table Attendance
 		VAR _Result = _MaxAllowedFor90 - ( [# Authorised Absence] + [# Unauthorised Absence] )
 		
 		RETURN _Result
-		
-		    
-		    
-
 		displayFolder: "Absence Impact"
 		formatString:= #,##0
 		lineageTag: 6b53deca-fcf7-44b4-82b9-195932088224
@@ -602,7 +554,6 @@ table Attendance
 		    'SIMS Attendance Code'[Mark] = "E",
 		    KEEPFILTERS( AttFilter )
 		)
-
 		formatString:= #,##0
 		lineageTag: 800ab7f3-b728-41bb-9915-f1318756f41f
 
@@ -636,7 +587,6 @@ table Attendance
 		        PossibleAttLatest > 0, LatestResult + 0,
 		        BLANK()
 		    )
-
 		formatString:= #,##0.0 %
 		lineageTag: f431c289-a798-486e-9d4d-72c85cd45ef5
 
@@ -670,7 +620,6 @@ table Attendance
 		        PossibleAttLatest > 0, LatestResult + 0,
 		        BLANK()
 		    )
-
 		formatString:= #,##0.0 %
 		lineageTag: 16840944-9fd2-4831-9a6b-055eb91ad1c0
 

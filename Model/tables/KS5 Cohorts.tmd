@@ -15,7 +15,6 @@ table 'KS5 Cohorts'
 			in
 				Entity
 
-
 	column DisplayOrder
 		dataType: Int64
 		encodingHint: Value

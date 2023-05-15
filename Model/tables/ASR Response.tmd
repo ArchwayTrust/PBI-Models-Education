@@ -13,7 +13,6 @@ table 'ASR Response'
 			in
 				Entity
 
-
 	column ASRResponseId
 		dataType: Int64
 		encodingHint: Value

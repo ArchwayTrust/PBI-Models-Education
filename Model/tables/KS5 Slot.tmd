@@ -15,7 +15,6 @@ table 'KS5 Slot'
 			in
 				Entity
 
-
 	column 'KS5 Slot'
 		dataType: String
 		isDataTypeInferred: false

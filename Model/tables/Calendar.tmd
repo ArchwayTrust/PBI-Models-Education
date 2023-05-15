@@ -17,14 +17,12 @@ table Calendar
 			  Entity = Dataflow{[ entity = "dimDates" ]}[Data]
 			in
 			  Entity
-
 		queryGroup: Dimensions
 
 	measure 'Flag Covid' =
 		
 		
 		IF (HASONEVALUE (Calendar[Academic Year]), MAX(Calendar[Covid Impact]))
-
 		formatString:= 0
 		lineageTag: 4fe5b9a8-e739-4d51-99f8-d3a949f9ee41
 
@@ -352,10 +350,10 @@ table Calendar
 		//    1, 
 		    0 
 		//    )
-
 		dataType: Int64
 		encodingHint: Value
 		formatString:= 0
+		isDataTypeInferred: false
 		lineageTag: 22a2d2dd-462f-423b-8100-dab1648d7f31
 		summarizeBy: None
 
@@ -382,8 +380,8 @@ table Calendar
 		    )
 		    
 		RETURN Result
-
 		dataType: String
+		isDataTypeInferred: false
 		lineageTag: 3244befb-18dd-47e2-92f2-8b589a54d785
 		sortByColumn: 'Week Commencing'
 		summarizeBy: None
