@@ -15,11 +15,9 @@ table 'KS3 Assessment'
 			in
 				Entity
 
-
 	measure 'KS3 Number of Students' =
 		
 		DISTINCTCOUNT ( 'KS3 Assessment'[StudentId] )
-
 		lineageTag: 3c462149-35fd-404d-b50c-3382f3e48d0b
 
 	measure 'KS3 Slicer Filter' = INT( NOT ( ISEMPTY( 'KS3 Assessment' ) ) )
@@ -28,14 +26,12 @@ table 'KS3 Assessment'
 	measure 'KS3 Average %' =
 		
 		AVERAGE ( 'KS3 Assessment'[PercentageScore] )
-
 		formatString:= #,##0.00 %
 		lineageTag: 2fd6a5e1-3c41-4539-9aee-b1a808e459d9
 
 	measure 'KS3 Number of Assessments' =
 		
 		COUNTROWS ( 'KS3 Assessment' )
-
 		lineageTag: ee1b4770-1b3d-4222-a4b1-0ebb64858e71
 
 	column 'Baseline Percentile'

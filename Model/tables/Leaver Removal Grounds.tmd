@@ -15,7 +15,6 @@ table 'Leaver Removal Grounds'
 			in
 			  Entity
 
-
 	column 'Grounds for Removal'
 		dataType: String
 		isDataTypeInferred: false

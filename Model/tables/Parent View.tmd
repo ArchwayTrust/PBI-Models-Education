@@ -15,7 +15,6 @@ table 'Parent View'
 			in
 			  Entity
 
-
 	measure '% Parent View Responses' =
 		
 		VAR NumberOfResponses = SUM ( 'Parent View'[NumberOfResponses] )
@@ -31,8 +30,6 @@ table 'Parent View'
 		VAR Result = DIVIDE ( NumberOfResponses, TotalResponses)
 		    
 		RETURN Result
-		
-
 		formatString:= #,##0.00 %
 		lineageTag: d05f50a0-3738-49ad-a36d-90aa3834b722
 
@@ -56,7 +53,6 @@ table 'Parent View'
 		VAR Result = DIVIDE ( NumberOfResponses, TotalResponses)
 		    
 		RETURN Result
-
 		formatString:= #,##0.00 %
 		lineageTag: 9d6f1add-ce26-4687-a4fb-f8a95f47826a
 
@@ -67,7 +63,6 @@ table 'Parent View'
 		    REMOVEFILTERS( 'Parent View Question' ),
 		    'Parent View Question'[Question] = "Q1"
 		)
-
 		formatString:= #,##0
 		lineageTag: 4a3b024e-b477-4040-867c-c05df3e85ada
 
@@ -89,8 +84,6 @@ table 'Parent View'
 		VAR Result = DIVIDE ( NumberOfResponses, TotalResponses)
 		    
 		RETURN Result
-		
-
 		formatString:= #,##0.00 %
 		lineageTag: 05e4daae-4513-4e6c-a5ec-f8afb58b84e4
 
@@ -115,7 +108,6 @@ table 'Parent View'
 		VAR Result = DIVIDE ( NumberOfResponses, TotalResponses)
 		    
 		RETURN Result
-
 		formatString:= #,##0.00 %
 		lineageTag: d17dff58-2b5d-4f84-8e5a-e1bf51646002
 
@@ -132,7 +124,6 @@ table 'Parent View'
 		    )
 		    
 		RETURN Result
-
 		lineageTag: 44f30c61-2dc3-45ec-af6c-eea74f61b6ab
 
 	measure 'Parent View Slicer Filter' = INT ( NOT ( ISEMPTY ( 'Parent View' ) ) )
@@ -144,7 +135,6 @@ table 'Parent View'
 		    [% Parent View Positive Responses],
 		    REMOVEFILTERS ( Site )
 		)
-
 		formatString:= #,##0.00 %
 		lineageTag: 62ce864f-ec1d-4162-b559-0a475f817fed
 
@@ -153,7 +143,6 @@ table 'Parent View'
 		    [% Parent View Responses],
 		    REMOVEFILTERS( Site )
 		)
-
 		formatString:= #,##0.00 %
 		lineageTag: 4dedfd3c-2106-45a5-b3d6-2eb067586e30
 

@@ -16,7 +16,6 @@ table 'DfE LA Suspension'
 			  Entity = Dataflow{[ entity = "factLAExclusions" ]}[Data]
 			in
 			  Entity
-
 		queryGroup: Facts
 
 	column 'Academic Year'

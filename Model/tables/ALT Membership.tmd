@@ -14,7 +14,6 @@ table 'ALT Membership'
 			  )
 			in
 			  Source
-
 		queryGroup: 'Dimensions\Static'
 
 	column ALTMembershipId

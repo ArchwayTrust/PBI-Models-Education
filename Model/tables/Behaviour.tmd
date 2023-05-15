@@ -18,7 +18,6 @@ table Behaviour
 			  Entity = Dataflow{[entity = "factBehEvents"]}[Data]
 			in
 			  Entity
-
 		queryGroup: Facts
 
 	measure 'Negative Points' =
@@ -29,7 +28,6 @@ table Behaviour
 		        NOT Behaviour[Cancelled],
 		        'Behaviour Event Type'[Significance] = "Negative"
 		    )
-
 		formatString:= #,##0
 		lineageTag: 161cd4c9-16a5-4f4b-b463-08b4ff32de43
 
@@ -40,7 +38,6 @@ table Behaviour
 		    'Behaviour Event Type'[Significance] = "Negative",
 		    Behaviour[Score] < 0
 		)
-
 		formatString:= #,##0
 		lineageTag: 7249a1a2-3ac4-441d-a320-e855b5417c5f
 
@@ -50,7 +47,6 @@ table Behaviour
 		    COUNTROWS( Behaviour ),
 		    NOT Behaviour[Cancelled]
 		)
-
 		formatString:= #,##0
 		lineageTag: 83713985-7fea-4904-9034-6429d237538d
 
@@ -61,7 +57,6 @@ table Behaviour
 		   NOT Behaviour[Cancelled],
 		   'Behaviour Event Type'[Significance] = "Positive"
 		)
-
 		formatString:= #,##0
 		lineageTag: 50ca893e-9ff0-4ddd-af45-01deb755fdec
 
@@ -112,7 +107,6 @@ table Behaviour
 		    )
 		RETURN
 		    Result
-
 		displayFolder: "Change Detection"
 		formatString:= #,##0.00
 		lineageTag: bc37d86c-1652-4641-81e2-1a4a79076680
@@ -138,7 +132,6 @@ table Behaviour
 		        CurrentWeekEvents - WeeklyAverage,
 		        WeeklyAverage
 		        )
-
 		displayFolder: "Change Detection"
 		formatString:= #,0.0%;-#,0.0%;#,0.0%
 		lineageTag: 50916338-e197-44df-b3d7-a9fa66a3da5f
@@ -156,7 +149,6 @@ table Behaviour
 		    StuIdList,
 		    [Number of Negative Student Events]
 		)
-
 		lineageTag: 2a7a7e5e-e57f-40d3-b669-4402dd300cb0
 
 	measure '# ILU Admissions' =
@@ -164,7 +156,6 @@ table Behaviour
 		    SUM( Behaviour[ILUAdmission] ),
 		    NOT Behaviour[Cancelled]
 		)
-
 		formatString:= #,##0
 		lineageTag: f662d4a0-60ce-424a-a514-d2a674ca2fcd
 
@@ -173,7 +164,6 @@ table Behaviour
 		    SUM( Behaviour[ILUDays] ),
 		    NOT Behaviour[Cancelled]
 		)
-
 		formatString:= #,##0.0
 		lineageTag: 188b1c45-989a-4bc6-90dd-0a965bbf9654
 
@@ -183,7 +173,6 @@ table Behaviour
 		    Behaviour[ILUAdmission] = 1,
 		    NOT Behaviour[Cancelled]
 		)
-
 		formatString:= #,##0
 		lineageTag: bd9edec4-9a3b-45fc-8a38-5f7e2da145cc
 

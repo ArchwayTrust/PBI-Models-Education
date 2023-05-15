@@ -17,14 +17,12 @@ table 'Pupil Groups Calc Group'
 			    Student[DFE SEND] = "E"
 			)
 
-
 		calculationItem 'SEN Support' =
 			
 			CALCULATE (
 			    SELECTEDMEASURE(),
 			    Student[DFE SEND] = "K"
 			)
-
 
 		calculationItem 'Pupil Premium' =
 			
@@ -33,14 +31,12 @@ table 'Pupil Groups Calc Group'
 			    Student[Pupil Premium] = "PP"
 			)
 
-
 		calculationItem 'No SEND' =
 			
 			CALCULATE (
 			    SELECTEDMEASURE(),
 			    Student[DfE SEND] = "N"
 			)
-
 
 		calculationItem 'Not Pupil Premium' =
 			
@@ -49,14 +45,12 @@ table 'Pupil Groups Calc Group'
 			    Student[Pupil Premium] = "Not PP"
 			)
 
-
 		calculationItem Male =
 			
 			CALCULATE (
 			    SELECTEDMEASURE(),
 			    Student[Gender] = "M"
 			)
-
 
 		calculationItem Female =
 			
@@ -65,14 +59,12 @@ table 'Pupil Groups Calc Group'
 			    Student[Gender] = "F"
 			)
 
-
 		calculationItem 'Not FSM Ever6' =
 			
 			CALCULATE (
 			    SELECTEDMEASURE(),
 			    Student[FSM Ever 6] = "Not FSM Ever6"
 			)
-
 
 		calculationItem 'FSM Ever6' =
 			
@@ -81,7 +73,6 @@ table 'Pupil Groups Calc Group'
 			    Student[FSM Ever 6] = "FSM Ever6"
 			)
 
-
 		calculationItem EAL =
 			
 			CALCULATE (
@@ -89,14 +80,12 @@ table 'Pupil Groups Calc Group'
 			    Student[EAL] = "EAL"
 			)
 
-
 		calculationItem 'Not EAL' =
 			
 			CALCULATE (
 			    SELECTEDMEASURE(),
 			    Student[EAL] = "Not EAL"
 			)
-
 
 	column 'Pupil Group'
 		dataType: String

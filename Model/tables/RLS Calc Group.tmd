@@ -22,7 +22,6 @@ table 'RLS Calc Group'
 			    KEEPFILTERS( TREATAS( StudentIdsToMove, Student[StudentId] ) )
 			)
 
-
 		calculationItem 'Apply Directly For Exclusions' =
 			
 			VAR StudentIdsToMove = 
@@ -37,7 +36,6 @@ table 'RLS Calc Group'
 			    SELECTEDMEASURE(),
 			    KEEPFILTERS( TREATAS( StudentIdsToMove, Suspension[StudentId] ) )
 			)
-
 
 	column 'Calc Item'
 		dataType: String

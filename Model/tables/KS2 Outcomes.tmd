@@ -15,7 +15,6 @@ table 'KS2 Outcomes'
 			in
 				Entity
 
-
 	measure 'KS2 Outcomes % EXS+ Maths' =
 		VAR NumberOfStudents = SUM ( 'KS2 Outcomes'[StudentIncluded] )
 		VAR NumberEXS = 
@@ -30,7 +29,6 @@ table 'KS2 Outcomes'
 		    )
 		    
 		RETURN Result
-
 		formatString:= #,##0.0 %
 		KPI:
 			statusExpression:=
@@ -43,7 +41,6 @@ table 'KS2 Outcomes'
 				Act >= Nat, 1,
 				Act < Nat, -1
 				)
-
 			statusGraphic: "Traffic Light - Single"
 			targetExpression:= AVERAGE ( 'DFE KS2 National'[MathsEXS%] )
 			targetFormatString: "#,##0.0 %"
@@ -63,7 +60,6 @@ table 'KS2 Outcomes'
 		    )
 		    
 		RETURN Result
-
 		formatString:= #,##0.0 %
 		KPI:
 			statusExpression:=
@@ -76,7 +72,6 @@ table 'KS2 Outcomes'
 				Act >= Nat, 1,
 				Act < Nat, -1
 				)
-
 			statusGraphic: "Traffic Light - Single"
 			targetExpression:= AVERAGE ( 'DFE KS2 National'[ReadingEXS%] )
 			targetFormatString: "#,##0.0 %"
@@ -95,7 +90,6 @@ table 'KS2 Outcomes'
 		    )
 		    
 		RETURN Result
-
 		formatString:= #,##0.0 %
 		KPI:
 			statusExpression:=
@@ -108,7 +102,6 @@ table 'KS2 Outcomes'
 				Act >= Nat, 1,
 				Act < Nat, -1
 				)
-
 			statusGraphic: "Traffic Light - Single"
 			targetExpression:= AVERAGE ( 'DFE KS2 National'[WritingEXS%] )
 			targetFormatString: "#,##0.0 %"
@@ -129,7 +122,6 @@ table 'KS2 Outcomes'
 		    )
 		    
 		RETURN Result
-
 		formatString:= #,##0.0 %
 		KPI:
 			statusExpression:=
@@ -142,7 +134,6 @@ table 'KS2 Outcomes'
 				Act >= Nat, 1,
 				Act < Nat, -1
 				)
-
 			statusGraphic: "Traffic Light - Single"
 			targetExpression:= AVERAGE ( 'DFE KS2 National'[RWMEXS%] )
 			targetFormatString: "#,##0.0 %"
@@ -153,7 +144,6 @@ table 'KS2 Outcomes'
 		    AVERAGE ( 'KS2 Outcomes'[MathsProgress]),
 		    'KS2 Outcomes'[StudentIncluded] = 1
 		)
-
 		formatString:= #,##0.00
 		KPI:
 			statusDescription: "Shows statistical significance."
@@ -170,7 +160,6 @@ table 'KS2 Outcomes'
 				    )
 				    
 				RETURN Result
-
 			statusGraphic: "Traffic Light - Single"
 		lineageTag: a6328cb4-2079-4cdc-a9f6-4719d4328eca
 
@@ -179,7 +168,6 @@ table 'KS2 Outcomes'
 		    AVERAGE ( 'KS2 Outcomes'[ReadingProgress]),
 		    'KS2 Outcomes'[StudentIncluded] = 1
 		)
-
 		formatString:= #,##0.00
 		KPI:
 			statusDescription: "Shows statistical significance."
@@ -196,7 +184,6 @@ table 'KS2 Outcomes'
 				    )
 				    
 				RETURN Result
-
 			statusGraphic: "Traffic Light - Single"
 		lineageTag: 663816f8-33c9-4c25-875b-e59d95e04436
 
@@ -205,7 +192,6 @@ table 'KS2 Outcomes'
 		    AVERAGE ( 'KS2 Outcomes'[WritingProgress]),
 		    'KS2 Outcomes'[StudentIncluded] = 1
 		)
-
 		formatString:= #,##0.00
 		KPI:
 			statusExpression:=
@@ -221,7 +207,6 @@ table 'KS2 Outcomes'
 				    )
 				    
 				RETURN Result
-
 			statusGraphic: "Traffic Light - Single"
 		lineageTag: 7258e196-75a0-40aa-b8da-4e98c1056a62
 
@@ -230,7 +215,6 @@ table 'KS2 Outcomes'
 		    AVERAGE ( 'KS2 Outcomes'[KS2MathsScaledScore]),
 		    'KS2 Outcomes'[StudentIncluded] = 1
 		)
-
 		formatString:= #,##0.0
 		KPI:
 			statusExpression:=
@@ -243,12 +227,7 @@ table 'KS2 Outcomes'
 				Act >= Nat, 1,
 				Act < Nat, -1
 				)
-
-			targetExpression:=
-				AVERAGE ( 'DFE KS2 National'[AvgMathsSS] )
-				
-				
-
+			targetExpression:= AVERAGE ( 'DFE KS2 National'[AvgMathsSS] )
 		lineageTag: 3db7cf38-717e-47b6-ab5c-76aec243e12a
 
 	measure 'KS2 Outcomes Average Reading Scaled Score' =
@@ -256,7 +235,6 @@ table 'KS2 Outcomes'
 		    AVERAGE ( 'KS2 Outcomes'[KS2ReadingScaledScore]),
 		    'KS2 Outcomes'[StudentIncluded] = 1
 		)
-
 		formatString:= #,##0.0
 		KPI:
 			statusExpression:=
@@ -269,7 +247,6 @@ table 'KS2 Outcomes'
 				Act >= Nat, 1,
 				Act < Nat, -1
 				)
-
 			statusGraphic: "Traffic Light - Single"
 			targetExpression:= AVERAGE ( 'DFE KS2 National'[AvgReadSS] )
 			targetFormatString: #,##0
@@ -280,7 +257,6 @@ table 'KS2 Outcomes'
 		    AVERAGE ( 'KS2 Outcomes'[KS2GPSScaledScore]),
 		    'KS2 Outcomes'[StudentIncluded] = 1
 		)
-
 		formatString:= #,##0.0
 		KPI:
 			statusExpression:=
@@ -293,7 +269,6 @@ table 'KS2 Outcomes'
 				Act >= Nat, 1,
 				Act < Nat, -1
 				)
-
 			statusGraphic: "Traffic Light - Single"
 			targetExpression:= AVERAGE ( 'DFE KS2 National'[AvgGPSSS] )
 			targetFormatString: #,##0
@@ -314,7 +289,6 @@ table 'KS2 Outcomes'
 		    )
 		    
 		RETURN Result
-
 		formatString:= #,##0.0 %
 		KPI:
 			statusExpression:=
@@ -327,8 +301,6 @@ table 'KS2 Outcomes'
 				Act >= Nat, 1,
 				Act < Nat, -1
 				)
-				
-
 			statusGraphic: "Traffic Light - Single"
 			targetExpression:= AVERAGE ( 'DFE KS2 National'[RWMGDS%] )
 			targetFormatString: "#,##0.0 %"
@@ -347,7 +319,6 @@ table 'KS2 Outcomes'
 		VAR Result = 1.96 * DIVIDE ( NatStDev, SQRTPupils)
 		
 		RETURN Result
-
 		formatString:= #,##0.00
 		lineageTag: b9cf9432-0716-446f-aa8c-0f62bf90ed33
 
@@ -364,7 +335,6 @@ table 'KS2 Outcomes'
 		VAR Result = 1.96 * DIVIDE ( NatStDev, SQRTPupils)
 		
 		RETURN Result
-
 		formatString:= #,##0.00
 		lineageTag: 66e96932-1da4-40ff-836e-fc19ccd0abdc
 
@@ -381,7 +351,6 @@ table 'KS2 Outcomes'
 		VAR Result = 1.96 * DIVIDE ( NatStDev, SQRTPupils)
 		
 		RETURN Result
-
 		formatString:= #,##0.00
 		lineageTag: 7a54bf23-abd1-4b32-aecf-4d3eda8104ef
 

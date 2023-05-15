@@ -16,7 +16,6 @@ table PAN
 				Entity = Dataflow{[ entity = "factPAN" ]}[Data]
 			in
 				Entity
-
 		queryGroup: Facts
 
 	column SiteId

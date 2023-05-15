@@ -15,7 +15,6 @@ table '(RLS) Student Name'
 			  Entity = Dataflow{[ entity = "dimStudents" ]}[Data]
 			in
 			  Entity
-
 		queryGroup: Dimensions
 
 	measure 'RLS Student Visual Filter' =
@@ -28,7 +27,6 @@ table '(RLS) Student Name'
 		        )
 		    )
 		)
-
 		lineageTag: cab22cee-4bf9-40e6-a5c3-04a8610178c1
 
 	measure 'Selected First Name' = SELECTEDVALUE ( '(RLS) Student Name'[First Name] )
@@ -134,8 +132,8 @@ table '(RLS) Student Name'
 	column 'Display Name' =
 		
 		'(RLS) Student Name'[Last Name] & ", " & '(RLS) Student Name'[First Name] & " (" & '(RLS) Student Name'[UPN] & ")"
-
 		dataType: String
+		isDataTypeInferred: false
 		isDefaultLabel
 		lineageTag: 645b97f4-cb02-4e21-96f1-ef85a993cb76
 		summarizeBy: None

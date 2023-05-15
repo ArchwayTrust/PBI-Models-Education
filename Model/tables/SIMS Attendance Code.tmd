@@ -15,7 +15,6 @@ table 'SIMS Attendance Code'
 				Entity = Dataflow{[ entity = "dimSIMSAttendanceCodes" ]}[Data]
 			in
 				Entity
-
 		queryGroup: Dimensions
 
 	column SIMSAttendanceCodeId

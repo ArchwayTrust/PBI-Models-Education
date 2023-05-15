@@ -15,7 +15,6 @@ table 'G4S TT Periods'
 			in
 				Entity
 
-
 	column Academy
 		dataType: String
 		isAvailableInMDX: false

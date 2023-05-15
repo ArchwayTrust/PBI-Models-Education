@@ -15,7 +15,6 @@ table 'Parent View Question'
 			in
 			  Entity
 
-
 	column 'Full Question'
 		dataType: String
 		isDataTypeInferred: false

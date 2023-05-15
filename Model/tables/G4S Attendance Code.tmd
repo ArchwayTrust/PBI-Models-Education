@@ -15,7 +15,6 @@ table 'G4S Attendance Code'
 			in
 				Entity
 
-
 	column Academy
 		dataType: String
 		isAvailableInMDX: false

@@ -15,7 +15,6 @@ table 'DfE School Type'
 				Entity = Dataflow{[ entity = "dimSchoolTypes" ]}[Data]
 			in
 				Entity
-
 		queryGroup: Dimensions
 
 	column SchoolTypeId

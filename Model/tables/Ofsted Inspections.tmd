@@ -17,7 +17,6 @@ table 'Ofsted Inspections'
 				Entity = Dataflow{[ entity = "factInspections" ]}[Data]
 			in
 				Entity
-
 		queryGroup: Facts
 
 	measure 'Ofsted Rating' =
@@ -45,7 +44,6 @@ table 'Ofsted Inspections'
 		        ISINSCOPE(Site[Academy Code]), 
 		        OfstedRating
 		    )
-
 		formatString:= 0
 		lineageTag: 3a66d7e5-a642-41df-8077-50dfed7d51fd
 
@@ -79,7 +77,6 @@ table 'Ofsted Inspections'
 		        IF( ISBLANK( Result ), "Not Yet Inspected", Result ),
 		        BLANK()
 		    )
-
 		lineageTag: 7e1ab5fe-0f2b-40a7-98ca-b1d2191f90b4
 
 		annotation Format = <Format Format="Text" />
@@ -99,7 +96,6 @@ table 'Ofsted Inspections'
 		)
 		
 		RETURN MostRecentInspectionDate
-
 		formatString:= dd/mm/yyyy
 		lineageTag: 9317e942-e8a3-4368-a663-9e4f5a35a482
 
@@ -118,7 +114,6 @@ table 'Ofsted Inspections'
 		)
 		
 		RETURN BLANK()
-
 		lineageTag: da7c98c2-0144-4f0f-ae88-e671a0e2306d
 
 	column 'Inspection Date'
@@ -182,11 +177,11 @@ table 'Ofsted Inspections'
 		
 		RETURN
 		IF ('Ofsted Inspections'[Inspection Date] >= JoinDate, 1, 0)
-
 		dataType: Int64
 		encodingHint: Value
 		formatString:= 0
 		isAvailableInMDX: false
+		isDataTypeInferred: false
 		isHidden
 		lineageTag: c1a453cf-b619-4e69-9f31-78a59deca725
 		summarizeBy: None

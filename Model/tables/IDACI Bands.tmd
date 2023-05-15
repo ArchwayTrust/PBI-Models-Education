@@ -15,7 +15,6 @@ table 'IDACI Bands'
 			in
 				Entity
 
-
 	measure 'IDACI Band Description' = SELECTEDVALUE ( 'IDACI Bands'[Description] )
 		lineageTag: 95105907-620e-47bb-8078-bb826b8b27f7
 

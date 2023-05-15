@@ -15,7 +15,6 @@ table 'Ofsted Rating'
 				Entity = Dataflow{[ entity = "dimOfstedRatings" ]}[Data]
 			in
 				Entity
-
 		queryGroup: Dimensions
 
 	column OfstedRatingId

@@ -15,7 +15,6 @@ table 'Census Term'
 			in
 				Entity
 
-
 	column DisplayOrder
 		dataType: Int64
 		encodingHint: Value

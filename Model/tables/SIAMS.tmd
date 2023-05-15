@@ -13,7 +13,6 @@ table SIAMS
 			in
 				Entity
 
-
 	measure 'Impact of Collective Worship' = SELECTEDVALUE ( SIAMS[CollectiveWorship] )
 		lineageTag: 293c823f-57f5-4ecc-b440-fab995f2ba00
 

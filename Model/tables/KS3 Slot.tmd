@@ -15,7 +15,6 @@ table 'KS3 Slot'
 			in
 				Entity
 
-
 	column KS3SlotId
 		dataType: Int64
 		encodingHint: Value

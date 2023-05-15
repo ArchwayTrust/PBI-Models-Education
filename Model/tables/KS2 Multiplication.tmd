@@ -15,13 +15,11 @@ table 'KS2 Multiplication'
 			in
 				Entity
 
-
 	measure 'KS2 Multiplication Average Mark' =
 		CALCULATE(
 		    AVERAGE( 'KS2 Multiplication'[MarksOutOf25] ),
 		    'KS2 Multiplication'[PupilIncluded] = 1
 		)
-
 		formatString:= #,##0.0
 		lineageTag: 6da2a81a-70cf-409d-a5b6-b4b05481bcb7
 
@@ -30,7 +28,6 @@ table 'KS2 Multiplication'
 		    SUM ( 'KS2 Multiplication'[PupilIncluded] ),
 		    'KS2 Multiplication Marks'[Band] = "Below"
 		)
-
 		formatString:= #,##0
 		lineageTag: 5e44fbc1-ed1a-44ce-8791-5a347c0d25dd
 
@@ -48,7 +45,6 @@ table 'KS2 Multiplication'
 		VAR Result = DIVIDE (NumberPassed, NumberStudents)
 		    
 		RETURN Result
-
 		formatString:= #,##0.0 %
 		lineageTag: 1bff53ca-dc8b-4bc0-ada9-f9a5adc680cb
 

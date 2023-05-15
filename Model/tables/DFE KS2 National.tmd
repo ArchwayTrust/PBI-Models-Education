@@ -16,7 +16,6 @@ table 'DFE KS2 National'
 			in
 				Entity
 
-
 	column AvgGPSSS
 		dataType: Decimal
 		encodingHint: Value

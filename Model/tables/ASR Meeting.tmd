@@ -13,7 +13,6 @@ table 'ASR Meeting'
 			in
 				Entity
 
-
 	column ASRMeetingId
 		dataType: Int64
 		encodingHint: Value

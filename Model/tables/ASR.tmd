@@ -13,7 +13,6 @@ table ASR
 			in
 				Entity
 
-
 	measure 'ASR Response' =
 		VAR OverallScore = 
 		    CALCULATE (
@@ -40,7 +39,6 @@ table ASR
 		            ),
 		            BLANK()
 		    )
-
 		lineageTag: dfec2618-4966-4356-a8c8-54e3571ac6c4
 
 	measure 'ASR Colour' =
@@ -54,7 +52,6 @@ table ASR
 		    Response = "Develop", "orange",
 		    Response = "Stabilise", "Red"
 		)
-
 		lineageTag: b999f031-c8f3-4b7d-88ae-7c46873a2046
 
 	measure 'ASR Slicer Filter' = INT ( NOT ( ISEMPTY ( ASR ) ) )

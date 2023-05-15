@@ -15,36 +15,29 @@ table 'GL PTS'
 			in
 				Entity
 
-
 	measure 'PTS SAS' =
 		
 		AVERAGE ('GL PTS'[StandardAgeScore])
-
 		lineageTag: ef20f872-9c6c-4206-a661-6ba2f757cced
 
 	measure 'PTS Stanine' =
 		
 		AVERAGE ( 'GL PTS'[OverallStanine])
-
 		lineageTag: 51fcc999-6f1f-4f41-ba8d-a50484bcd3ea
 
 	measure 'PTS Chemistry Stanine' =
 		
 		AVERAGE('GL PTS'[ChemistryStanine])
-
 		lineageTag: c0c666a1-f9e8-48e1-a7ca-6998b388607b
 
 	measure 'PTS Physics Stanine' =
 		
 		AVERAGE ('GL PTS'[PhysicsStanine])
-
 		lineageTag: ccccb63b-3292-4f4d-84ba-f213cab5dcb1
 
 	measure 'PTS Biology Stanine' =
 		
 		AVERAGE ( 'GL PTS'[BiologyStanine] )
-		
-
 		lineageTag: e9ce7b3a-f4a3-4d5e-a2eb-490eb2a11869
 
 	column 'Academic Year'

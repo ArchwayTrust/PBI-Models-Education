@@ -16,7 +16,6 @@ table 'DfE Parent View'
 			in
 			  Entity
 
-
 	column Date
 		dataType: DateTime
 		encodingHint: Value

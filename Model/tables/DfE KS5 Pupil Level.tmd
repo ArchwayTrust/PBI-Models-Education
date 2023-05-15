@@ -17,7 +17,6 @@ table 'DfE KS5 Pupil Level'
 			in
 			  Entity
 
-
 	column AcademicStudent
 		dataType: Boolean
 		isAvailableInMDX: false

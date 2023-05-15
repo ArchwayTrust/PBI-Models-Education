@@ -15,7 +15,6 @@ table 'KS3 Group'
 			in
 				Entity
 
-
 	column KS3GroupId
 		dataType: Int64
 		encodingHint: Value

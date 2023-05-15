@@ -14,7 +14,6 @@ table 'EYFS Profile'
 			in
 				Entity
 
-
 	measure 'EYFS Outcomes GLD %' =
 		VAR StudentsAchievingGLD =
 		    COUNTROWS(
@@ -41,7 +40,6 @@ table 'EYFS Profile'
 		    )
 		
 		RETURN Result
-
 		formatString:= #,##0.0 %
 		lineageTag: 9965721c-d1f1-4be8-90b7-bb2dfff33f5e
 
@@ -65,7 +63,6 @@ table 'EYFS Profile'
 		    )
 		    
 		RETURN Result
-
 		formatString:= #,##0.0 %
 		lineageTag: f518b5a5-4c86-41a3-9b61-e7a16a2096ac
 

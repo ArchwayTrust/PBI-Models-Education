@@ -15,7 +15,6 @@ table 'Secondary Cohorts'
 			in
 				Entity
 
-
 	column Cohort
 		dataType: String
 		isDataTypeInferred: false

@@ -23,7 +23,6 @@ table 'CAF Slot'
 			  )
 			in
 			  Source
-
 		queryGroup: 'Dimensions\Static'
 
 	column CAFSlot
